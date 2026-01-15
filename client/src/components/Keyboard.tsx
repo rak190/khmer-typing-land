@@ -108,32 +108,40 @@ interface KeyboardProps {
 
 const HandsOverlay: React.FC<{ activeFinger: string | null }> = ({ activeFinger }) => {
   return (
-    <div className="absolute inset-0 flex justify-between px-10 items-end pb-4 overflow-hidden">
-      {/* Left Hand */}
-      <div className="relative flex gap-2 items-end">
-        {['LP', 'LR', 'LM', 'LI', 'TH'].map((f) => (
-          <div 
-            key={f}
-            className={cn(
-              "w-10 rounded-t-full transition-all duration-300 bg-slate-800/50",
-              f === 'TH' ? "h-14 origin-right rotate-[-30deg]" : "h-32",
-              activeFinger === f && "bg-primary opacity-100 h-36 shadow-[0_0_30px_hsl(var(--primary))]"
-            )}
-          />
-        ))}
-      </div>
-      {/* Right Hand */}
-      <div className="relative flex gap-2 items-end">
-        {['TH', 'RI', 'RM', 'RR', 'RP'].map((f) => (
-          <div 
-            key={f}
-            className={cn(
-              "w-10 rounded-t-full transition-all duration-300 bg-slate-800/50",
-              f === 'TH' ? "h-14 origin-left rotate-[30deg]" : "h-32",
-              activeFinger === f && "bg-primary opacity-100 h-36 shadow-[0_0_30px_hsl(var(--primary))]"
-            )}
-          />
-        ))}
+    <div className="absolute inset-0 pointer-events-none z-0">
+      <div className="absolute inset-0 flex justify-between px-2 items-center overflow-hidden">
+        {/* Left Hand - Centered horizontally under its keys */}
+        <div className="relative flex gap-1.5 items-end opacity-20 translate-x-12">
+          {['LP', 'LR', 'LM', 'LI', 'TH'].map((f) => (
+            <div 
+              key={f}
+              className={cn(
+                "w-10 rounded-t-full transition-all duration-300 bg-slate-800/80",
+                f === 'TH' ? "h-14 origin-right rotate-[-30deg]" : 
+                f === 'LP' ? "h-24" :
+                f === 'LR' ? "h-28" :
+                f === 'LM' ? "h-32" : "h-28",
+                activeFinger === f && "bg-primary opacity-100 h-36 shadow-[0_0_40px_hsl(var(--primary))]"
+              )}
+            />
+          ))}
+        </div>
+        {/* Right Hand - Centered horizontally under its keys */}
+        <div className="relative flex gap-1.5 items-end opacity-20 -translate-x-12">
+          {['TH', 'RI', 'RM', 'RR', 'RP'].map((f) => (
+            <div 
+              key={f}
+              className={cn(
+                "w-10 rounded-t-full transition-all duration-300 bg-slate-800/80",
+                f === 'TH' ? "h-14 origin-left rotate-[30deg]" :
+                f === 'RP' ? "h-24" :
+                f === 'RR' ? "h-28" :
+                f === 'RM' ? "h-32" : "h-28",
+                activeFinger === f && "bg-primary opacity-100 h-36 shadow-[0_0_40px_hsl(var(--primary))]"
+              )}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
