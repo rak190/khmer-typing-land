@@ -152,15 +152,21 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
 
         <div className="absolute inset-0 flex items-center px-16">
           {/* Hero */}
-          <div className="absolute left-16 bottom-16 w-20 h-20 bg-blue-500/20 border border-blue-400/50 rounded-2xl flex items-center justify-center text-4xl shadow-[0_0_30px_rgba(59,130,246,0.3)] z-10 transition-transform hover:scale-110">
-            {mascot}
+          <div className="absolute left-16 bottom-16 flex flex-col items-center gap-2 z-10">
+            <div className="w-20 h-20 bg-primary/20 border-2 border-primary/50 rounded-2xl flex items-center justify-center text-5xl shadow-[0_0_30px_rgba(90,200,250,0.3)] transition-transform hover:scale-110 relative">
+              <div className="absolute -inset-2 border-2 border-primary/20 rounded-3xl animate-[spin_10s_linear_infinite]" />
+              {mascot}
+            </div>
+            <div className="px-3 py-1 rounded-full bg-black/40 border border-white/10 text-[10px] font-bold text-slate-400 uppercase tracking-widest backdrop-blur-sm">
+              Guardian
+            </div>
           </div>
 
           {/* Enemy */}
           {enemyVisual && (
             <div 
               id="enemy-sprite"
-              className="absolute right-[-100px] bottom-16 w-20 h-20 bg-red-500/20 border border-red-400/50 rounded-2xl flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(239,68,68,0.3)] z-10 will-change-transform"
+              className="absolute right-[-100px] bottom-16 flex flex-col items-center gap-1 z-10 will-change-transform"
               title={`Type: ${enemyVisual.target}`}
             >
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 text-5xl font-khmer text-white font-bold drop-shadow-md flex flex-col items-center gap-1">
@@ -171,7 +177,9 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
                   </span>
                 )}
               </div>
-              {mascot}
+              <div className="w-20 h-20 bg-red-500/20 border border-red-400/50 rounded-2xl flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(239,68,68,0.3)]">
+                 👾
+              </div>
             </div>
           )}
         </div>
