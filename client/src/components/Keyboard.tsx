@@ -40,21 +40,21 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod }
         w === "w4" && "w-[142px]",
         w === "w5" && "w-[200px]",
         !w && "w-[58px]",
-        active && "active-highlight scale-[0.98]",
-        correct && "correct",
-        wrong && "wrong",
+        active && "ring-4 ring-primary ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--primary)/0.6)] bg-primary/20",
+        correct && "ring-4 ring-accent ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--accent)/0.6)] bg-accent/20",
+        wrong && "ring-4 ring-destructive ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--destructive)/0.6)] bg-destructive/20",
         !map && !fixed && "opacity-50"
       )}
     >
-      <span className={cn("absolute left-2 top-1 text-[13px] font-black", active ? "text-primary-foreground" : "text-blue-100")}>
+      <span className={cn("absolute left-2 top-1 text-base font-black transition-colors", active ? "text-white" : "text-blue-100")}>
         {topLabel}
       </span>
       {botLabel && botLabel !== topLabel && (
-        <span className="absolute left-2 bottom-1 text-[11px] font-bold text-slate-400">
+        <span className={cn("absolute left-2 bottom-1 text-[11px] font-bold transition-colors", active ? "text-white/80" : "text-slate-400")}>
           {botLabel}
         </span>
       )}
-      <span className="absolute right-2 bottom-1 text-[9px] text-slate-600 font-mono">
+      <span className={cn("absolute right-2 bottom-1 text-[9px] font-mono transition-colors", active ? "text-white/40" : "text-slate-600")}>
         {code.replace(/Key|Digit/, "")}
       </span>
     </div>
