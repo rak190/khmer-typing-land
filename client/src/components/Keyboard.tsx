@@ -31,32 +31,32 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod }
   return (
     <div 
       className={cn(
-        "key-cap h-14 rounded-xl border border-white/10 text-white relative flex items-center justify-center transition-all duration-200",
-        w === "w2" && "w-[86px]",
-        w === "w3" && "w-[114px]",
-        w === "w4" && "w-[142px]",
-        w === "w5" && "w-[200px]",
-        !w && "w-[58px]",
-        active && "ring-4 ring-primary ring-offset-4 ring-offset-background scale-110 z-20 shadow-[0_0_40px_hsl(var(--primary)/0.8)] bg-primary/40",
-        correct && "ring-4 ring-accent ring-offset-4 ring-offset-background scale-110 z-20 shadow-[0_0_40px_hsl(var(--accent)/0.8)] bg-accent/40",
-        wrong && "ring-4 ring-destructive ring-offset-4 ring-offset-background scale-110 z-20 shadow-[0_0_40px_hsl(var(--destructive)/0.8)] bg-destructive/40",
+        "key-cap h-11 rounded-lg border border-white/10 text-white relative flex items-center justify-center transition-all duration-200",
+        w === "w2" && "w-[68px]",
+        w === "w3" && "w-[90px]",
+        w === "w4" && "w-[112px]",
+        w === "w5" && "w-[158px]",
+        !w && "w-[46px]",
+        active && "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_30px_hsl(var(--primary)/0.8)] bg-primary/40",
+        correct && "ring-2 ring-accent ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_30px_hsl(var(--accent)/0.8)] bg-accent/40",
+        wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_30px_hsl(var(--destructive)/0.8)] bg-destructive/40",
         !map && !fixed && "opacity-50"
       )}
     >
-      <span className={cn("text-xl font-black transition-all font-khmer", active ? "text-white scale-125" : "text-blue-100")}>
+      <span className={cn("text-lg font-black transition-all font-khmer", active ? "text-white scale-110" : "text-blue-100")}>
         {label}
       </span>
       
       {active && !fixed && (
-        <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce z-30 pointer-events-none">
-          <div className="bg-primary text-primary-foreground text-[10px] font-black px-2 py-0.5 rounded-md shadow-lg whitespace-nowrap mb-1 uppercase tracking-tighter border border-white/20">
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce z-30 pointer-events-none">
+          <div className="bg-primary text-primary-foreground text-[8px] font-black px-1.5 py-0.5 rounded shadow-lg whitespace-nowrap mb-0.5 uppercase tracking-tighter border border-white/20">
             {CODE_TO_FINGER[code] ? FINGER[CODE_TO_FINGER[code]] : "Press"}
           </div>
-          <div className="text-2xl filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">👆</div>
+          <div className="text-xl filter drop-shadow-[0_0_6px_rgba(255,255,255,0.8)]">👆</div>
         </div>
       )}
 
-      <span className={cn("absolute right-1.5 bottom-1 text-[9px] font-mono transition-colors", active ? "text-white/40" : "text-slate-600")}>
+      <span className={cn("absolute right-1 bottom-0.5 text-[8px] font-mono transition-colors", active ? "text-white/40" : "text-slate-600")}>
         {code.replace(/Key|Digit/, "")}
       </span>
     </div>
@@ -108,7 +108,7 @@ interface KeyboardProps {
 
 const HandsOverlay: React.FC<{ activeFinger: string | null }> = ({ activeFinger }) => {
   return (
-    <div className="relative w-full h-32 mt-8 pointer-events-none overflow-hidden">
+    <div className="relative w-full h-24 mt-4 pointer-events-none overflow-hidden">
       <div className="absolute inset-0 flex justify-between px-10">
         {/* Left Hand */}
         <div className="relative flex gap-1 items-end opacity-20">
@@ -116,9 +116,9 @@ const HandsOverlay: React.FC<{ activeFinger: string | null }> = ({ activeFinger 
             <div 
               key={f}
               className={cn(
-                "w-8 rounded-t-full transition-all duration-300",
-                f === 'TH' ? "h-12 bg-slate-500 origin-right rotate-[-30deg]" : "h-24 bg-slate-500",
-                activeFinger === f && "bg-primary opacity-100 h-28 shadow-[0_0_20px_hsl(var(--primary))]"
+                "w-6 rounded-t-full transition-all duration-300",
+                f === 'TH' ? "h-10 bg-slate-500 origin-right rotate-[-30deg]" : "h-16 bg-slate-500",
+                activeFinger === f && "bg-primary opacity-100 h-20 shadow-[0_0_15px_hsl(var(--primary))]"
               )}
             />
           ))}
@@ -129,9 +129,9 @@ const HandsOverlay: React.FC<{ activeFinger: string | null }> = ({ activeFinger 
             <div 
               key={f}
               className={cn(
-                "w-8 rounded-t-full transition-all duration-300",
-                f === 'TH' ? "h-12 bg-slate-500 origin-left rotate-[30deg]" : "h-24 bg-slate-500",
-                activeFinger === f && "bg-primary opacity-100 h-28 shadow-[0_0_20px_hsl(var(--primary))]"
+                "w-6 rounded-t-full transition-all duration-300",
+                f === 'TH' ? "h-10 bg-slate-500 origin-left rotate-[30deg]" : "h-16 bg-slate-500",
+                activeFinger === f && "bg-primary opacity-100 h-20 shadow-[0_0_15px_hsl(var(--primary))]"
               )}
             />
           ))}
@@ -197,9 +197,9 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 items-center">
+      <div className="flex flex-col gap-1.5 items-center">
         {KEY_ROWS.map((row, i) => (
-          <div key={i} className="flex gap-2">
+          <div key={i} className="flex gap-1.5">
             {row.map(k => (
               <Key 
                 key={k.code} 
