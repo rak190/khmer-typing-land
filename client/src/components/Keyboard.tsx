@@ -31,21 +31,31 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod }
   return (
     <div 
       className={cn(
-        "key-cap h-14 rounded-xl border border-white/10 text-white relative flex items-center justify-center",
+        "key-cap h-14 rounded-xl border border-white/10 text-white relative flex items-center justify-center transition-all duration-200",
         w === "w2" && "w-[86px]",
         w === "w3" && "w-[114px]",
         w === "w4" && "w-[142px]",
         w === "w5" && "w-[200px]",
         !w && "w-[58px]",
-        active && "ring-4 ring-primary ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--primary)/0.6)] bg-primary/20",
-        correct && "ring-4 ring-accent ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--accent)/0.6)] bg-accent/20",
-        wrong && "ring-4 ring-destructive ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--destructive)/0.6)] bg-destructive/20",
+        active && "ring-4 ring-primary ring-offset-4 ring-offset-background scale-110 z-20 shadow-[0_0_40px_hsl(var(--primary)/0.8)] bg-primary/40",
+        correct && "ring-4 ring-accent ring-offset-4 ring-offset-background scale-110 z-20 shadow-[0_0_40px_hsl(var(--accent)/0.8)] bg-accent/40",
+        wrong && "ring-4 ring-destructive ring-offset-4 ring-offset-background scale-110 z-20 shadow-[0_0_40px_hsl(var(--destructive)/0.8)] bg-destructive/40",
         !map && !fixed && "opacity-50"
       )}
     >
       <span className={cn("text-xl font-black transition-all font-khmer", active ? "text-white scale-125" : "text-blue-100")}>
         {label}
       </span>
+      
+      {active && !fixed && (
+        <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce z-30 pointer-events-none">
+          <div className="bg-primary text-primary-foreground text-[10px] font-black px-2 py-0.5 rounded-md shadow-lg whitespace-nowrap mb-1 uppercase tracking-tighter border border-white/20">
+            {CODE_TO_FINGER[code] ? FINGER[CODE_TO_FINGER[code]] : "Press"}
+          </div>
+          <div className="text-2xl filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">👆</div>
+        </div>
+      )}
+
       <span className={cn("absolute right-1.5 bottom-1 text-[9px] font-mono transition-colors", active ? "text-white/40" : "text-slate-600")}>
         {code.replace(/Key|Digit/, "")}
       </span>
