@@ -108,34 +108,32 @@ interface KeyboardProps {
 
 const HandsOverlay: React.FC<{ activeFinger: string | null }> = ({ activeFinger }) => {
   return (
-    <div className="relative w-full h-24 mt-4 pointer-events-none overflow-hidden">
-      <div className="absolute inset-0 flex justify-between px-10">
-        {/* Left Hand */}
-        <div className="relative flex gap-1 items-end opacity-20">
-          {['LP', 'LR', 'LM', 'LI', 'TH'].map((f) => (
-            <div 
-              key={f}
-              className={cn(
-                "w-6 rounded-t-full transition-all duration-300",
-                f === 'TH' ? "h-10 bg-slate-500 origin-right rotate-[-30deg]" : "h-16 bg-slate-500",
-                activeFinger === f && "bg-primary opacity-100 h-20 shadow-[0_0_15px_hsl(var(--primary))]"
-              )}
-            />
-          ))}
-        </div>
-        {/* Right Hand */}
-        <div className="relative flex gap-1 items-end opacity-20">
-          {['TH', 'RI', 'RM', 'RR', 'RP'].map((f) => (
-            <div 
-              key={f}
-              className={cn(
-                "w-6 rounded-t-full transition-all duration-300",
-                f === 'TH' ? "h-10 bg-slate-500 origin-left rotate-[30deg]" : "h-16 bg-slate-500",
-                activeFinger === f && "bg-primary opacity-100 h-20 shadow-[0_0_15px_hsl(var(--primary))]"
-              )}
-            />
-          ))}
-        </div>
+    <div className="absolute inset-0 flex justify-between px-10 items-end pb-4 overflow-hidden">
+      {/* Left Hand */}
+      <div className="relative flex gap-2 items-end">
+        {['LP', 'LR', 'LM', 'LI', 'TH'].map((f) => (
+          <div 
+            key={f}
+            className={cn(
+              "w-10 rounded-t-full transition-all duration-300 bg-slate-800/50",
+              f === 'TH' ? "h-14 origin-right rotate-[-30deg]" : "h-32",
+              activeFinger === f && "bg-primary opacity-100 h-36 shadow-[0_0_30px_hsl(var(--primary))]"
+            )}
+          />
+        ))}
+      </div>
+      {/* Right Hand */}
+      <div className="relative flex gap-2 items-end">
+        {['TH', 'RI', 'RM', 'RR', 'RP'].map((f) => (
+          <div 
+            key={f}
+            className={cn(
+              "w-10 rounded-t-full transition-all duration-300 bg-slate-800/50",
+              f === 'TH' ? "h-14 origin-left rotate-[30deg]" : "h-32",
+              activeFinger === f && "bg-primary opacity-100 h-36 shadow-[0_0_30px_hsl(var(--primary))]"
+            )}
+          />
+        ))}
       </div>
     </div>
   );
@@ -180,7 +178,7 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
   }, [activeFinger]);
 
   return (
-    <div className={cn("flex flex-col gap-4 p-4 rounded-3xl bg-black/20 border border-white/5 w-full max-w-[1000px] mx-auto backdrop-blur-sm", className)}>
+    <div className={cn("flex flex-col gap-4 p-4 rounded-3xl bg-black/20 border border-white/5 w-full max-w-[1000px] mx-auto backdrop-blur-sm relative", className)}>
       <div className="flex justify-between items-center text-sm">
         <div className="flex gap-4">
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5">
@@ -197,9 +195,14 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
         </div>
       </div>
 
-      <div className="flex flex-col gap-1.5 items-center">
+      <div className="relative flex flex-col gap-1.5 items-center z-10">
+        {/* Hands Overlay integrated behind keys */}
+        <div className="absolute inset-x-0 top-0 bottom-0 pointer-events-none opacity-40 z-0">
+          <HandsOverlay activeFinger={activeFinger} />
+        </div>
+
         {KEY_ROWS.map((row, i) => (
-          <div key={i} className="flex gap-1.5">
+          <div key={i} className="flex gap-1.5 relative z-10">
             {row.map(k => (
               <Key 
                 key={k.code} 
@@ -213,8 +216,6 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
           </div>
         ))}
       </div>
-
-      <HandsOverlay activeFinger={activeFinger} />
     </div>
   );
 };
