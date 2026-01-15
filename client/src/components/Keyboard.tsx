@@ -16,20 +16,33 @@ interface KeyProps {
 const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod }) => {
   const map = NIDA_MAP[code];
   
-  // Decide what to show
-  let topLabel = "";
-  let botLabel = "";
-  
   if (fixed) {
-    topLabel = fixed;
-  } else if (map) {
-    const { base, shift, altgr } = map;
-    botLabel = base; // Always show base at bottom
-    
-    if (mod === "SHIFT") topLabel = shift || base;
-    else if (mod === "ALTGR") topLabel = altgr || base;
-    else topLabel = base;
+    return (
+      <div 
+        className={cn(
+          "key-cap h-14 rounded-xl border border-white/10 text-white relative",
+          w === "w2" && "w-[86px]",
+          w === "w3" && "w-[114px]",
+          w === "w4" && "w-[142px]",
+          w === "w5" && "w-[200px]",
+          !w && "w-[58px]",
+          active && "ring-4 ring-primary ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--primary)/0.6)] bg-primary/20",
+          correct && "ring-4 ring-accent ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--accent)/0.6)] bg-accent/20",
+          wrong && "ring-4 ring-destructive ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--destructive)/0.6)] bg-destructive/20",
+        )}
+      >
+        <span className="absolute left-2 top-1 text-[11px] font-black opacity-70 uppercase tracking-tighter">{fixed}</span>
+      </div>
+    );
   }
+
+  if (!map) {
+    return (
+      <div className={cn("key-cap h-14 rounded-xl border border-white/10 opacity-30", !w ? "w-[58px]" : "")} />
+    );
+  }
+
+  const { base, shift, altgr } = map;
 
   return (
     <div 
@@ -40,21 +53,40 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod }
         w === "w4" && "w-[142px]",
         w === "w5" && "w-[200px]",
         !w && "w-[58px]",
-        active && "ring-4 ring-primary ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--primary)/0.6)] bg-primary/20",
-        correct && "ring-4 ring-accent ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--accent)/0.6)] bg-accent/20",
-        wrong && "ring-4 ring-destructive ring-offset-4 ring-offset-background scale-105 z-10 shadow-[0_0_30px_hsl(var(--destructive)/0.6)] bg-destructive/20",
-        !map && !fixed && "opacity-50"
+        active && "ring-4 ring-primary ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_40px_hsl(var(--primary)/0.7)] bg-primary/30",
+        correct && "ring-4 ring-accent ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_40px_hsl(var(--accent)/0.7)] bg-accent/30",
+        wrong && "ring-4 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_40px_hsl(var(--destructive)/0.7)] bg-destructive/30",
       )}
     >
-      <span className={cn("absolute left-2 top-1 text-base font-black transition-colors", active ? "text-white" : "text-blue-100")}>
-        {topLabel}
+      {/* SHIFT LAYER - Top Left */}
+      <span className={cn(
+        "absolute left-1.5 top-1 text-[11px] font-black transition-all",
+        mod === "SHIFT" ? "text-primary scale-125 translate-x-1" : "text-slate-500 opacity-40",
+        active && mod === "SHIFT" && "text-white opacity-100"
+      )}>
+        {shift}
       </span>
-      {botLabel && botLabel !== topLabel && (
-        <span className={cn("absolute left-2 bottom-1 text-[11px] font-bold transition-colors", active ? "text-white/80" : "text-slate-400")}>
-          {botLabel}
-        </span>
-      )}
-      <span className={cn("absolute right-2 bottom-1 text-[9px] font-mono transition-colors", active ? "text-white/40" : "text-slate-600")}>
+
+      {/* ALTGR LAYER - Top Right */}
+      <span className={cn(
+        "absolute right-1.5 top-1 text-[11px] font-black transition-all",
+        mod === "ALTGR" ? "text-amber-400 scale-125 -translate-x-1" : "text-slate-500 opacity-40",
+        active && mod === "ALTGR" && "text-white opacity-100"
+      )}>
+        {altgr}
+      </span>
+
+      {/* BASE LAYER - Center */}
+      <span className={cn(
+        "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-lg font-black font-khmer transition-all",
+        mod === "BASE" ? "text-white scale-110" : "text-slate-400 opacity-30",
+        active && mod === "BASE" && "text-white opacity-100"
+      )}>
+        {base}
+      </span>
+
+      {/* Physical Key ID */}
+      <span className="absolute right-1 bottom-0.5 text-[8px] font-mono text-slate-700 font-bold uppercase">
         {code.replace(/Key|Digit/, "")}
       </span>
     </div>
