@@ -118,7 +118,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
         </div>
       </div>
 
-      <Keyboard activeCode={activeCode} correct={flash === "good"} wrongCode={wrongCode} />
+      <Keyboard activeCode={activeCode} correct={flash === "good"} wrongCode={wrongCode} target={target} />
     </div>
   );
 };

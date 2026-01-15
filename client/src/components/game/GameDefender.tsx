@@ -189,7 +189,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
         </div>
       </div>
 
-      <Keyboard activeCode={activeCode} wrongCode={wrongCode} />
+      <Keyboard activeCode={activeCode} wrongCode={wrongCode} target={enemyVisual?.target} />
     </div>
   );
 };

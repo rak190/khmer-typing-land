@@ -104,50 +104,64 @@ interface KeyboardProps {
   wrongCode?: string | null;
   className?: string;
   onModChange?: (mod: "BASE" | "SHIFT" | "ALTGR") => void;
+  target?: string;
 }
 
-const HandsOverlay: React.FC<{ activeFinger: string | null }> = ({ activeFinger }) => {
+const HandsOverlay: React.FC<{ activeFinger: string | null; target?: string }> = ({ activeFinger, target }) => {
+  const needsShift = target && Object.values(NIDA_MAP).some(m => m.shift === target);
+  const needsAltGr = target && Object.values(NIDA_MAP).some(m => m.altgr === target);
+
   return (
     <div className="absolute inset-0 pointer-events-none z-0">
       <div className="absolute inset-0 flex justify-between px-2 items-center overflow-hidden">
-        {/* Left Hand - Centered horizontally under its keys */}
+        {/* Left Hand */}
         <div className="relative flex gap-1.5 items-end opacity-20 translate-x-12">
-          {['LP', 'LR', 'LM', 'LI', 'TH'].map((f) => (
-            <div 
-              key={f}
-              className={cn(
-                "w-10 rounded-t-full transition-all duration-300 bg-slate-800/80",
-                f === 'TH' ? "h-14 origin-right rotate-[-30deg]" : 
-                f === 'LP' ? "h-24" :
-                f === 'LR' ? "h-28" :
-                f === 'LM' ? "h-32" : "h-28",
-                activeFinger === f && "bg-primary opacity-100 h-36 shadow-[0_0_40px_hsl(var(--primary))]"
-              )}
-            />
-          ))}
+          {['LP', 'LR', 'LM', 'LI', 'TH'].map((f) => {
+            const isTarget = activeFinger === f;
+            const isModifier = (f === 'LP' && needsShift);
+            return (
+              <div 
+                key={f}
+                className={cn(
+                  "w-10 rounded-t-full transition-all duration-300 bg-slate-800/80",
+                  f === 'TH' ? "h-14 origin-right rotate-[-30deg]" : 
+                  f === 'LP' ? "h-24" :
+                  f === 'LR' ? "h-28" :
+                  f === 'LM' ? "h-32" : "h-28",
+                  isTarget && "bg-primary opacity-100 h-36 shadow-[0_0_40px_hsl(var(--primary))]",
+                  isModifier && "bg-amber-400 opacity-80 h-32 shadow-[0_0_30px_rgba(251,191,36,0.5)] animate-pulse"
+                )}
+              />
+            );
+          })}
         </div>
-        {/* Right Hand - Centered horizontally under its keys */}
+        {/* Right Hand */}
         <div className="relative flex gap-1.5 items-end opacity-20 -translate-x-12">
-          {['TH', 'RI', 'RM', 'RR', 'RP'].map((f) => (
-            <div 
-              key={f}
-              className={cn(
-                "w-10 rounded-t-full transition-all duration-300 bg-slate-800/80",
-                f === 'TH' ? "h-14 origin-left rotate-[30deg]" :
-                f === 'RP' ? "h-24" :
-                f === 'RR' ? "h-28" :
-                f === 'RM' ? "h-32" : "h-28",
-                activeFinger === f && "bg-primary opacity-100 h-36 shadow-[0_0_40px_hsl(var(--primary))]"
-              )}
-            />
-          ))}
+          {['TH', 'RI', 'RM', 'RR', 'RP'].map((f) => {
+            const isTarget = activeFinger === f;
+            const isModifier = (f === 'RP' && (needsShift || needsAltGr));
+            return (
+              <div 
+                key={f}
+                className={cn(
+                  "w-10 rounded-t-full transition-all duration-300 bg-slate-800/80",
+                  f === 'TH' ? "h-14 origin-left rotate-[30deg]" :
+                  f === 'RP' ? "h-24" :
+                  f === 'RR' ? "h-28" :
+                  f === 'RM' ? "h-32" : "h-28",
+                  isTarget && "bg-primary opacity-100 h-36 shadow-[0_0_40px_hsl(var(--primary))]",
+                  isModifier && "bg-amber-400 opacity-80 h-32 shadow-[0_0_30px_rgba(251,191,36,0.5)] animate-pulse"
+                )}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
   );
 };
 
-export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCode, className, onModChange }) => {
+export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCode, className, onModChange, target }) => {
   const [mod, setMod] = React.useState<"BASE" | "SHIFT" | "ALTGR">("BASE");
 
   useEffect(() => {
@@ -180,10 +194,23 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
     return CODE_TO_FINGER[activeCode] || null;
   }, [activeCode]);
 
+  // Determine if modifiers are needed for the current target
+  const targetMapEntry = useMemo(() => {
+    if (!target) return null;
+    const entry = Object.entries(NIDA_MAP).find(([_, m]) => m.shift === target || m.altgr === target || m.base === target);
+    return entry || null;
+  }, [target]);
+
+  const needsShift = targetMapEntry ? (targetMapEntry[1] as any).shift === target : false;
+  const needsAltGr = targetMapEntry ? (targetMapEntry[1] as any).altgr === target : false;
+
   const fingerName = useMemo(() => {
     if (!activeFinger) return "—";
-    return FINGER[activeFinger] || "—";
-  }, [activeFinger]);
+    let name = FINGER[activeFinger as keyof typeof FINGER] || "—";
+    if (needsShift) name = `Shift + ${name}`;
+    if (needsAltGr) name = `AltGr + ${name}`;
+    return name;
+  }, [activeFinger, needsShift, needsAltGr]);
 
   return (
     <div className={cn("flex flex-col gap-4 p-4 rounded-3xl bg-black/20 border border-white/5 w-full max-w-[1000px] mx-auto backdrop-blur-sm relative", className)}>
@@ -204,23 +231,27 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
       </div>
 
       <div className="relative flex flex-col gap-1.5 items-center z-10">
-        {/* Hands Overlay integrated behind keys */}
         <div className="absolute inset-x-0 top-0 bottom-0 pointer-events-none opacity-40 z-0">
-          <HandsOverlay activeFinger={activeFinger} />
+          <HandsOverlay activeFinger={activeFinger} target={target} />
         </div>
 
         {KEY_ROWS.map((row, i) => (
           <div key={i} className="flex gap-1.5 relative z-10">
-            {row.map(k => (
-              <Key 
-                key={k.code} 
-                {...k} 
-                mod={mod} 
-                active={activeCode === k.code}
-                correct={correct && activeCode === k.code}
-                wrong={wrongCode === k.code}
-              />
-            ))}
+            {row.map(k => {
+              const isModifierNeeded = (needsShift && (k.code === "ShiftLeft" || k.code === "ShiftRight")) || 
+                                       (needsAltGr && k.code === "AltRight");
+              
+              return (
+                <Key 
+                  key={k.code} 
+                  {...k} 
+                  mod={mod} 
+                  active={activeCode === k.code || isModifierNeeded}
+                  correct={correct && activeCode === k.code}
+                  wrong={wrongCode === k.code}
+                />
+              );
+            })}
           </div>
         ))}
       </div>

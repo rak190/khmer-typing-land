@@ -166,7 +166,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
         </div>
       </div>
 
-      <Keyboard activeCode={activeCode} wrongCode={wrongCode} />
+      <Keyboard activeCode={activeCode} wrongCode={wrongCode} target={target} />
     </div>
   );
 };
