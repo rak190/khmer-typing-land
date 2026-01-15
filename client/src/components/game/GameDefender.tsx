@@ -3,6 +3,7 @@ import { findKeyForTarget, nidaFromEvent } from '@/lib/nida-map';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Keyboard } from '@/components/Keyboard';
+import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 
 interface GameProps {
   pool: string[];
@@ -151,8 +152,8 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
 
         <div className="absolute inset-0 flex items-center px-16">
           {/* Hero */}
-          <div className="absolute left-16 bottom-16 w-20 h-20 bg-blue-500/20 border border-blue-400/50 rounded-2xl flex items-center justify-center text-4xl shadow-[0_0_30px_rgba(59,130,246,0.3)] z-10">
-            🛡️
+          <div className="absolute left-16 bottom-16 w-20 h-20 bg-blue-500/20 border border-blue-400/50 rounded-2xl flex items-center justify-center text-4xl shadow-[0_0_30px_rgba(59,130,246,0.3)] z-10 transition-transform hover:scale-110">
+            {mascot}
           </div>
 
           {/* Enemy */}
@@ -162,8 +163,13 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
               className="absolute right-[-100px] bottom-16 w-20 h-20 bg-red-500/20 border border-red-400/50 rounded-2xl flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(239,68,68,0.3)] z-10 will-change-transform"
               title={`Type: ${enemyVisual.target}`}
             >
-              <div className="absolute -top-12 left-1/2 -translate-x-1/2 text-5xl font-khmer text-white font-bold drop-shadow-md">
+              <div className="absolute -top-12 left-1/2 -translate-x-1/2 text-5xl font-khmer text-white font-bold drop-shadow-md flex flex-col items-center gap-1">
                 {enemyVisual.target}
+                {activeCode && (
+                  <span className="text-[10px] bg-primary/20 border border-primary/30 px-2 py-0.5 rounded-full text-primary font-bold whitespace-nowrap">
+                    {FINGER[CODE_TO_FINGER[activeCode]]}
+                  </span>
+                )}
               </div>
               {mascot}
             </div>

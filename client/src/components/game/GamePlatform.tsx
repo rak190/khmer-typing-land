@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useGameStore } from '@/lib/store';
 import { Keyboard } from '@/components/Keyboard';
+import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 
 interface GameProps {
   pool: string[];
@@ -95,15 +96,20 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
           </div>
         </div>
 
-        <div className="flex-1 flex items-center justify-center relative">
+        <div className="flex-1 flex flex-col items-center justify-center relative">
            <div 
              className={cn(
-               "w-48 h-48 rounded-full border-4 border-dashed border-white/20 flex items-center justify-center text-9xl font-khmer text-white transition-all duration-200",
+               "w-48 h-48 rounded-full border-4 border-dashed border-white/20 flex items-center justify-center text-9xl font-khmer text-white transition-all duration-200 relative",
                flash === "good" && "border-accent bg-accent/20 scale-110 shadow-[0_0_50px_rgba(48,209,88,0.5)]",
                flash === "bad" && "border-destructive bg-destructive/20 scale-95 shadow-[0_0_50px_rgba(255,69,58,0.5)]"
              )}
            >
              {target}
+             {activeCode && (
+               <div className="absolute -bottom-12 bg-primary/20 border border-primary/30 px-4 py-1 rounded-full text-xs font-bold text-primary animate-pulse whitespace-nowrap">
+                 Use {FINGER[CODE_TO_FINGER[activeCode]] || "any finger"}
+               </div>
+             )}
            </div>
         </div>
 

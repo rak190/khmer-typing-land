@@ -3,6 +3,7 @@ import { findKeyForTarget, nidaFromEvent } from '@/lib/nida-map';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Keyboard } from '@/components/Keyboard';
+import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 
 interface GameProps {
   pool: string[];
@@ -149,8 +150,13 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
           {/* Obstacle / Target Display */}
           <div className="absolute right-32 bottom-32 flex flex-col items-center animate-pulse">
             <div className="text-sm text-slate-400 mb-2 font-bold uppercase tracking-widest">Type Jump</div>
-            <div className="w-32 h-32 rounded-full border-4 border-dashed border-white/30 flex items-center justify-center text-7xl font-khmer text-white bg-black/20 backdrop-blur-sm">
+            <div className="w-32 h-32 rounded-full border-4 border-dashed border-white/30 flex items-center justify-center text-7xl font-khmer text-white bg-black/20 backdrop-blur-sm relative">
               {target}
+              {activeCode && (
+                <div className="absolute -bottom-8 bg-primary/20 border border-primary/30 px-3 py-0.5 rounded-full text-[10px] font-bold text-primary whitespace-nowrap">
+                  {FINGER[CODE_TO_FINGER[activeCode]]}
+                </div>
+              )}
             </div>
           </div>
         </div>
