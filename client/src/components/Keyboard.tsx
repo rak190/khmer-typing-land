@@ -106,6 +106,41 @@ interface KeyboardProps {
   onModChange?: (mod: "BASE" | "SHIFT" | "ALTGR") => void;
 }
 
+const HandsOverlay: React.FC<{ activeFinger: string | null }> = ({ activeFinger }) => {
+  return (
+    <div className="relative w-full h-32 mt-8 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 flex justify-between px-10">
+        {/* Left Hand */}
+        <div className="relative flex gap-1 items-end opacity-20">
+          {['LP', 'LR', 'LM', 'LI', 'TH'].map((f) => (
+            <div 
+              key={f}
+              className={cn(
+                "w-8 rounded-t-full transition-all duration-300",
+                f === 'TH' ? "h-12 bg-slate-500 origin-right rotate-[-30deg]" : "h-24 bg-slate-500",
+                activeFinger === f && "bg-primary opacity-100 h-28 shadow-[0_0_20px_hsl(var(--primary))]"
+              )}
+            />
+          ))}
+        </div>
+        {/* Right Hand */}
+        <div className="relative flex gap-1 items-end opacity-20">
+          {['TH', 'RI', 'RM', 'RR', 'RP'].map((f) => (
+            <div 
+              key={f}
+              className={cn(
+                "w-8 rounded-t-full transition-all duration-300",
+                f === 'TH' ? "h-12 bg-slate-500 origin-left rotate-[30deg]" : "h-24 bg-slate-500",
+                activeFinger === f && "bg-primary opacity-100 h-28 shadow-[0_0_20px_hsl(var(--primary))]"
+              )}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCode, className, onModChange }) => {
   const [mod, setMod] = React.useState<"BASE" | "SHIFT" | "ALTGR">("BASE");
 
@@ -134,11 +169,15 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
     };
   }, [onModChange]);
 
-  const fingerName = useMemo(() => {
-    if (!activeCode) return "—";
-    const f = CODE_TO_FINGER[activeCode];
-    return f ? FINGER[f] : "—";
+  const activeFinger = useMemo(() => {
+    if (!activeCode) return null;
+    return CODE_TO_FINGER[activeCode] || null;
   }, [activeCode]);
+
+  const fingerName = useMemo(() => {
+    if (!activeFinger) return "—";
+    return FINGER[activeFinger] || "—";
+  }, [activeFinger]);
 
   return (
     <div className={cn("flex flex-col gap-4 p-4 rounded-3xl bg-black/20 border border-white/5 w-full max-w-[1000px] mx-auto backdrop-blur-sm", className)}>
@@ -174,6 +213,8 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
           </div>
         ))}
       </div>
+
+      <HandsOverlay activeFinger={activeFinger} />
     </div>
   );
 };
