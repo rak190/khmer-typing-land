@@ -157,7 +157,29 @@ export const Play: React.FC = () => {
             )}
 
             <div className="flex flex-col gap-3">
-              <Button size="lg" className="w-full" onClick={() => {
+              {params?.wid && params?.sid && (
+                <Button size="lg" className="w-full bg-green-600 hover:bg-green-500 text-white font-bold" onClick={() => {
+                  const worldId = params.wid;
+                  const currentStageNo = parseInt(params.sid.replace("s", ""));
+                  const world = WORLDS.find(w => w.id === worldId);
+                  const nextStageId = `s${currentStageNo + 1}`;
+                  const nextStage = world?.stages.find(s => s.id === nextStageId);
+                  
+                  if (nextStage) {
+                    setLocation(`/play/${worldId}/${nextStageId}`);
+                    // Reset game state for next stage
+                    setPhase("platform");
+                    setStats({ hits: 0, miss: 0 });
+                    setNewBadges([]);
+                  } else {
+                    // No more stages in this world, go back
+                    setLocation(`/world/${worldId}`);
+                  }
+                }}>
+                  Next Stage →
+                </Button>
+              )}
+              <Button size="lg" variant="outline" className="w-full" onClick={() => {
                 setPhase("platform");
                 setStats({ hits: 0, miss: 0 });
                 setNewBadges([]);

@@ -139,8 +139,8 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
   }, [spawnEnemy, killsGoal, onComplete]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-8">
-      <div className="glass-panel p-8 rounded-3xl w-full text-center relative overflow-hidden h-[400px] flex flex-col justify-between" ref={boxRef}>
+    <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
+      <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[350px] flex flex-col justify-between" ref={boxRef}>
         
         <div className="flex justify-between w-full items-center text-slate-400 font-mono text-sm z-10 relative">
           <span>Defender Mode</span>

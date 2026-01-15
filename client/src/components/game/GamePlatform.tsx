@@ -78,8 +78,8 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
   }, [target, done, count, hits, miss, onComplete, pick]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-8">
-      <div className="glass-panel p-8 rounded-3xl w-full text-center relative overflow-hidden min-h-[400px] flex flex-col items-center justify-between">
+    <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
+      <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden min-h-[350px] flex flex-col items-center justify-between">
         <div className="absolute top-0 left-0 w-full h-1 bg-white/10">
           <div 
             className="h-full bg-primary transition-all duration-300" 
