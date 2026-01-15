@@ -153,8 +153,8 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
             <div className="w-32 h-32 rounded-full border-4 border-dashed border-white/30 flex items-center justify-center text-7xl font-khmer text-white bg-black/20 backdrop-blur-sm relative">
               {target}
               {activeCode && (
-                <div className="absolute -bottom-8 bg-primary/20 border border-primary/30 px-3 py-0.5 rounded-full text-[10px] font-bold text-primary whitespace-nowrap">
-                  {FINGER[CODE_TO_FINGER[activeCode]]}
+                <div className="absolute -bottom-12 bg-primary border-2 border-white/20 px-4 py-1.5 rounded-xl text-sm font-black text-primary-foreground shadow-[0_0_20px_rgba(90,200,250,0.4)] animate-bounce whitespace-nowrap">
+                  👆 {FINGER[CODE_TO_FINGER[activeCode]]}
                 </div>
               )}
             </div>

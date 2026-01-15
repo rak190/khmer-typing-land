@@ -106,8 +106,8 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
            >
              {target}
              {activeCode && (
-               <div className="absolute -bottom-12 bg-primary/20 border border-primary/30 px-4 py-1 rounded-full text-xs font-bold text-primary animate-pulse whitespace-nowrap">
-                 Use {FINGER[CODE_TO_FINGER[activeCode]] || "any finger"}
+               <div className="absolute -bottom-16 bg-primary border-2 border-white/20 px-6 py-2 rounded-2xl text-lg font-black text-primary-foreground shadow-[0_0_30px_rgba(90,200,250,0.5)] animate-bounce whitespace-nowrap z-20">
+                 👆 {FINGER[CODE_TO_FINGER[activeCode]] || "any finger"}
                </div>
              )}
            </div>

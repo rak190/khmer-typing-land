@@ -166,8 +166,8 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 text-5xl font-khmer text-white font-bold drop-shadow-md flex flex-col items-center gap-1">
                 {enemyVisual.target}
                 {activeCode && (
-                  <span className="text-[10px] bg-primary/20 border border-primary/30 px-2 py-0.5 rounded-full text-primary font-bold whitespace-nowrap">
-                    {FINGER[CODE_TO_FINGER[activeCode]]}
+                  <span className="text-xs bg-primary border-2 border-white/20 px-3 py-1 rounded-xl text-primary-foreground font-black shadow-lg animate-bounce whitespace-nowrap">
+                    👆 {FINGER[CODE_TO_FINGER[activeCode]]}
                   </span>
                 )}
               </div>
