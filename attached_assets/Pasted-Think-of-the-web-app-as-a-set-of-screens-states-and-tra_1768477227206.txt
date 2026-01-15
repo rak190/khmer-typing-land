@@ -1,0 +1,109 @@
+Think of the web app as a set of “screens” (states) and transitions triggered mostly by keyboard.
+A) Boot / Requirements Gate
+•	Shows “requires a physical keyboard” style prompt in the app ecosystem 
+•	Often includes “Press Enter to continue” style onboarding (observed in reviews/writeups) 
+B) Keyboard Layout Selection
+•	Select keyboard standard/layout (NiDA Khmer unicode before play 
+Purpose: make sure key events match what the player sees.
+C) Player Profile Creation / Selection
+•	Enter name, pick icon 
+•	Multi-profile support (manual mentions up to 60 players) 
+•	Quick selection: press number keys assigned to profiles (reported) 
+D) Home / World Select
+•	“Carousel” world selection (left/right) and a big world badge/art (seen in press screenshots) 
+•	Worlds/Stages structure: 9 worlds, 9 stages each 
+•	Early unlock: worlds 1–6 accessible at first (reported) 
+E) Stage Select
+•	Pick Stage 1–9 inside a world.
+•	Each stage is a “bundle” of mini-games (3 runs) 
+F) Pre-stage Finger Placement Prompt
+•	Before gameplay, it explicitly teaches home-row finger placement 
+G) Mini-game Play (Core Loop)
+Common pattern across mini-games:
+1.	Spawn “target” letters/characters on objects (blocks, enemies, platforms, etc.)
+2.	Listen to keydown
+3.	Judge correctness (match expected char)
+4.	Give immediate feedback (hit/miss)
+5.	Update progress meter / health / distance / timer
+6.	End condition → result stats
+H) Results / Stars / Mastery
+•	Earn star(s) for clear; collecting enough stars yields badges (reported as 3-star threshold for a badge in the writeup) 
+•	Badges act as collectible progression & cosmetic identity (150 total) 
+I) Challenge Mode
+•	Separate mode unlocked/available for practice and scoring 
+•	Score determined by speed + accuracy 
+•	Includes multiple mini-games; an “exclusive” mini-game Typing Sword is donation/unlock-based 
+J) Sentence Generator (Custom Practice Content)
+•	Official site links to a “Sentence Generator” to create your own practice text 
+K) Menu / Settings / Utilities
+•	Keyboard-driven navigation (“progress is done by pressing keys” + menu key usage mentioned in writeup) 
+•	Data backup via copy/paste text export (manual) 
+________________________________________
+3) Gameplay mechanics patterns (what repeats everywhere)
+Input model
+•	Single source of truth = keydown events
+•	“Expected character” is a queue:
+o	sometimes one letter at a time
+o	sometimes sequence on moving objects
+o	sometimes word/sentence typing
+•	Needs robust handling for:
+o	shift / uppercase
+o	locale layouts (ANSI/ISO)
+o	IME edge cases (manual warns about incorrect detection; suggests ensuring correct layout & mode) 
+Lesson structure pattern
+•	Curriculum ramp: start World 1, build basics, World 6 considered mastery of basics (manual) 
+•	Worlds 7+ gated by completion (reported) 
+Reward pattern
+•	Micro-reward: stars per stage
+•	Meta-reward: badges (150) as collectible + avatar 
+•	Hidden/secret progression: manual mentions a hidden unlock (click a badge many times) to unlock all stages 
+________________________________________
+4) “System decomposition” (modules you’d rebuild)
+(1) Navigation / State Engine
+•	BOOT → LAYOUT → PROFILE → WORLD → STAGE → (MINIGAME x3) → RESULT → WORLD
+•	plus CHALLENGE and SENTENCE_GENERATOR
+(2) Content Data (Curriculum)
+•	Worlds (1..9)
+•	Stages (1..9)
+•	Each stage: list of 3 mini-games + allowed characters set + difficulty parameters
+•	Unlock rules:
+o	initial unlocked worlds
+o	world gating by completion
+(3) Input + Judging Engine
+•	Normalizes key events to “display characters”
+•	Compares against expected queue
+•	Tracks:
+o	hits, misses
+o	accuracy
+o	time / WPM/CPM style metrics (esp. Challenge mode) 
+(4) Mini-game Framework (40 mini-games total)
+Typing Land advertises 40 kinds of mini-games 
+So architecturally: each mini-game is a plugin implementing:
+•	init(config)
+•	spawnTargets()
+•	onKey(char)
+•	update(dt)
+•	isComplete()
+•	getStats()
+(5) Rewards / Badges
+•	Badge registry (150)
+•	Conditions:
+o	stage performance thresholds
+o	special achievements
+•	Avatar selection = any earned badge 
+(6) Persistence
+•	Profiles (up to 60)
+•	Progress:
+o	stars per stage
+o	badges owned
+o	settings
+•	Backup/export via copy/paste (text blob) 
+________________________________________
+5) Practical “pattern rules” you can copy
+If you’re recreating it (like your Khmer Typing Land project), these are the non-negotiables that make it feel like Typing Land:
+1.	Everything is playable with the keyboard (UI navigation included). 
+2.	81-lesson map with clear unlocking and a visible path. 
+3.	3 mini-games per stage → feels like a “lesson pack,” not a single drill. 
+4.	Badges are the long-term motivation (150, used as avatar). 
+5.	Challenge mode is separate and score-based (speed+accuracy) with sentence practice.
+
