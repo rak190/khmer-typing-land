@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Keyboard } from '@/components/Keyboard';
 import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
+import { sounds } from '@/lib/sounds';
 
 interface GameProps {
   pool: string[];
@@ -53,6 +54,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
 
   const jump = () => {
     if (stateRef.current.y === 0) {
+      sounds.playClick();
       stateRef.current.vy = 12; // slightly higher jump
     }
   };
@@ -78,6 +80,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
         setDist(stateRef.current.dist);
         
         if (stateRef.current.dist >= distanceGoal) {
+          sounds.playLevelUp();
           onComplete({ hits: stateRef.current.hits, miss: stateRef.current.miss });
           return; // Stop loop
         }
@@ -100,6 +103,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
 
       if (produced === stateRef.current.target) {
         // Hit
+        sounds.playCorrect();
         stateRef.current.hits++;
         setHits(stateRef.current.hits);
         jump();
@@ -110,6 +114,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
         stateRef.current.target = next;
       } else {
         // Miss
+        sounds.playWrong();
         stateRef.current.miss++;
         setMiss(stateRef.current.miss);
         setWrongCode(e.code);

@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { useGameStore } from '@/lib/store';
 import { Keyboard } from '@/components/Keyboard';
 import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
+import { sounds } from '@/lib/sounds';
 
 interface GameProps {
   pool: string[];
@@ -49,6 +50,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
 
       if (produced === target) {
         // Hit
+        sounds.playCorrect();
         setHits(h => h + 1);
         setDone(d => d + 1);
         setFlash("good");
@@ -57,12 +59,14 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
         // Next
         const nextDone = done + 1;
         if (nextDone >= count) {
+          sounds.playLevelUp();
           onComplete({ hits: hits + 1, miss });
         } else {
           setTarget(pick());
         }
       } else {
         // Miss
+        sounds.playWrong();
         setMiss(m => m + 1);
         setFlash("bad");
         setWrongCode(e.code);

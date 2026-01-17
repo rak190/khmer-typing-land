@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Keyboard } from '@/components/Keyboard';
 import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
+import { sounds } from '@/lib/sounds';
 
 interface GameProps {
   pool: string[];
@@ -77,6 +78,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
 
       if (stateRef.current.enemy.x >= limit) {
         // Damage
+        sounds.playWrong();
         stateRef.current.hp--;
         setHp(stateRef.current.hp);
         stateRef.current.enemy.active = false;
@@ -114,6 +116,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
 
       if (stateRef.current.enemy.active && produced === stateRef.current.enemy.target) {
         // Kill
+        sounds.playCorrect();
         stateRef.current.hits++;
         setHits(stateRef.current.hits);
         stateRef.current.kills++;
@@ -123,11 +126,13 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
         setEnemyVisual(null); // Hide
 
         if (stateRef.current.kills >= killsGoal) {
+          sounds.playLevelUp();
           onComplete({ hits: stateRef.current.hits, miss: stateRef.current.miss });
         } else {
           spawnEnemy();
         }
       } else {
+        sounds.playWrong();
         stateRef.current.miss++;
         setMiss(stateRef.current.miss);
         setWrongCode(e.code);
