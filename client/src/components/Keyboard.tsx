@@ -13,7 +13,7 @@ interface KeyProps {
   mod: "BASE" | "SHIFT" | "ALTGR";
 }
 
-const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod }) => {
+const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, className }) => {
   const map = NIDA_MAP[code];
   
   // Decide what to show
@@ -40,22 +40,14 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod }
         active && "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_30px_hsl(var(--primary)/0.8)] bg-primary/40",
         correct && "ring-2 ring-accent ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_30px_hsl(var(--accent)/0.8)] bg-accent/40",
         wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_30px_hsl(var(--destructive)/0.8)] bg-destructive/40",
-        !map && !fixed && "opacity-50"
+        !map && !fixed && "opacity-50",
+        className
       )}
     >
       <span className={cn("text-lg font-black transition-all font-khmer", active ? "text-white scale-110" : "text-blue-100")}>
         {label}
       </span>
       
-      {active && !fixed && (
-        <div className="absolute -top-8 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce z-30 pointer-events-none">
-          <div className="bg-primary text-primary-foreground text-[8px] font-black px-1.5 py-0.5 rounded shadow-lg whitespace-nowrap mb-0.5 uppercase tracking-tighter border border-white/20">
-            {CODE_TO_FINGER[code] ? FINGER[CODE_TO_FINGER[code]] : "Press"}
-          </div>
-          <div className="text-xl filter drop-shadow-[0_0_6px_rgba(255,255,255,0.8)]">👆</div>
-        </div>
-      )}
-
       <span className={cn("absolute right-1 bottom-0.5 text-[8px] font-mono transition-colors", active ? "text-white/40" : "text-slate-600")}>
         {code.replace(/Key|Digit/, "")}
       </span>
