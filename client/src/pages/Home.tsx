@@ -24,10 +24,10 @@ export const Home: React.FC = () => {
         <div className="glass-panel p-8 rounded-3xl mb-12 border-primary/20 bg-primary/5">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
-              <h1 className="text-4xl font-black text-white mb-2 font-display">
+              <h1 className="text-4xl font-black text-foreground mb-2 font-display">
                 <span className="text-primary">Chapter {Math.min(9, Math.floor(totalStars / 12) + 1)}:</span> {STORY_CHAPTERS[Math.min(8, Math.floor(totalStars / 12))]?.title}
               </h1>
-              <p className="text-slate-300 max-w-2xl text-lg italic">
+              <p className="text-muted-foreground max-w-2xl text-lg italic">
                 "{STORY_CHAPTERS[Math.min(8, Math.floor(totalStars / 12))]?.intro}"
               </p>
             </div>
@@ -44,7 +44,7 @@ export const Home: React.FC = () => {
              <input 
                value={profile.name}
                onChange={(e) => setProfileName(e.target.value)}
-               className="bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary/50 w-64"
+               className="bg-secondary border border-border rounded-xl px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 w-64"
                placeholder="Scribe Name..."
              />
              <div className="flex gap-2 ml-auto">
@@ -74,27 +74,27 @@ export const Home: React.FC = () => {
               <div 
                 key={world.id}
                 className={cn(
-                  "group relative p-6 rounded-2xl border transition-all duration-300",
+                  "group relative p-6 rounded-2xl border transition-all duration-300 shadow-sm",
                   isUnlocked 
-                    ? "bg-card/50 border-white/10 hover:border-primary/50 hover:bg-card/80 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10" 
-                    : "bg-black/20 border-white/5 opacity-70 grayscale"
+                    ? "bg-card border-border hover:border-primary/50 hover:-translate-y-1 hover:shadow-xl" 
+                    : "bg-muted border-border opacity-70 grayscale"
                 )}
               >
                 <div className="flex justify-between items-start mb-4">
-                  <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-2xl border border-white/10 group-hover:bg-primary/20 group-hover:border-primary/30 transition-colors">
+                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-2xl border border-border group-hover:bg-primary/10 group-hover:border-primary/30 transition-colors">
                     {isUnlocked ? "🌍" : "🔒"}
                   </div>
                   {!isUnlocked && (
-                    <div className="px-3 py-1 rounded-full bg-black/40 border border-white/5 text-xs font-mono text-slate-400">
+                    <div className="px-3 py-1 rounded-full bg-secondary border border-border text-xs font-mono text-muted-foreground">
                       Need {world.unlockStars} ⭐
                     </div>
                   )}
                 </div>
                 
-                <h3 className="text-xl font-bold text-white mb-1 group-hover:text-primary transition-colors">
+                <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
                   {world.name}
                 </h3>
-                <p className="text-sm text-slate-400 mb-6">
+                <p className="text-sm text-muted-foreground mb-6">
                   {world.stages.length} Stages • Focus on basic consonants
                 </p>
 

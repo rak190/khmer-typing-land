@@ -111,15 +111,15 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
           />
         </div>
 
-        <div className="flex justify-between w-full items-center text-slate-400 font-mono text-sm">
+        <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span>Platform Mode</span>
           </div>
           <div className="flex gap-4">
-            <span className="text-green-400 font-bold">Hits: {hits}</span>
-            <span className="text-red-400">Miss: {miss}</span>
-            <span className="text-white">Left: {count - done}</span>
+            <span className="text-accent font-bold">Hits: {hits}</span>
+            <span className="text-destructive">Miss: {miss}</span>
+            <span className="text-foreground">Left: {count - done}</span>
           </div>
         </div>
 
@@ -128,14 +128,14 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
           {combo > 1 && (
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-8 flex flex-col items-center animate-bounce">
               <span className="text-xs font-bold text-primary uppercase tracking-tighter">Combo</span>
-              <span className="text-3xl font-black text-white italic drop-shadow-[0_0_10px_rgba(90,200,250,0.8)]">{combo}</span>
+              <span className="text-3xl font-black text-foreground italic drop-shadow-sm">{combo}</span>
             </div>
           )}
 
           {/* Feedback Text */}
           {feedback && (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-50">
-              <span className="text-4xl font-black text-white italic uppercase tracking-wider animate-[ping_0.5s_ease-out_1] drop-shadow-[0_0_20px_white]">
+              <span className="text-4xl font-black text-primary italic uppercase tracking-wider animate-[ping_0.5s_ease-out_1] drop-shadow-sm">
                 {feedback}
               </span>
             </div>
@@ -143,9 +143,9 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
 
            <div 
              className={cn(
-               "w-48 h-48 rounded-full border-4 border-dashed border-white/20 flex items-center justify-center text-9xl font-khmer text-white transition-all duration-200 relative",
-               flash === "good" && "border-accent bg-accent/20 scale-110 shadow-[0_0_80px_rgba(48,209,88,0.6)]",
-               flash === "bad" && "border-destructive bg-destructive/20 scale-95 shadow-[0_0_80px_rgba(255,69,58,0.6)]"
+               "w-48 h-48 rounded-full border-4 border-dashed border-slate-200 flex items-center justify-center text-9xl font-khmer text-foreground transition-all duration-200 relative",
+               flash === "good" && "border-accent bg-accent/10 scale-110 shadow-lg",
+               flash === "bad" && "border-destructive bg-destructive/10 scale-95 shadow-lg"
              )}
            >
              {target}
