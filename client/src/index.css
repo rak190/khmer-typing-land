@@ -95,3 +95,26 @@
     animation: shake 0.1s linear infinite;
   }
 }
+
+/* World Themes */
+[data-world="w1"] .glass-panel { --panel-glow: rgba(90, 200, 250, 0.3); }
+[data-world="w2"] .glass-panel { --panel-glow: rgba(48, 209, 88, 0.3); border-color: rgba(48, 209, 88, 0.2); }
+[data-world="w3"] .glass-panel { --panel-glow: rgba(255, 159, 10, 0.3); border-color: rgba(255, 159, 10, 0.2); }
+[data-world="w4"] .glass-panel { --panel-glow: rgba(255, 55, 95, 0.3); border-color: rgba(255, 55, 95, 0.2); }
+[data-world="w5"] .glass-panel { --panel-glow: rgba(191, 90, 242, 0.3); border-color: rgba(191, 90, 242, 0.2); }
+[data-world="w6"] .glass-panel { --panel-glow: rgba(255, 214, 10, 0.3); border-color: rgba(255, 214, 10, 0.2); }
+[data-world="w7"] .glass-panel { --panel-glow: rgba(100, 210, 255, 0.3); border-color: rgba(100, 210, 255, 0.2); }
+[data-world="w8"] .glass-panel { --panel-glow: rgba(255, 69, 58, 0.3); border-color: rgba(255, 69, 58, 0.2); }
+[data-world="w9"] .glass-panel { --panel-glow: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.2); }
+
+.glass-panel {
+  box-shadow: 0 0 50px var(--panel-glow, rgba(90, 200, 250, 0.1));
+  transition: all 0.5s ease;
+}
+
+/* Background Variations */
+[data-world="w2"] body { background-image: radial-gradient(circle at 50% 0%, #062012 0%, transparent 70%); }
+[data-world="w3"] body { background-image: radial-gradient(circle at 50% 0%, #201506 0%, transparent 70%); }
+[data-world="w4"] body { background-image: radial-gradient(circle at 50% 0%, #200612 0%, transparent 70%); }
+[data-world="w5"] body { background-image: radial-gradient(circle at 50% 0%, #150620 0%, transparent 70%); }
+[data-world="w9"] body { background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, transparent 70%), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"); }

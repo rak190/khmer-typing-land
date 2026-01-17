@@ -66,11 +66,11 @@ export const Play: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-10 pt-20">
+    <div className="min-h-screen p-4 sm:p-8 flex flex-col items-center" data-world={worldId}>
       <HUD />
 
       {phase !== "result" && (
-        <div className="container mx-auto px-4 mt-4 mb-4">
+        <div className="w-full max-w-4xl flex justify-between items-center mb-8 relative z-10">
            <Button variant="ghost" onClick={handleQuit} className="gap-2 text-slate-400 hover:text-white">
              <ArrowLeft size={16} /> Quit Lesson
            </Button>
