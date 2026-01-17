@@ -7,30 +7,42 @@ import { ArrowLeft, Star } from 'lucide-react';
 import { HUD } from '@/components/HUD';
 import { cn } from '@/lib/utils';
 
+import { STORY_CHAPTERS } from '@/lib/story';
+
 const WORLDS = buildWorlds();
 
 export const StageSelect: React.FC = () => {
   const [, params] = useRoute("/world/:id");
-  const { progress } = useGameStore();
+  const { progress, getTotalStars } = useGameStore();
   
   const world = WORLDS.find(w => w.id === params?.id);
+  const chapter = STORY_CHAPTERS.find(c => c.worldId === world?.id);
   
   if (!world) return <div className="text-white p-20">World not found</div>;
 
   return (
-    <div className="min-h-screen bg-background pb-20 pt-20">
+    <div className="min-h-screen bg-background pb-20 pt-20" data-world={world.id}>
       <HUD />
 
       <div className="container mx-auto px-4 mt-8 max-w-5xl">
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex flex-col md:flex-row md:items-center gap-6 mb-12 glass-panel p-8 rounded-3xl border-primary/20">
           <Link href="/">
-            <Button variant="secondary" size="icon" className="rounded-full">
+            <Button variant="secondary" size="icon" className="rounded-full shrink-0">
               <ArrowLeft size={18} />
             </Button>
           </Link>
-          <div>
-            <h1 className="text-3xl font-black text-white">{world.name}</h1>
-            <p className="text-slate-400">Select a stage to begin training</p>
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-1">
+              <h1 className="text-3xl font-black text-white">{world.name}</h1>
+              <span className="px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-widest">Chapter {world.id.replace('w','')}</span>
+            </div>
+            <h2 className="text-xl font-bold text-primary mb-3">Quest: {chapter?.title}</h2>
+            <p className="text-slate-300 italic text-lg leading-relaxed">"{chapter?.intro}"</p>
+          </div>
+          <div className="flex flex-col items-center justify-center p-6 bg-black/40 rounded-2xl border border-white/5 min-w-[150px]">
+            <div className="text-5xl mb-2 animate-pulse">{chapter?.monsterEmoji}</div>
+            <div className="text-[10px] font-black uppercase text-red-500 tracking-tighter">Bounty Target</div>
+            <div className="text-sm font-bold text-white">{chapter?.monsterName}</div>
           </div>
         </div>
 

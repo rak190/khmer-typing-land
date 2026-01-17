@@ -11,29 +11,43 @@ import { GameDefender } from '@/components/game/GameDefender';
 import { makeBadges } from '@/lib/badges';
 import { cn } from '@/lib/utils';
 
+import { STORY_CHAPTERS, RANDOM_EVENTS } from '@/lib/story';
+
 const WORLDS = buildWorlds();
 const ALL_BADGES = makeBadges();
 
-type GamePhase = "platform" | "runner" | "defender" | "result";
+type GamePhase = "intro" | "platform" | "runner" | "defender" | "result";
 
 export const Play: React.FC = () => {
   const [, params] = useRoute("/play/:wid/:sid");
   const [, setLocation] = useLocation();
   const { recordStageResult, selectedBadgeId } = useGameStore();
 
-  const [phase, setPhase] = useState<GamePhase>("platform");
+  const [phase, setPhase] = useState<GamePhase>("intro");
   const [stats, setStats] = useState({ hits: 0, miss: 0 });
   const [newBadges, setNewBadges] = useState<string[]>([]);
+  const [activeEvent, setActiveEvent] = useState<typeof RANDOM_EVENTS[0] | null>(null);
   
   const worldId = params?.wid;
   const stageId = params?.sid;
   
   const world = WORLDS.find(w => w.id === worldId);
   const stage = world?.stages.find(s => s.id === stageId);
+  const chapter = STORY_CHAPTERS.find(c => c.worldId === worldId);
   
   // Find mascot icon
   const badge = ALL_BADGES.find(b => b.id === selectedBadgeId) || ALL_BADGES[0];
   const mascot = badge.icon;
+
+  useEffect(() => {
+    // Random Event Check
+    if (phase === "intro") {
+      const event = RANDOM_EVENTS.find(e => Math.random() < e.chance);
+      if (event) {
+        setActiveEvent(event);
+      }
+    }
+  }, [phase]);
 
   if (!world || !stage) return <div>Stage not found</div>;
 
@@ -77,7 +91,37 @@ export const Play: React.FC = () => {
         </div>
       )}
 
-      <div className="container mx-auto px-4 flex justify-center">
+      <div className="container mx-auto px-4 flex flex-col items-center justify-center min-h-[60vh]">
+        {phase === "intro" && (
+          <div className="glass-panel p-10 rounded-3xl text-center max-w-2xl w-full animate-in fade-in zoom-in duration-500 border-primary/30 shadow-[0_0_50px_rgba(59,130,246,0.2)]">
+            <div className="text-sm font-bold text-primary uppercase tracking-[0.3em] mb-4">Quest Objective</div>
+            <h1 className="text-4xl font-black text-white mb-6">{stage.name}</h1>
+            
+            <div className="flex items-center justify-center gap-8 mb-8">
+              <div className="text-6xl animate-bounce">{mascot}</div>
+              <div className="text-2xl text-slate-500 font-bold">VS</div>
+              <div className="text-6xl animate-pulse">{chapter?.monsterEmoji}</div>
+            </div>
+
+            <p className="text-slate-300 italic text-xl mb-10 leading-relaxed">
+              "To defeat the {chapter?.monsterName}, you must master these scripts: <span className="text-white font-bold not-italic">{stage.pool.join(' ')}</span>"
+            </p>
+
+            {activeEvent && (
+              <div className="mb-8 p-4 bg-yellow-400/10 border border-yellow-400/30 rounded-2xl animate-pulse">
+                <div className="text-yellow-400 font-bold flex items-center justify-center gap-2">
+                  ✨ Random Event: {activeEvent.name}
+                </div>
+                <div className="text-xs text-yellow-200/70">{activeEvent.description}</div>
+              </div>
+            )}
+
+            <Button size="lg" className="px-12 py-8 text-2xl font-black bg-primary hover:bg-primary/80 text-primary-foreground rounded-2xl shadow-xl shadow-primary/20" onClick={() => setPhase("platform")}>
+              BEGIN QUEST
+            </Button>
+          </div>
+        )}
+
         {phase === "platform" && (
           <GamePlatform 
             pool={stage.pool} 
