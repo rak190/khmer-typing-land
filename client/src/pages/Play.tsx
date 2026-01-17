@@ -11,22 +11,24 @@ import { GameDefender } from '@/components/game/GameDefender';
 import { makeBadges } from '@/lib/badges';
 import { cn } from '@/lib/utils';
 
-import { STORY_CHAPTERS, RANDOM_EVENTS } from '@/lib/story';
+import { STORY_CHAPTERS, RANDOM_EVENTS, EASTER_EGGS } from '@/lib/story';
 
 const WORLDS = buildWorlds();
 const ALL_BADGES = makeBadges();
 
-type GamePhase = "intro" | "platform" | "runner" | "defender" | "result";
+type GamePhase = "intro" | "platform" | "runner" | "defender" | "result" | "easter-egg";
 
 export const Play: React.FC = () => {
   const [, params] = useRoute("/play/:wid/:sid");
   const [, setLocation] = useLocation();
-  const { recordStageResult, selectedBadgeId } = useGameStore();
+  const { recordStageResult, selectedBadgeId, getTotalStars } = useGameStore();
 
   const [phase, setPhase] = useState<GamePhase>("intro");
   const [stats, setStats] = useState({ hits: 0, miss: 0 });
   const [newBadges, setNewBadges] = useState<string[]>([]);
   const [activeEvent, setActiveEvent] = useState<typeof RANDOM_EVENTS[0] | null>(null);
+  const [activeEgg, setActiveEgg] = useState<typeof EASTER_EGGS[0] | null>(null);
+  const [eggInput, setEggInput] = useState("");
   
   const worldId = params?.wid;
   const stageId = params?.sid;
@@ -40,14 +42,20 @@ export const Play: React.FC = () => {
   const mascot = badge.icon;
 
   useEffect(() => {
-    // Random Event Check
+    // Random Event & Easter Egg Check
     if (phase === "intro") {
       const event = RANDOM_EVENTS.find(e => Math.random() < e.chance);
       if (event) {
         setActiveEvent(event);
       }
+
+      const totalStars = getTotalStars();
+      const egg = EASTER_EGGS.find(e => totalStars >= e.triggerMilestone && Math.random() < 0.2);
+      if (egg) {
+        setActiveEgg(egg);
+      }
     }
-  }, [phase]);
+  }, [phase, getTotalStars]);
 
   if (!world || !stage) return <div>Stage not found</div>;
 
@@ -116,8 +124,53 @@ export const Play: React.FC = () => {
               </div>
             )}
 
+            {activeEgg && (
+              <div className="mb-8 p-6 bg-purple-500/20 border border-purple-500/50 rounded-2xl animate-pulse relative overflow-hidden group hover:scale-105 transition-transform cursor-pointer" onClick={() => setPhase("easter-egg")}>
+                <div className="absolute top-0 right-0 p-2 text-xs font-black bg-purple-500 text-white rounded-bl-xl">HIDDEN QUEST</div>
+                <div className="text-purple-300 font-bold flex items-center justify-center gap-2 text-lg">
+                  💎 Secret Unlocked: {activeEgg.name}
+                </div>
+                <div className="text-sm text-purple-200/70 mt-1">A mysterious portal has appeared. Click to enter!</div>
+              </div>
+            )}
+
             <Button size="lg" className="px-12 py-8 text-2xl font-black bg-primary hover:bg-primary/80 text-primary-foreground rounded-2xl shadow-xl shadow-primary/20" onClick={() => setPhase("platform")}>
               BEGIN QUEST
+            </Button>
+          </div>
+        )}
+
+        {phase === "easter-egg" && activeEgg && (
+          <div className="glass-panel p-10 rounded-3xl text-center max-w-2xl w-full animate-in slide-in-from-bottom-20 duration-500 border-purple-500/50 shadow-[0_0_80px_rgba(168,85,247,0.3)]">
+            <div className="text-sm font-bold text-purple-400 uppercase tracking-[0.4em] mb-4">Secret Realm</div>
+            <h1 className="text-4xl font-black text-white mb-4">{activeEgg.name}</h1>
+            <p className="text-slate-300 mb-8 leading-relaxed">"{activeEgg.description}"</p>
+            
+            <div className="bg-black/40 p-8 rounded-2xl border border-white/10 mb-8">
+              <div className="text-xs font-bold text-slate-500 uppercase mb-4 tracking-widest">Type the Secret Script to Claim Your Reward</div>
+              <div className="text-6xl font-khmer text-white mb-6 animate-pulse select-none">
+                {activeEgg.secretWord}
+              </div>
+              <input 
+                autoFocus
+                value={eggInput}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setEggInput(val);
+                  if (val === activeEgg.secretWord) {
+                    sounds.playLevelUp();
+                    setPhase("result");
+                    setStats({ hits: 100, miss: 0 }); // Instant win for secret
+                    setNewBadges([activeEgg.reward]);
+                  }
+                }}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-center text-3xl font-khmer text-primary focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="Type here..."
+              />
+            </div>
+
+            <Button variant="ghost" className="text-slate-400" onClick={() => setPhase("intro")}>
+              Return to Quest
             </Button>
           </div>
         )}

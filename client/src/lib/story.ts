@@ -114,5 +114,40 @@ export const RANDOM_EVENTS = [
     description: "You found an ancient secret!",
     reward: "Rare Badge",
     chance: 0.02
+  },
+  {
+    id: "e4",
+    name: "Dragon's Challenge",
+    description: "A legendary beast appeared! Defeat it for a hidden reward!",
+    reward: "Secret Item",
+    chance: 0.03
+  }
+];
+
+export interface EasterEgg {
+  id: string;
+  triggerMilestone: number; // total stars
+  name: string;
+  description: string;
+  secretWord: string;
+  reward: string;
+}
+
+export const EASTER_EGGS: EasterEgg[] = [
+  {
+    id: "egg1",
+    triggerMilestone: 20,
+    name: "The First Scribe's Echo",
+    description: "A secret message from the past has appeared in your journey.",
+    secretWord: "អរគុណ", // Thank you in Khmer
+    reward: "Ancient Ink Badge"
+  },
+  {
+    id: "egg2",
+    triggerMilestone: 50,
+    name: "The Hidden Glyph",
+    description: "You've unlocked a secret challenge in the void.",
+    secretWord: "សន្តិភាព", // Peace in Khmer
+    reward: "Peacekeeper Aura"
   }
 ];
