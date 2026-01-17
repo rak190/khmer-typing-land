@@ -222,30 +222,38 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
           </div>
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5">
             <span className="text-slate-400">Finger:</span>
-            <span className="font-bold text-white text-primary">Hidden</span>
+            <span className="font-bold text-white text-primary">{fingerName}</span>
           </div>
         </div>
         <div className="text-xs text-slate-500 hidden sm:block">
-           Hint Mode: <b>Disabled</b>
+           Tip: Use <b>Right Alt</b> (AltGr) for AltGr keys. Hold <b>Shift</b> for upper layer.
         </div>
       </div>
 
       <div className="relative flex flex-col gap-1.5 items-center z-10">
-        <div className="absolute inset-x-0 top-0 bottom-0 pointer-events-none opacity-0 z-0">
-          <HandsOverlay activeFinger={null} target={undefined} />
+        <div className="absolute inset-x-0 top-0 bottom-0 pointer-events-none opacity-40 z-0">
+          <HandsOverlay activeFinger={activeFinger} target={target} />
         </div>
 
         {KEY_ROWS.map((row, i) => (
           <div key={i} className="flex gap-1.5 relative z-10">
             {row.map(k => {
+              const isModifierNeeded = (needsShift && (k.code === "ShiftLeft" || k.code === "ShiftRight")) || 
+                                       (needsAltGr && k.code === "AltRight");
+              const isTargetKey = activeCode === k.code;
+              
               return (
                 <Key 
                   key={k.code} 
                   {...k} 
                   mod={mod} 
-                  active={false}
-                  correct={false}
+                  active={isTargetKey || isModifierNeeded}
+                  correct={correct && isTargetKey}
                   wrong={wrongCode === k.code}
+                  className={cn(
+                    isTargetKey && "shadow-[0_0_20px_rgba(59,130,246,0.6)] border-blue-400 ring-2 ring-blue-400/50",
+                    isModifierNeeded && "shadow-[0_0_20px_rgba(251,191,36,0.6)] border-amber-400 ring-2 ring-amber-400/50 animate-pulse"
+                  )}
                 />
               );
             })}
