@@ -149,15 +149,15 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
     <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
       <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[350px] flex flex-col justify-between">
         
-        <div className="flex justify-between w-full items-center text-slate-400 font-mono text-sm z-10 relative">
+        <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm z-10 relative">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span>Runner Mode</span>
           </div>
           <div className="flex gap-4">
-            <span className="text-white">Goal: {dist}/{distanceGoal}m</span>
+            <span className="text-foreground">Goal: {dist}/{distanceGoal}m</span>
             <span className="text-primary font-bold">{speedMult.toFixed(1)}x Speed</span>
-            <span className="text-green-400">Hits: {hits}</span>
+            <span className="text-accent font-bold">Hits: {hits}</span>
           </div>
         </div>
 
@@ -202,8 +202,8 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
           <div className="absolute right-32 bottom-32 flex flex-col items-center">
             <div className="text-[10px] text-slate-400 mb-2 font-bold uppercase tracking-[0.3em] opacity-50">Type to Jump</div>
             <div className={cn(
-              "w-32 h-32 rounded-full border-4 border-dashed border-white/30 flex items-center justify-center text-7xl font-khmer text-white bg-black/20 backdrop-blur-sm relative transition-all",
-              speedMult > 2 && "border-primary scale-110 shadow-[0_0_40px_rgba(90,200,250,0.4)]"
+              "w-32 h-32 rounded-full border-4 border-dashed border-slate-300 flex items-center justify-center text-7xl font-khmer text-foreground bg-white/20 backdrop-blur-sm relative transition-all",
+              speedMult > 2 && "border-primary scale-110 shadow-lg"
             )}>
               {target}
             </div>

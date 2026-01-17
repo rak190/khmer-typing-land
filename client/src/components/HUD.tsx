@@ -13,7 +13,7 @@ export const HUD: React.FC = () => {
   const stars = getTotalStars();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-3 flex justify-between items-center bg-background/50 backdrop-blur-md border-b border-white/5">
+    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-3 flex justify-between items-center bg-background/80 backdrop-blur-md border-b border-border shadow-sm">
       <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
         <span className="text-3xl animate-bounce-slow">{badge.icon}</span>
         <div className="flex flex-col">

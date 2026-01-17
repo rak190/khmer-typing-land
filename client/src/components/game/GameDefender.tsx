@@ -198,23 +198,23 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
     <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
       <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[350px] flex flex-col justify-between transition-transform duration-300" ref={boxRef}>
         
-        <div className="flex justify-between w-full items-center text-slate-400 font-mono text-sm z-10 relative">
+        <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm z-10 relative">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
             <span>Defender Mode</span>
           </div>
           <div className="flex gap-4 items-center">
              <div className="flex flex-col items-end">
-               <span className="text-[10px] uppercase text-slate-500 font-bold">Shield</span>
-               <div className="w-24 h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/10">
+               <span className="text-[10px] uppercase text-muted-foreground font-bold">Shield</span>
+               <div className="w-24 h-1.5 bg-secondary rounded-full overflow-hidden border border-border">
                  <div 
-                   className="h-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)] transition-all duration-300" 
+                   className="h-full bg-cyan-400 shadow-sm transition-all duration-300" 
                    style={{ width: `${shield}%` }}
                  />
                </div>
              </div>
-             <span className="text-red-500 font-black tracking-tighter">HP: {"❤️".repeat(hp)}</span>
-            <span className="text-white">Kills: {kills}/{killsGoal}</span>
+             <span className="text-destructive font-black tracking-tighter">HP: {"❤️".repeat(hp)}</span>
+            <span className="text-foreground">Kills: {kills}/{killsGoal}</span>
             {combo > 2 && <span className="text-primary font-bold animate-pulse">{combo}x Combo!</span>}
           </div>
         </div>
@@ -266,11 +266,11 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
               title={`Type: ${enemyVisual.target}`}
             >
               <div className="absolute -top-16 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                <div className="text-5xl font-khmer text-white font-bold drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] flex items-center gap-1 bg-black/40 px-4 py-2 rounded-xl border border-white/10">
+                <div className="text-5xl font-khmer text-foreground font-bold drop-shadow-sm flex items-center gap-1 bg-white/60 px-4 py-2 rounded-xl border border-border backdrop-blur-sm">
                   {enemyVisual.target}
                 </div>
                 {enemyVisual.isBoss && (
-                  <div className="text-[10px] font-black uppercase text-purple-400 tracking-tighter mt-1 animate-pulse">Boss Detected</div>
+                  <div className="text-[10px] font-black uppercase text-purple-600 tracking-tighter mt-1 animate-pulse">Boss Detected</div>
                 )}
               </div>
               <div className={cn(

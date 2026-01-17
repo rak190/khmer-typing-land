@@ -31,24 +31,24 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
   return (
     <div 
       className={cn(
-        "key-cap h-11 rounded-lg border border-white/10 text-white relative flex items-center justify-center transition-all duration-200",
+        "key-cap h-11 rounded-lg border border-border text-foreground relative flex items-center justify-center transition-all duration-200",
         w === "w2" && "w-[68px]",
         w === "w3" && "w-[90px]",
         w === "w4" && "w-[112px]",
         w === "w5" && "w-[158px]",
         !w && "w-[46px]",
-        active && "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_30px_hsl(var(--primary)/0.8)] bg-primary/40",
-        correct && "ring-2 ring-accent ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_30px_hsl(var(--accent)/0.8)] bg-accent/40",
-        wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-[0_0_30px_hsl(var(--destructive)/0.8)] bg-destructive/40",
+        active && "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-primary/10",
+        correct && "ring-2 ring-accent ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-accent/10",
+        wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-destructive/10",
         !map && !fixed && "opacity-50",
         className
       )}
     >
-      <span className={cn("text-lg font-black transition-all font-khmer", active ? "text-white scale-110" : "text-blue-100")}>
+      <span className={cn("text-lg font-black transition-all font-khmer", active ? "text-primary scale-110" : "text-slate-600")}>
         {label}
       </span>
       
-      <span className={cn("absolute right-1 bottom-0.5 text-[8px] font-mono transition-colors", active ? "text-white/40" : "text-slate-600")}>
+      <span className={cn("absolute right-1 bottom-0.5 text-[8px] font-mono transition-colors", active ? "text-primary/40" : "text-slate-400")}>
         {code.replace(/Key|Digit/, "")}
       </span>
     </div>
@@ -205,19 +205,19 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
   }, [activeFinger, needsShift, needsAltGr]);
 
   return (
-    <div className={cn("flex flex-col gap-4 p-4 rounded-3xl bg-black/20 border border-white/5 w-full max-w-[1000px] mx-auto backdrop-blur-sm relative", className)}>
+    <div className={cn("flex flex-col gap-4 p-4 rounded-3xl bg-card/50 border border-border w-full max-w-[1000px] mx-auto backdrop-blur-sm relative shadow-inner", className)}>
       <div className="flex justify-between items-center text-sm">
         <div className="flex gap-4">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5">
-            <span className="text-slate-400">State:</span>
-            <span className="font-bold text-white w-12">{mod}</span>
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary border border-border">
+            <span className="text-muted-foreground">State:</span>
+            <span className="font-bold text-foreground w-12">{mod}</span>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5">
-            <span className="text-slate-400">Finger:</span>
-            <span className="font-bold text-white text-primary">See Highlight</span>
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary border border-border">
+            <span className="text-muted-foreground">Finger:</span>
+            <span className="font-bold text-primary">See Highlight</span>
           </div>
         </div>
-        <div className="text-xs text-slate-500 hidden sm:block">
+        <div className="text-xs text-muted-foreground hidden sm:block italic">
            Follow the <b>Glow</b>: Amber for Modifiers, Blue for Characters.
         </div>
       </div>
@@ -243,8 +243,8 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
                   correct={correct && isTargetKey}
                   wrong={wrongCode === k.code}
                   className={cn(
-                    isTargetKey && "shadow-[0_0_20px_rgba(59,130,246,0.6)] border-blue-400 ring-2 ring-blue-400/50",
-                    isModifierNeeded && "shadow-[0_0_20px_rgba(251,191,36,0.6)] border-amber-400 ring-2 ring-amber-400/50 animate-pulse"
+                    isTargetKey && "shadow-[0_0_20px_rgba(59,130,246,0.3)] border-primary ring-2 ring-primary/30",
+                    isModifierNeeded && "shadow-[0_0_20px_rgba(251,191,36,0.3)] border-amber-500 ring-2 ring-amber-500/30 animate-pulse"
                   )}
                 />
               );
