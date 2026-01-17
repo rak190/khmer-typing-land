@@ -118,3 +118,44 @@
 [data-world="w4"] body { background-image: radial-gradient(circle at 50% 0%, #200612 0%, transparent 70%); }
 [data-world="w5"] body { background-image: radial-gradient(circle at 50% 0%, #150620 0%, transparent 70%); }
 [data-world="w9"] body { background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, transparent 70%), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"); }
+
+/* Stage Specific Shifts */
+[data-stage="s2"] body { filter: hue-rotate(15deg); }
+[data-stage="s3"] body { filter: hue-rotate(30deg); }
+[data-stage="s4"] body { filter: hue-rotate(45deg); opacity: 0.9; }
+[data-stage="s5"] body { filter: hue-rotate(60deg); }
+[data-stage="s6"] body { filter: hue-rotate(75deg); border-left: 2px solid rgba(255,255,255,0.05); }
+[data-stage="s7"] body { filter: hue-rotate(90deg); }
+[data-stage="s8"] body { filter: hue-rotate(105deg); }
+[data-stage="s9"] body { filter: hue-rotate(120deg); brightness: 1.1; }
+
+/* Add stage-specific patterns */
+[data-stage="s1"]::before, [data-stage="s4"]::before, [data-stage="s7"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+[data-stage="s2"]::before, [data-stage="s5"]::before, [data-stage="s8"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+[data-stage="s3"]::before, [data-stage="s6"]::before, [data-stage="s9"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.01) 0%, transparent 80%);
+  background-size: 100% 100%;
+  pointer-events: none;
+  z-index: -1;
+}

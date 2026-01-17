@@ -88,7 +88,7 @@ export const Play: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 flex flex-col items-center" data-world={worldId}>
+    <div className="min-h-screen p-4 sm:p-8 flex flex-col items-center" data-world={worldId} data-stage={stageId}>
       <HUD />
 
       {phase !== "result" && (
