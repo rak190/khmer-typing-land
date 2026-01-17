@@ -222,11 +222,11 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
           </div>
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5">
             <span className="text-slate-400">Finger:</span>
-            <span className="font-bold text-white text-primary">{fingerName}</span>
+            <span className="font-bold text-white text-primary">See Highlight</span>
           </div>
         </div>
         <div className="text-xs text-slate-500 hidden sm:block">
-           Tip: Use <b>Right Alt</b> (AltGr) for AltGr keys. Hold <b>Shift</b> for upper layer.
+           Follow the <b>Glow</b>: Amber for Modifiers, Blue for Characters.
         </div>
       </div>
 
