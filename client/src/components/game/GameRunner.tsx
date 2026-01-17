@@ -22,6 +22,9 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
   const [activeCode, setActiveCode] = useState<string | null>(null);
   const [wrongCode, setWrongCode] = useState<string | null>(null);
 
+  const [combo, setCombo] = useState(0);
+  const [speedMult, setSpeedMult] = useState(1);
+
   const heroRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
   const stateRef = useRef({
@@ -31,7 +34,8 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
     dist: 0,
     target: "",
     hits: 0,
-    miss: 0
+    miss: 0,
+    speed: 1
   });
 
   const pick = useCallback(() => {
@@ -55,7 +59,8 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
   const jump = () => {
     if (stateRef.current.y === 0) {
       sounds.playClick();
-      stateRef.current.vy = 12; // slightly higher jump
+      stateRef.current.vy = 12 + (stateRef.current.speed - 1) * 2; // jump higher if faster
+      stateRef.current.vy = Math.min(stateRef.current.vy, 18);
     }
   };
 
@@ -72,10 +77,13 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
       // Update DOM
       if (heroRef.current) {
         heroRef.current.style.transform = `translateY(${-stateRef.current.y}px)`;
+        // Visual speed tilt
+        const tilt = Math.min(stateRef.current.speed * 10, 25);
+        heroRef.current.style.transform += ` rotate(${tilt}deg)`;
       }
 
-      // Progress
-      if (stateRef.current.frames % 12 === 0) {
+      // Progress based on speed
+      if (stateRef.current.frames % Math.max(1, Math.floor(12 / stateRef.current.speed)) === 0) {
         stateRef.current.dist++;
         setDist(stateRef.current.dist);
         
@@ -106,6 +114,14 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
         sounds.playCorrect();
         stateRef.current.hits++;
         setHits(stateRef.current.hits);
+        
+        // Combo & Speed logic
+        const newCombo = combo + 1;
+        setCombo(newCombo);
+        const newSpeed = 1 + Math.min(newCombo * 0.1, 2);
+        stateRef.current.speed = newSpeed;
+        setSpeedMult(newSpeed);
+
         jump();
         
         // New target
@@ -115,6 +131,9 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
       } else {
         // Miss
         sounds.playWrong();
+        setCombo(0);
+        setSpeedMult(1);
+        stateRef.current.speed = 1;
         stateRef.current.miss++;
         setMiss(stateRef.current.miss);
         setWrongCode(e.code);
@@ -124,38 +143,68 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [pick]);
+  }, [pick, combo]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
       <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[350px] flex flex-col justify-between">
         
         <div className="flex justify-between w-full items-center text-slate-400 font-mono text-sm z-10 relative">
-          <span>Runner Mode</span>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span>Runner Mode</span>
+          </div>
           <div className="flex gap-4">
             <span className="text-white">Goal: {dist}/{distanceGoal}m</span>
+            <span className="text-primary font-bold">{speedMult.toFixed(1)}x Speed</span>
             <span className="text-green-400">Hits: {hits}</span>
-            <span className="text-red-400">Miss: {miss}</span>
           </div>
         </div>
 
+        {/* Combo Popups */}
+        {combo > 5 && (
+          <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20 pointer-events-none animate-bounce">
+             <span className="text-3xl font-black italic text-primary drop-shadow-glow">HYPER SPEED!</span>
+          </div>
+        )}
+
         {/* Game World */}
         <div className="absolute inset-0 flex items-end pb-8 px-16">
-          {/* Ground */}
-          <div className="absolute bottom-0 left-0 w-full h-8 bg-white/5 border-t border-white/10" />
+          {/* Ground with moving texture */}
+          <div className="absolute bottom-0 left-0 w-full h-8 bg-white/5 border-t border-white/10 overflow-hidden">
+             <div 
+               className="absolute inset-0 w-[200%] h-full opacity-20"
+               style={{ 
+                 backgroundImage: 'linear-gradient(90deg, transparent 50%, white 50%)',
+                 backgroundSize: '40px 100%',
+                 animation: `slide ${0.5 / speedMult}s linear infinite`
+               }}
+             />
+          </div>
           
           {/* Hero */}
           <div 
             ref={heroRef}
-            className="w-20 h-20 bg-primary/20 border border-primary/50 rounded-2xl flex items-center justify-center text-4xl shadow-[0_0_30px_rgba(90,200,250,0.3)] z-10 transition-transform duration-75 ease-linear will-change-transform"
+            className={cn(
+              "w-20 h-20 bg-primary/20 border border-primary/50 rounded-2xl flex items-center justify-center text-4xl shadow-[0_0_30px_rgba(90,200,250,0.3)] z-10 transition-transform duration-75 ease-linear will-change-transform",
+              speedMult > 1.5 && "shadow-[0_0_50px_rgba(90,200,250,0.6)] border-white/50"
+            )}
           >
-            {mascot}
+            <div className="relative">
+              {mascot}
+              {speedMult > 2 && (
+                <div className="absolute inset-0 animate-ping opacity-50 bg-primary rounded-full" />
+              )}
+            </div>
           </div>
 
           {/* Obstacle / Target Display */}
-          <div className="absolute right-32 bottom-32 flex flex-col items-center animate-pulse">
-            <div className="text-sm text-slate-400 mb-2 font-bold uppercase tracking-widest">Type Jump</div>
-            <div className="w-32 h-32 rounded-full border-4 border-dashed border-white/30 flex items-center justify-center text-7xl font-khmer text-white bg-black/20 backdrop-blur-sm relative">
+          <div className="absolute right-32 bottom-32 flex flex-col items-center">
+            <div className="text-[10px] text-slate-400 mb-2 font-bold uppercase tracking-[0.3em] opacity-50">Type to Jump</div>
+            <div className={cn(
+              "w-32 h-32 rounded-full border-4 border-dashed border-white/30 flex items-center justify-center text-7xl font-khmer text-white bg-black/20 backdrop-blur-sm relative transition-all",
+              speedMult > 2 && "border-primary scale-110 shadow-[0_0_40px_rgba(90,200,250,0.4)]"
+            )}>
               {target}
             </div>
           </div>

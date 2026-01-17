@@ -22,6 +22,9 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
   const [activeCode, setActiveCode] = useState<string | null>(null);
   const [wrongCode, setWrongCode] = useState<string | null>(null);
 
+  const [combo, setCombo] = useState(0);
+  const [explosion, setExplosion] = useState<{x: number, y: number} | null>(null);
+
   const requestRef = useRef<number>(0);
   const boxRef = useRef<HTMLDivElement>(null);
   // We keep track of the enemy purely in ref to avoid re-renders during animation, 
@@ -55,6 +58,11 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
     spawnEnemy();
   }, [spawnEnemy]);
 
+  const triggerExplosion = (x: number) => {
+    setExplosion({ x, y: 16 });
+    setTimeout(() => setExplosion(null), 400);
+  };
+
   // Loop
   useEffect(() => {
     const animate = () => {
@@ -64,14 +72,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
       }
 
       // Move enemy
-      stateRef.current.enemy.x += 1.5; // Speed
-      
-      // Update visual state (React state update will trigger render)
-      // For smoother performance we could use direct DOM, but React state at 60fps might be jittery.
-      // Let's use direct DOM manipulation for the enemy element if possible, 
-      // but simpler to just set state for prototype. 
-      // Actually, updating React state 60 times a second is bad.
-      // I'll use a Ref for the enemy DOM element.
+      stateRef.current.enemy.x += 1.5 + (stateRef.current.kills * 0.1); // Scaled speed
       
       const boxWidth = boxRef.current?.clientWidth || 800;
       const limit = boxWidth - 180; // Hit zone
@@ -79,10 +80,17 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
       if (stateRef.current.enemy.x >= limit) {
         // Damage
         sounds.playWrong();
+        setCombo(0);
         stateRef.current.hp--;
         setHp(stateRef.current.hp);
         stateRef.current.enemy.active = false;
         setEnemyVisual(null);
+
+        // Shake effect
+        if (boxRef.current) {
+          boxRef.current.classList.add('animate-shake');
+          setTimeout(() => boxRef.current?.classList.remove('animate-shake'), 400);
+        }
 
         if (stateRef.current.hp <= 0) {
           onComplete({ hits: stateRef.current.hits, miss: stateRef.current.miss });
@@ -91,9 +99,6 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
           spawnEnemy();
         }
       } else {
-         // Only update visual ref if we are using it, 
-         // but here I'm using state for the enemy visual.
-         // Let's optimize: Update a DOM element directly.
          const el = document.getElementById("enemy-sprite");
          if (el) {
            el.style.transform = `translateX(${-stateRef.current.enemy.x}px)`;
@@ -117,6 +122,12 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
       if (stateRef.current.enemy.active && produced === stateRef.current.enemy.target) {
         // Kill
         sounds.playCorrect();
+        
+        const newCombo = combo + 1;
+        setCombo(newCombo);
+        
+        triggerExplosion(stateRef.current.enemy.x);
+        
         stateRef.current.hits++;
         setHits(stateRef.current.hits);
         stateRef.current.kills++;
@@ -133,6 +144,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
         }
       } else {
         sounds.playWrong();
+        setCombo(0);
         stateRef.current.miss++;
         setMiss(stateRef.current.miss);
         setWrongCode(e.code);
@@ -141,24 +153,31 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [spawnEnemy, killsGoal, onComplete]);
+  }, [spawnEnemy, killsGoal, onComplete, combo]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
-      <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[350px] flex flex-col justify-between" ref={boxRef}>
+      <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[350px] flex flex-col justify-between transition-transform duration-300" ref={boxRef}>
         
         <div className="flex justify-between w-full items-center text-slate-400 font-mono text-sm z-10 relative">
-          <span>Defender Mode</span>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            <span>Defender Mode</span>
+          </div>
           <div className="flex gap-4">
-             <span className="text-red-500 font-bold">HP: {"❤️".repeat(hp)}</span>
+             <span className="text-red-500 font-black tracking-tighter">HP: {"❤️".repeat(hp)}</span>
             <span className="text-white">Kills: {kills}/{killsGoal}</span>
+            {combo > 2 && <span className="text-primary font-bold animate-pulse">{combo}x Combo!</span>}
           </div>
         </div>
 
         <div className="absolute inset-0 flex items-center px-16">
           {/* Hero */}
           <div className="absolute left-16 bottom-16 flex flex-col items-center gap-2 z-10">
-            <div className="w-20 h-20 bg-primary/20 border-2 border-primary/50 rounded-2xl flex items-center justify-center text-5xl shadow-[0_0_30px_rgba(90,200,250,0.3)] transition-transform hover:scale-110 relative">
+            <div className={cn(
+              "w-20 h-20 bg-primary/20 border-2 border-primary/50 rounded-2xl flex items-center justify-center text-5xl shadow-[0_0_30_rgba(90,200,250,0.3)] transition-all relative",
+              combo > 5 && "border-white shadow-[0_0_50px_rgba(255,255,255,0.4)] scale-110"
+            )}>
               <div className="absolute -inset-2 border-2 border-primary/20 rounded-3xl animate-[spin_10s_linear_infinite]" />
               {mascot}
             </div>
@@ -166,6 +185,14 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
               Guardian
             </div>
           </div>
+
+          {/* Explosion Effect */}
+          {explosion && (
+             <div 
+               className="absolute right-[-100px] bottom-16 w-24 h-24 bg-orange-500 rounded-full animate-ping opacity-50 z-20"
+               style={{ transform: `translateX(${-explosion.x}px)` }}
+             />
+          )}
 
           {/* Enemy */}
           {enemyVisual && (
@@ -177,7 +204,10 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 text-5xl font-khmer text-white font-bold drop-shadow-md flex flex-col items-center gap-1">
                 {enemyVisual.target}
               </div>
-              <div className="w-20 h-20 bg-red-500/20 border border-red-400/50 rounded-2xl flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(239,68,68,0.3)]">
+              <div className={cn(
+                "w-20 h-20 bg-red-500/20 border border-red-400/50 rounded-2xl flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(239,68,68,0.3)]",
+                stateRef.current.enemy.x > 500 && "animate-pulse border-red-500 scale-105"
+              )}>
                  👾
               </div>
             </div>

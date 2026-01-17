@@ -23,6 +23,9 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
   const [activeCode, setActiveCode] = useState<string | null>(null);
   const [wrongCode, setWrongCode] = useState<string | null>(null);
   
+  const [combo, setCombo] = useState(0);
+  const [feedback, setFeedback] = useState<string | null>(null);
+  
   const pick = useCallback(() => {
     return pool[Math.floor(Math.random() * pool.length)];
   }, [pool]);
@@ -40,6 +43,11 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
     setActiveCode(k?.code || null);
   }, [target]);
 
+  const showFeedback = (text: string) => {
+    setFeedback(text);
+    setTimeout(() => setFeedback(null), 800);
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Ignore modifier only
@@ -51,9 +59,19 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
       if (produced === target) {
         // Hit
         sounds.playCorrect();
+        const newCombo = combo + 1;
+        setCombo(newCombo);
         setHits(h => h + 1);
         setDone(d => d + 1);
         setFlash("good");
+        
+        if (newCombo % 5 === 0) {
+          showFeedback(`${newCombo} COMBO!`);
+          sounds.playLevelUp();
+        } else if (newCombo > 2) {
+          showFeedback("Perfect!");
+        }
+
         setTimeout(() => setFlash(null), 180);
         
         // Next
@@ -67,6 +85,8 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
       } else {
         // Miss
         sounds.playWrong();
+        setCombo(0);
+        showFeedback("Oops!");
         setMiss(m => m + 1);
         setFlash("bad");
         setWrongCode(e.code);
@@ -79,33 +99,53 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [target, done, count, hits, miss, onComplete, pick]);
+  }, [target, done, count, hits, miss, combo, onComplete, pick]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
       <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden min-h-[350px] flex flex-col items-center justify-between">
         <div className="absolute top-0 left-0 w-full h-1 bg-white/10">
           <div 
-            className="h-full bg-primary transition-all duration-300" 
+            className="h-full bg-primary transition-all duration-300 shadow-[0_0_15px_rgba(90,200,250,0.8)]" 
             style={{ width: `${(done / count) * 100}%` }}
           />
         </div>
 
         <div className="flex justify-between w-full items-center text-slate-400 font-mono text-sm">
-          <span>Platform Mode</span>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span>Platform Mode</span>
+          </div>
           <div className="flex gap-4">
-            <span className="text-green-400">Hits: {hits}</span>
+            <span className="text-green-400 font-bold">Hits: {hits}</span>
             <span className="text-red-400">Miss: {miss}</span>
             <span className="text-white">Left: {count - done}</span>
           </div>
         </div>
 
         <div className="flex-1 flex flex-col items-center justify-center relative">
+          {/* Combo Display */}
+          {combo > 1 && (
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-8 flex flex-col items-center animate-bounce">
+              <span className="text-xs font-bold text-primary uppercase tracking-tighter">Combo</span>
+              <span className="text-3xl font-black text-white italic drop-shadow-[0_0_10px_rgba(90,200,250,0.8)]">{combo}</span>
+            </div>
+          )}
+
+          {/* Feedback Text */}
+          {feedback && (
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-50">
+              <span className="text-4xl font-black text-white italic uppercase tracking-wider animate-[ping_0.5s_ease-out_1] drop-shadow-[0_0_20px_white]">
+                {feedback}
+              </span>
+            </div>
+          )}
+
            <div 
              className={cn(
                "w-48 h-48 rounded-full border-4 border-dashed border-white/20 flex items-center justify-center text-9xl font-khmer text-white transition-all duration-200 relative",
-               flash === "good" && "border-accent bg-accent/20 scale-110 shadow-[0_0_50px_rgba(48,209,88,0.5)]",
-               flash === "bad" && "border-destructive bg-destructive/20 scale-95 shadow-[0_0_50px_rgba(255,69,58,0.5)]"
+               flash === "good" && "border-accent bg-accent/20 scale-110 shadow-[0_0_80px_rgba(48,209,88,0.6)]",
+               flash === "bad" && "border-destructive bg-destructive/20 scale-95 shadow-[0_0_80px_rgba(255,69,58,0.6)]"
              )}
            >
              {target}
