@@ -43,6 +43,11 @@ export const Play: React.FC = () => {
   const mascot = badge.icon;
 
   useEffect(() => {
+    // Stop background music when playing a level
+    if (phase !== "intro" && phase !== "result") {
+      sounds.stopBackgroundMusic();
+    }
+    
     // Random Event & Easter Egg Check
     if (phase === "intro") {
       const event = RANDOM_EVENTS.find(e => Math.random() < e.chance);
