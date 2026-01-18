@@ -58,23 +58,29 @@ class SoundManager {
     this.bgOsc = this.ctx.createOscillator();
     this.bgGain = this.ctx.createGain();
 
-    // Create a more "fitting" musical sequence (C Major Arpeggio)
+    // Educational game menu style: Playful, rhythmic, and bright
     const now = this.ctx.currentTime;
-    const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
     
-    this.bgOsc.type = 'sine';
-    this.bgOsc.frequency.setValueAtTime(notes[0], now);
+    // Pentatonic scale for a friendly, educational feel (C4, D4, E4, G4, A4, C5)
+    const notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
     
-    // Simple looping melody using scheduling
+    this.bgOsc.type = 'triangle'; // Softer, more "toy-like" sound than sine
+    
+    // Schedule a bouncy, rhythmic sequence
     let time = now;
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 200; i++) {
       const note = notes[i % notes.length];
+      // Create a "bouncing" rhythm with frequency shifts
       this.bgOsc.frequency.setValueAtTime(note, time);
-      time += 0.5;
+      // Add a slight portamento/glide between some notes for playfulness
+      if (i % 4 === 0) {
+        this.bgOsc.frequency.exponentialRampToValueAtTime(note * 1.05, time + 0.1);
+      }
+      time += 0.25; // Faster tempo (120 BPM)
     }
 
     this.bgGain.gain.setValueAtTime(0, now);
-    this.bgGain.gain.linearRampToValueAtTime(0.02, now + 1); // Fade in
+    this.bgGain.gain.linearRampToValueAtTime(0.015, now + 1); // Subtly quiet
 
     this.bgOsc.connect(this.bgGain);
     this.bgGain.connect(this.ctx.destination);
