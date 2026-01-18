@@ -54,34 +54,30 @@ class SoundManager {
     this.init();
     
     if (!this.bgAudio) {
-      // Trying the Pixabay URL again with a slightly different format, 
-      // but providing the local asset as a fallback immediately if it fails.
-      const pixabayUrl = "https://cdn.pixabay.com/download/audio/2025/01/24/kids-game-gaming-background-music-295075.mp3?filename=kids-game-gaming-background-music-295075.mp3";
-      const localFallback = "/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701930800.mp3";
-      
-      this.bgAudio = new Audio(pixabayUrl);
+      // Using the newly attached file path
+      const audioPath = "/attached_assets/kids-game-gaming-background-music-295075_1768702772378.mp3";
+      this.bgAudio = new Audio(audioPath);
       this.bgAudio.loop = true;
       this.bgAudio.volume = 0.3;
-      this.bgAudio.crossOrigin = "anonymous";
       
-      this.bgAudio.addEventListener('error', () => {
-        console.warn("Pixabay audio failed, switching to local asset...");
+      this.bgAudio.addEventListener('error', (e) => {
+        console.warn("Main audio failed, using local Sakura Girl fallback:", e);
         if (this.bgAudio) {
-          this.bgAudio.src = localFallback;
+          this.bgAudio.src = "/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701930800.mp3";
           this.bgAudio.load();
-          this.bgAudio.play().catch(e => console.error("Local fallback also failed:", e));
+          this.bgAudio.play().catch(err => console.error("All fallback audio failed:", err));
         }
       });
     }
     
-    this.bgAudio.play()
-      .then(() => {
+    const playPromise = this.bgAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
         this.isBgPlaying = true;
-      })
-      .catch(error => {
-        console.warn("Autoplay blocked or load failed:", error);
-        // If play fails, we don't set isBgPlaying so user can try again by clicking
+      }).catch(error => {
+        console.warn("Autoplay blocked, wait for user interaction:", error);
       });
+    }
   }
 
   stopBackgroundMusic() {
