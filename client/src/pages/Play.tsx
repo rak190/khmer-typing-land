@@ -11,6 +11,7 @@ import { GameDefender } from '@/components/game/GameDefender';
 import { makeBadges } from '@/lib/badges';
 import { cn } from '@/lib/utils';
 
+import { sounds } from '@/lib/sounds';
 import { STORY_CHAPTERS, RANDOM_EVENTS, EASTER_EGGS } from '@/lib/story';
 
 const WORLDS = buildWorlds();

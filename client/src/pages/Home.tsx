@@ -49,14 +49,14 @@ export const Home: React.FC = () => {
              />
              <div className="flex gap-2 ml-auto">
               <Link href="/badges">
-                <Button variant="glass" size="sm" className="gap-2">
-                  <span>Collection</span>
-                  <span className="bg-white/10 px-2 py-0.5 rounded text-xs">
+                <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-slate-300 text-slate-700 hover:bg-white hover:text-primary transition-all shadow-sm">
+                  <span className="font-bold">Collection</span>
+                  <span className="bg-slate-200 px-2 py-0.5 rounded text-xs font-mono">
                     {badgesOwned.length}
                   </span>
                 </Button>
               </Link>
-              <Button variant="ghost" size="sm" className="text-xs text-slate-500" onClick={() => {
+              <Button variant="ghost" size="sm" className="text-xs text-red-500 font-bold hover:bg-red-50 hover:text-red-600 transition-colors" onClick={() => {
                 if(confirm("Erase your legend?")) resetProgress();
               }}>
                 Reset Journey
