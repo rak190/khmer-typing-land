@@ -46,8 +46,28 @@ class SoundManager {
     setTimeout(() => this.playTone(783.99, 'sine', 0.2, 0.1), 200);
   }
 
-  startBackgroundMusic() {}
-  stopBackgroundMusic() {}
+  private bgAudio: HTMLAudioElement | null = null;
+  private isBgPlaying = false;
+
+  startBackgroundMusic() {
+    if (this.isBgPlaying) return;
+    
+    if (!this.bgAudio) {
+      this.bgAudio = new Audio("https://cdn.pixabay.com/audio/2025/01/24/18-05-39-290_700.mp3?filename=kids-game-gaming-background-music-295075.mp3");
+      this.bgAudio.loop = true;
+      this.bgAudio.volume = 0.3;
+    }
+    
+    this.bgAudio.play().catch(e => console.error("Audio play failed:", e));
+    this.isBgPlaying = true;
+  }
+
+  stopBackgroundMusic() {
+    if (this.bgAudio) {
+      this.bgAudio.pause();
+      this.isBgPlaying = false;
+    }
+  }
 }
 
 export const sounds = new SoundManager();
