@@ -14,24 +14,24 @@
   --color-popover: hsl(0 0% 100%);
   --color-popover-foreground: hsl(222 47% 11%);
   
-  --color-primary: hsl(199 92% 50%); /* Vibrant Azure */
+  --color-primary: hsl(199 92% 45%); /* Slightly darker Azure for better contrast */
   --color-primary-foreground: hsl(0 0% 100%);
   
-  --color-secondary: hsl(220 20% 95%);
+  --color-secondary: hsl(220 20% 92%);
   --color-secondary-foreground: hsl(222 47% 11%);
   
-  --color-muted: hsl(220 14% 90%);
-  --color-muted-foreground: hsl(220 10% 40%);
+  --color-muted: hsl(220 14% 85%);
+  --color-muted-foreground: hsl(220 10% 30%); /* Darker for readability */
   
-  --color-accent: hsl(142 76% 36%); /* Forest Green */
+  --color-accent: hsl(142 76% 30%); /* Darker Forest Green */
   --color-accent-foreground: hsl(0 0% 100%);
   
-  --color-destructive: hsl(0 84% 60%); /* Red */
+  --color-destructive: hsl(0 84% 50%); /* Darker Red */
   --color-destructive-foreground: hsl(0 0% 100%);
 
-  --color-border: hsl(220 13% 85%); /* Slightly darker for visibility */
-  --color-input: hsl(220 13% 93%);
-  --color-ring: hsl(199 92% 50%);
+  --color-border: hsl(220 13% 80%); /* Darker for visibility */
+  --color-input: hsl(220 13% 90%);
+  --color-ring: hsl(199 92% 45%);
   
   --color-key-top: hsl(0 0% 100%);
   --color-key-bot: hsl(220 13% 95%);
@@ -60,17 +60,17 @@
     text-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
   .glass-panel {
-    @apply bg-card/70 backdrop-blur-xl border border-white shadow-xl shadow-slate-200/50;
+    @apply bg-white/80 backdrop-blur-xl border border-white shadow-xl shadow-slate-300/50;
   }
   .key-cap {
-    @apply relative flex items-center justify-center select-none transition-all duration-75 text-slate-700 font-bold border border-slate-200;
+    @apply relative flex items-center justify-center select-none transition-all duration-75 text-slate-800 font-bold border border-slate-300;
     background: linear-gradient(180deg, var(--color-key-top), var(--color-key-bot));
-    box-shadow: 0 4px 0 hsl(220 13% 85%), 0 0 0 1px rgba(255,255,255,0.8) inset;
+    box-shadow: 0 4px 0 hsl(220 13% 80%), 0 0 0 1px rgba(255,255,255,0.8) inset;
     transform: translateY(0);
   }
   .key-cap:active, .key-cap.active-press {
     transform: translateY(2px);
-    box-shadow: 0 1px 0 hsl(220 13% 85%), 0 0 0 1px rgba(255,255,255,0.8) inset;
+    box-shadow: 0 1px 0 hsl(220 13% 80%), 0 0 0 1px rgba(255,255,255,0.8) inset;
   }
   .key-cap.active-highlight {
     @apply ring-2 ring-primary ring-offset-2 ring-offset-background text-primary;

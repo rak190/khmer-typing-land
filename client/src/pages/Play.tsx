@@ -101,18 +101,18 @@ export const Play: React.FC = () => {
 
       <div className="container mx-auto px-4 flex flex-col items-center justify-center min-h-[60vh]">
         {phase === "intro" && (
-          <div className="glass-panel p-10 rounded-3xl text-center max-w-2xl w-full animate-in fade-in zoom-in duration-500 border-primary/30 shadow-[0_0_50px_rgba(59,130,246,0.2)]">
+          <div className="glass-panel p-10 rounded-3xl text-center max-w-2xl w-full animate-in fade-in zoom-in duration-500 border-primary/40 shadow-[0_0_50px_rgba(59,130,246,0.15)]">
             <div className="text-sm font-bold text-primary uppercase tracking-[0.3em] mb-4">Quest Objective</div>
-            <h1 className="text-4xl font-black text-white mb-6">{stage.name}</h1>
+            <h1 className="text-4xl font-black text-slate-900 mb-6">{stage.name}</h1>
             
             <div className="flex items-center justify-center gap-8 mb-8">
               <div className="text-6xl animate-bounce">{mascot}</div>
-              <div className="text-2xl text-slate-500 font-bold">VS</div>
+              <div className="text-2xl text-slate-400 font-bold">VS</div>
               <div className="text-6xl animate-pulse">{chapter?.monsterEmoji}</div>
             </div>
 
-            <p className="text-slate-300 italic text-xl mb-10 leading-relaxed">
-              "To defeat the {chapter?.monsterName}, you must master these scripts: <span className="text-white font-bold not-italic">{stage.pool.join(' ')}</span>"
+            <p className="text-slate-600 italic text-xl mb-10 leading-relaxed">
+              "To defeat the {chapter?.monsterName}, you must master these scripts: <span className="text-slate-900 font-bold not-italic">{stage.pool.join(' ')}</span>"
             </p>
 
             {activeEvent && (

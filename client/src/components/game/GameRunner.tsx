@@ -200,10 +200,10 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
 
           {/* Obstacle / Target Display */}
           <div className="absolute right-32 bottom-32 flex flex-col items-center">
-            <div className="text-[10px] text-slate-400 mb-2 font-bold uppercase tracking-[0.3em] opacity-50">Type to Jump</div>
+            <div className="text-[10px] text-slate-500 mb-2 font-bold uppercase tracking-[0.3em] opacity-80">Type to Jump</div>
             <div className={cn(
-              "w-32 h-32 rounded-full border-4 border-dashed border-slate-300 flex items-center justify-center text-7xl font-khmer text-foreground bg-white/20 backdrop-blur-sm relative transition-all",
-              speedMult > 2 && "border-primary scale-110 shadow-lg"
+              "w-32 h-32 rounded-full border-4 border-dashed border-slate-400 flex items-center justify-center text-7xl font-khmer text-slate-900 bg-white/40 backdrop-blur-md shadow-lg relative transition-all",
+              speedMult > 2 && "border-primary scale-110 shadow-primary/20"
             )}>
               {target}
             </div>
