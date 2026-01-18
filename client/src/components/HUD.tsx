@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGameStore } from '@/lib/store';
-import { Badge, Volume2, VolumeX } from 'lucide-react';
+import { Badge, Volume2, VolumeX, Sun, Moon } from 'lucide-react';
 import { makeBadges } from '@/lib/badges';
 import { Link } from 'wouter';
 import { sounds } from '@/lib/sounds';
@@ -10,6 +10,21 @@ const ALL_BADGES = makeBadges();
 export const HUD: React.FC = () => {
   const { profile, selectedBadgeId, getTotalStars } = useGameStore();
   const [isMuted, setIsMuted] = useState(true);
+  const [theme, setTheme] = useState<'light' | 'dark'>(
+    typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+  );
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
   
   const badge = ALL_BADGES.find(b => b.id === selectedBadgeId) || ALL_BADGES[0];
   const stars = getTotalStars();
@@ -25,7 +40,7 @@ export const HUD: React.FC = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-3 flex justify-between items-center bg-background/80 backdrop-blur-md border-b border-border shadow-sm">
+    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-3 flex justify-between items-center bg-background/80 backdrop-blur-md border-b border-border shadow-sm transition-colors duration-300">
       <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
         <span className="text-3xl animate-bounce-slow">{badge.icon}</span>
         <div className="flex flex-col">
@@ -40,8 +55,16 @@ export const HUD: React.FC = () => {
 
       <div className="flex items-center gap-3">
         <button 
+          onClick={toggleTheme}
+          className="p-2 rounded-full bg-secondary border border-border text-foreground hover:text-primary transition-colors"
+          title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+        >
+          {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+        </button>
+
+        <button 
           onClick={toggleMusic}
-          className="p-2 rounded-full bg-secondary border border-border text-slate-600 hover:text-primary transition-colors"
+          className="p-2 rounded-full bg-secondary border border-border text-slate-600 dark:text-slate-400 hover:text-primary transition-colors"
           title={isMuted ? "Enable Background Music" : "Mute Background Music"}
         >
           {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} className="animate-pulse" />}
@@ -54,7 +77,7 @@ export const HUD: React.FC = () => {
         
         <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/20 backdrop-blur-sm">
           <span className="text-yellow-600 text-sm">⭐</span>
-          <span className="text-sm font-black text-yellow-700">{stars}</span>
+          <span className="text-sm font-black text-yellow-700 dark:text-yellow-500">{stars}</span>
         </div>
 
         <Link href="/">
