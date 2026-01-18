@@ -51,15 +51,34 @@ class SoundManager {
 
   startBackgroundMusic() {
     if (this.isBgPlaying) return;
+    this.init();
     
     if (!this.bgAudio) {
-      this.bgAudio = new Audio("https://cdn.pixabay.com/audio/2025/01/24/18-05-39-290_700.mp3?filename=kids-game-gaming-background-music-295075.mp3");
+      // Use a more reliable CDN link or the direct Pixabay asset URL if possible
+      // This is the direct download link pattern for Pixabay
+      this.bgAudio = new Audio("https://cdn.pixabay.com/download/audio/2025/01/24/kids-game-gaming-background-music-295075.mp3?filename=kids-game-gaming-background-music-295075.mp3");
       this.bgAudio.loop = true;
       this.bgAudio.volume = 0.3;
+      this.bgAudio.crossOrigin = "anonymous";
+      
+      this.bgAudio.addEventListener('error', (e) => {
+        console.error("Main audio failed, trying alternative URL:", e);
+        // Alternative URL in case the first one fails
+        if (this.bgAudio) {
+           this.bgAudio.src = "https://cdn.pixabay.com/audio/2025/01/24/18-05-39-290_700.mp3";
+           this.bgAudio.load();
+        }
+      });
     }
     
-    this.bgAudio.play().catch(e => console.error("Audio play failed:", e));
-    this.isBgPlaying = true;
+    const playPromise = this.bgAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        this.isBgPlaying = true;
+      }).catch(error => {
+        console.warn("Autoplay blocked, waiting for interaction:", error);
+      });
+    }
   }
 
   stopBackgroundMusic() {
