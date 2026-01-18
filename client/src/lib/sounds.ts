@@ -54,31 +54,34 @@ class SoundManager {
     this.init();
     
     if (!this.bgAudio) {
-      // Use a more reliable CDN link or the direct Pixabay asset URL if possible
-      // This is the direct download link pattern for Pixabay
-      this.bgAudio = new Audio("https://cdn.pixabay.com/download/audio/2025/01/24/kids-game-gaming-background-music-295075.mp3?filename=kids-game-gaming-background-music-295075.mp3");
+      // Trying the Pixabay URL again with a slightly different format, 
+      // but providing the local asset as a fallback immediately if it fails.
+      const pixabayUrl = "https://cdn.pixabay.com/download/audio/2025/01/24/kids-game-gaming-background-music-295075.mp3?filename=kids-game-gaming-background-music-295075.mp3";
+      const localFallback = "/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701930800.mp3";
+      
+      this.bgAudio = new Audio(pixabayUrl);
       this.bgAudio.loop = true;
       this.bgAudio.volume = 0.3;
       this.bgAudio.crossOrigin = "anonymous";
       
-      this.bgAudio.addEventListener('error', (e) => {
-        console.error("Main audio failed, trying alternative URL:", e);
-        // Alternative URL in case the first one fails
+      this.bgAudio.addEventListener('error', () => {
+        console.warn("Pixabay audio failed, switching to local asset...");
         if (this.bgAudio) {
-           this.bgAudio.src = "https://cdn.pixabay.com/audio/2025/01/24/18-05-39-290_700.mp3";
-           this.bgAudio.load();
+          this.bgAudio.src = localFallback;
+          this.bgAudio.load();
+          this.bgAudio.play().catch(e => console.error("Local fallback also failed:", e));
         }
       });
     }
     
-    const playPromise = this.bgAudio.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
+    this.bgAudio.play()
+      .then(() => {
         this.isBgPlaying = true;
-      }).catch(error => {
-        console.warn("Autoplay blocked, waiting for interaction:", error);
+      })
+      .catch(error => {
+        console.warn("Autoplay blocked or load failed:", error);
+        // If play fails, we don't set isBgPlaying so user can try again by clicking
       });
-    }
   }
 
   stopBackgroundMusic() {
