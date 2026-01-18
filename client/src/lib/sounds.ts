@@ -53,13 +53,27 @@ class SoundManager {
     if (this.isBgPlaying) return;
     
     if (!this.bgAudio) {
+      // Use the correct path for assets in Replit
       this.bgAudio = new Audio("/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701366066.mp3");
       this.bgAudio.loop = true;
-      this.bgAudio.volume = 0.3;
+      this.bgAudio.volume = 0.4;
+      
+      // Add event listener to handle potential loading issues
+      this.bgAudio.addEventListener('error', (e) => {
+        console.error("Audio element error:", e);
+      });
     }
     
-    this.bgAudio.play().catch(e => console.error("Audio play failed:", e));
-    this.isBgPlaying = true;
+    // Resume audio context or play audio
+    const playPromise = this.bgAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        this.isBgPlaying = true;
+      }).catch(error => {
+        console.error("Audio play failed:", error);
+        this.isBgPlaying = false;
+      });
+    }
   }
 
   stopBackgroundMusic() {
