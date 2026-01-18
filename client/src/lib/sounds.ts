@@ -54,17 +54,43 @@ class SoundManager {
     
     if (!this.bgAudio) {
       // Use the correct path for assets in Replit
-      this.bgAudio = new Audio("/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701366066.mp3");
+      const audioPath = "/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701366066.mp3";
+      this.bgAudio = new Audio(audioPath);
+      this.bgAudio.crossOrigin = "anonymous";
       this.bgAudio.loop = true;
-      this.bgAudio.volume = 0.4;
+      this.bgAudio.volume = 0.5;
       
-      // Add event listener to handle potential loading issues
+      this.bgAudio.addEventListener('canplaythrough', () => {
+        console.log("Audio loaded and ready to play");
+      });
+
       this.bgAudio.addEventListener('error', (e) => {
         console.error("Audio element error:", e);
+        // Fallback to generated sound if file fails to load
+        this.startGeneratedMusic();
       });
     }
     
-    // Resume audio context or play audio
+    this.playAudio();
+  }
+
+  private startGeneratedMusic() {
+    // Basic fallback if file fails
+    this.init();
+    if (!this.ctx) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+    gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start();
+    this.isBgPlaying = true;
+  }
+
+  private playAudio() {
+    if (!this.bgAudio) return;
     const playPromise = this.bgAudio.play();
     if (playPromise !== undefined) {
       playPromise.then(() => {
