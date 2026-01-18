@@ -55,8 +55,8 @@ class SoundManager {
     this.init();
     
     if (!this.bgAudio) {
-      // Direct relative path for assets
-      this.bgAudio = new Audio("/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701366066.mp3");
+      // Direct relative path for assets using the newly attached file
+      this.bgAudio = new Audio("/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701930800.mp3");
       this.bgAudio.loop = true;
       this.bgAudio.volume = 0.5;
       
