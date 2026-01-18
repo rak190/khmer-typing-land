@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useGameStore } from '@/lib/store';
-import { Badge } from 'lucide-react';
+import { Badge, Volume2, VolumeX } from 'lucide-react';
 import { makeBadges } from '@/lib/badges';
 import { Link } from 'wouter';
+import { sounds } from '@/lib/sounds';
 
 const ALL_BADGES = makeBadges();
 
 export const HUD: React.FC = () => {
   const { profile, selectedBadgeId, getTotalStars } = useGameStore();
+  const [isMuted, setIsMuted] = useState(true);
   
   const badge = ALL_BADGES.find(b => b.id === selectedBadgeId) || ALL_BADGES[0];
   const stars = getTotalStars();
+
+  const toggleMusic = () => {
+    if (isMuted) {
+      sounds.startBackgroundMusic();
+      setIsMuted(false);
+    } else {
+      sounds.stopBackgroundMusic();
+      setIsMuted(true);
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-6 py-3 flex justify-between items-center bg-background/80 backdrop-blur-md border-b border-border shadow-sm">
@@ -27,6 +39,14 @@ export const HUD: React.FC = () => {
       </Link>
 
       <div className="flex items-center gap-3">
+        <button 
+          onClick={toggleMusic}
+          className="p-2 rounded-full bg-secondary border border-border text-slate-600 hover:text-primary transition-colors"
+          title={isMuted ? "Enable Background Music" : "Mute Background Music"}
+        >
+          {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} className="animate-pulse" />}
+        </button>
+
         <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary border border-border backdrop-blur-sm">
           <span className="text-lg">{badge.icon}</span>
           <span className="text-sm font-bold text-foreground">{profile.name}</span>
