@@ -46,45 +46,55 @@ class SoundManager {
     setTimeout(() => this.playTone(783.99, 'sine', 0.2, 0.1), 200);
   }
 
-  private bgAudio: HTMLAudioElement | null = null;
+  private bgOsc: OscillatorNode | null = null;
+  private bgGain: GainNode | null = null;
   private isBgPlaying = false;
 
   startBackgroundMusic() {
     if (this.isBgPlaying) return;
     this.init();
+    if (!this.ctx) return;
+
+    this.bgOsc = this.ctx.createOscillator();
+    this.bgGain = this.ctx.createGain();
+
+    // Friendly, rhythmic, educational music using generated tones
+    const now = this.ctx.currentTime;
+    const notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25]; // C Pentatonic
     
-    if (!this.bgAudio) {
-      // Using the newly attached file path
-      const audioPath = "/attached_assets/kids-game-gaming-background-music-295075_1768702772378.mp3";
-      this.bgAudio = new Audio(audioPath);
-      this.bgAudio.loop = true;
-      this.bgAudio.volume = 0.3;
-      
-      this.bgAudio.addEventListener('error', (e) => {
-        console.warn("Main audio failed, using local Sakura Girl fallback:", e);
-        if (this.bgAudio) {
-          this.bgAudio.src = "/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701930800.mp3";
-          this.bgAudio.load();
-          this.bgAudio.play().catch(err => console.error("All fallback audio failed:", err));
-        }
-      });
-    }
+    this.bgOsc.type = 'triangle';
     
-    const playPromise = this.bgAudio.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        this.isBgPlaying = true;
-      }).catch(error => {
-        console.warn("Autoplay blocked, wait for user interaction:", error);
-      });
+    let time = now;
+    for (let i = 0; i < 200; i++) {
+      const note = notes[i % notes.length];
+      this.bgOsc.frequency.setValueAtTime(note, time);
+      if (i % 4 === 0) {
+        this.bgOsc.frequency.exponentialRampToValueAtTime(note * 1.02, time + 0.1);
+      }
+      time += 0.25;
     }
+
+    this.bgGain.gain.setValueAtTime(0, now);
+    this.bgGain.gain.linearRampToValueAtTime(0.012, now + 1);
+
+    this.bgOsc.connect(this.bgGain);
+    this.bgGain.connect(this.ctx.destination);
+
+    this.bgOsc.start();
+    this.isBgPlaying = true;
   }
 
   stopBackgroundMusic() {
-    if (this.bgAudio) {
-      this.bgAudio.pause();
-      this.isBgPlaying = false;
+    if (this.bgOsc) {
+      try {
+        this.bgOsc.stop();
+        this.bgOsc.disconnect();
+      } catch (e) {
+        console.warn("Error stopping background music:", e);
+      }
+      this.bgOsc = null;
     }
+    this.isBgPlaying = false;
   }
 }
 
