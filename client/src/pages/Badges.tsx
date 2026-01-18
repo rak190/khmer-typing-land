@@ -45,21 +45,21 @@ export const Badges: React.FC = () => {
                 className={cn(
                   "relative p-4 rounded-2xl border flex flex-col items-center gap-3 transition-all duration-200 group text-left",
                   isOwned 
-                    ? "bg-white/90 border-slate-200 hover:bg-white shadow-sm" 
-                    : "bg-black/5 border-black/5 opacity-50 cursor-not-allowed",
-                  isSelected && "ring-2 ring-primary ring-offset-2 ring-offset-background bg-white border-primary/50 shadow-md"
+                    ? "bg-card border-border hover:border-primary/50 shadow-sm" 
+                    : "bg-muted/50 border-border opacity-50 cursor-not-allowed",
+                  isSelected && "ring-2 ring-primary ring-offset-2 ring-offset-background bg-primary/5 border-primary shadow-md"
                 )}
               >
                 <div className="text-4xl filter drop-shadow-lg group-hover:scale-110 transition-transform duration-200">
                   {badge.icon}
                 </div>
                 
-                <div className="w-full">
-                  <div className={cn("text-xs font-bold truncate", isOwned ? "text-slate-900" : "text-slate-500")}>
+                <div className="w-full text-center">
+                  <div className={cn("text-xs font-bold truncate", isOwned ? "text-foreground" : "text-muted-foreground")}>
                     {badge.name}
                   </div>
                   {!isOwned && (
-                    <div className="text-[10px] text-slate-600 flex items-center gap-1 mt-1 font-medium">
+                    <div className="text-[10px] text-muted-foreground flex items-center justify-center gap-1 mt-1 font-medium">
                       <Lock size={8} /> Needs {badge.unlock.value} ⭐
                     </div>
                   )}
