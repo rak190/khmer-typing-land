@@ -58,11 +58,23 @@ class SoundManager {
     this.bgOsc = this.ctx.createOscillator();
     this.bgGain = this.ctx.createGain();
 
-    // Simple rhythmic ambient sound using a Triangle wave
-    this.bgOsc.type = 'triangle';
-    this.bgOsc.frequency.setValueAtTime(110, this.ctx.currentTime); // Low A
+    // Create a more "fitting" musical sequence (C Major Arpeggio)
+    const now = this.ctx.currentTime;
+    const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+    
+    this.bgOsc.type = 'sine';
+    this.bgOsc.frequency.setValueAtTime(notes[0], now);
+    
+    // Simple looping melody using scheduling
+    let time = now;
+    for (let i = 0; i < 100; i++) {
+      const note = notes[i % notes.length];
+      this.bgOsc.frequency.setValueAtTime(note, time);
+      time += 0.5;
+    }
 
-    this.bgGain.gain.setValueAtTime(0.015, this.ctx.currentTime); // Very quiet
+    this.bgGain.gain.setValueAtTime(0, now);
+    this.bgGain.gain.linearRampToValueAtTime(0.02, now + 1); // Fade in
 
     this.bgOsc.connect(this.bgGain);
     this.bgGain.connect(this.ctx.destination);
