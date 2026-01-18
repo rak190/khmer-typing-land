@@ -47,66 +47,62 @@ class SoundManager {
   }
 
   private bgAudio: HTMLAudioElement | null = null;
+  private fallbackOsc: OscillatorNode | null = null;
   private isBgPlaying = false;
 
   startBackgroundMusic() {
     if (this.isBgPlaying) return;
+    this.init();
     
     if (!this.bgAudio) {
-      // Use the correct path for assets in Replit
-      const audioPath = "/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701366066.mp3";
-      this.bgAudio = new Audio(audioPath);
-      this.bgAudio.crossOrigin = "anonymous";
+      // Direct relative path for assets
+      this.bgAudio = new Audio("/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701366066.mp3");
       this.bgAudio.loop = true;
       this.bgAudio.volume = 0.5;
       
-      this.bgAudio.addEventListener('canplaythrough', () => {
-        console.log("Audio loaded and ready to play");
-      });
-
       this.bgAudio.addEventListener('error', (e) => {
-        console.error("Audio element error:", e);
-        // Fallback to generated sound if file fails to load
+        console.error("Audio file failed to load:", e);
+        // Fallback to generated sound
         this.startGeneratedMusic();
       });
     }
     
-    this.playAudio();
+    this.bgAudio.play()
+      .then(() => {
+        this.isBgPlaying = true;
+      })
+      .catch(error => {
+        console.warn("Autoplay blocked or file failed, trying fallback:", error);
+        this.startGeneratedMusic();
+      });
   }
 
   private startGeneratedMusic() {
-    // Basic fallback if file fails
+    if (this.isBgPlaying && this.fallbackOsc) return;
     this.init();
     if (!this.ctx) return;
-    const osc = this.ctx.createOscillator();
+    
+    this.fallbackOsc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+    this.fallbackOsc.type = 'triangle';
+    this.fallbackOsc.frequency.setValueAtTime(440, this.ctx.currentTime);
     gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
-    osc.connect(gain);
+    this.fallbackOsc.connect(gain);
     gain.connect(this.ctx.destination);
-    osc.start();
+    this.fallbackOsc.start();
     this.isBgPlaying = true;
-  }
-
-  private playAudio() {
-    if (!this.bgAudio) return;
-    const playPromise = this.bgAudio.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        this.isBgPlaying = true;
-      }).catch(error => {
-        console.error("Audio play failed:", error);
-        this.isBgPlaying = false;
-      });
-    }
   }
 
   stopBackgroundMusic() {
     if (this.bgAudio) {
       this.bgAudio.pause();
-      this.isBgPlaying = false;
     }
+    if (this.fallbackOsc) {
+      this.fallbackOsc.stop();
+      this.fallbackOsc.disconnect();
+      this.fallbackOsc = null;
+    }
+    this.isBgPlaying = false;
   }
 }
 

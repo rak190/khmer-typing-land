@@ -39,6 +39,13 @@ export const HUD: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    // Cleanup sounds when unmounting
+    return () => {
+      sounds.stopBackgroundMusic();
+    };
+  }, []);
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-6 py-3 flex justify-between items-center bg-background/80 backdrop-blur-md border-b border-border shadow-sm transition-colors duration-300">
       <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
