@@ -25,8 +25,8 @@ export const Badges: React.FC = () => {
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-black text-white">Collection</h1>
-            <p className="text-slate-400">
+            <h1 className="text-3xl font-black text-foreground">Collection</h1>
+            <p className="text-muted-foreground font-medium">
               Unlocked: <span className="text-primary font-bold">{badgesOwned.length}</span> / {ALL_BADGES.length}
             </p>
           </div>
@@ -45,9 +45,9 @@ export const Badges: React.FC = () => {
                 className={cn(
                   "relative p-4 rounded-2xl border flex flex-col items-center gap-3 transition-all duration-200 group text-left",
                   isOwned 
-                    ? "bg-card/40 border-white/5 hover:bg-card/80" 
-                    : "bg-black/20 border-white/5 opacity-50 cursor-not-allowed",
-                  isSelected && "ring-2 ring-primary ring-offset-2 ring-offset-background bg-primary/10 border-primary/50"
+                    ? "bg-white/90 border-slate-200 hover:bg-white shadow-sm" 
+                    : "bg-black/5 border-black/5 opacity-50 cursor-not-allowed",
+                  isSelected && "ring-2 ring-primary ring-offset-2 ring-offset-background bg-white border-primary/50 shadow-md"
                 )}
               >
                 <div className="text-4xl filter drop-shadow-lg group-hover:scale-110 transition-transform duration-200">
@@ -55,16 +55,16 @@ export const Badges: React.FC = () => {
                 </div>
                 
                 <div className="w-full">
-                  <div className={cn("text-xs font-bold truncate", isOwned ? "text-white" : "text-slate-500")}>
+                  <div className={cn("text-xs font-bold truncate", isOwned ? "text-slate-900" : "text-slate-500")}>
                     {badge.name}
                   </div>
                   {!isOwned && (
-                    <div className="text-[10px] text-slate-500 flex items-center gap-1 mt-1">
+                    <div className="text-[10px] text-slate-600 flex items-center gap-1 mt-1 font-medium">
                       <Lock size={8} /> Needs {badge.unlock.value} ⭐
                     </div>
                   )}
                   {isSelected && (
-                    <div className="text-[10px] text-primary font-bold uppercase tracking-widest mt-1">
+                    <div className="text-[10px] text-primary font-black uppercase tracking-widest mt-1">
                       Equipped
                     </div>
                   )}
