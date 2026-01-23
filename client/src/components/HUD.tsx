@@ -48,7 +48,7 @@ export const HUD: React.FC = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-6 py-3 flex justify-between items-center bg-background/80 backdrop-blur-md border-b border-border shadow-sm transition-colors duration-300">
-      <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
+      <div className="flex items-center gap-3">
         <span className="text-3xl animate-bounce-slow">{badge.icon}</span>
         <div className="flex flex-col">
           <span className="text-lg font-black tracking-tight text-foreground leading-none">
@@ -58,7 +58,7 @@ export const HUD: React.FC = () => {
             NiDA Mode
           </span>
         </div>
-      </Link>
+      </div>
 
       <div className="flex items-center gap-3">
         <button 
@@ -87,7 +87,7 @@ export const HUD: React.FC = () => {
           <span className="text-sm font-black text-yellow-700 dark:text-yellow-500">{stars}</span>
         </div>
 
-        <Link href="/">
+        <Link href="/home">
            <button className="px-4 py-1.5 rounded-full bg-primary hover:opacity-90 text-sm font-bold text-primary-foreground transition-all">
              Home
            </button>
