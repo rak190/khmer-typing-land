@@ -1,4 +1,5 @@
 import { Switch, Route } from "wouter";
+import { Landing } from "@/pages/Landing";
 import { Home } from "@/pages/Home";
 import { StageSelect } from "@/pages/StageSelect";
 import { Play } from "@/pages/Play";
@@ -8,7 +9,8 @@ import NotFound from "@/pages/not-found";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/" component={Landing} />
+      <Route path="/home" component={Home} />
       <Route path="/world/:id" component={StageSelect} />
       <Route path="/play/:wid/:sid" component={Play} />
       <Route path="/badges" component={Badges} />
