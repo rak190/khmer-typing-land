@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Keyboard, Play, Trophy, Shield, Rocket } from 'lucide-react';
@@ -8,6 +8,11 @@ import "@fontsource/kantumruy-pro/400.css";
 import "@fontsource/kantumruy-pro/700.css";
 
 export const Landing: React.FC = () => {
+  useEffect(() => {
+    // Attempt to start background music automatically
+    sounds.startBackgroundMusic();
+  }, []);
+
   const handleStart = () => {
     sounds.playClick();
   };
