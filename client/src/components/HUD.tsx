@@ -88,8 +88,8 @@ export const HUD: React.FC = () => {
         </div>
 
         <Link href="/home">
-           <button className="px-4 py-1.5 rounded-full bg-primary hover:opacity-90 text-sm font-bold text-primary-foreground transition-all">
-             Home
+           <button className="px-4 py-1.5 rounded-full bg-primary hover:opacity-90 text-sm font-bold text-primary-foreground transition-all font-body">
+             ទំព័រដើម
            </button>
         </Link>
       </div>

@@ -122,15 +122,15 @@ export function buildWorlds(): World[] {
   );
 
   const worlds: World[] = [
-    { id:"w1", name:"World 1: Basics",    unlockStars: unlock[0], stages: w1Stages },
-    { id:"w2", name:"World 2: Consonants",unlockStars: unlock[1], stages: w2Stages },
-    { id:"w3", name:"World 3: Vowels",    unlockStars: unlock[2], stages: w3Stages },
-    { id:"w4", name:"World 4: Marks",     unlockStars: unlock[3], stages: w4Stages },
-    { id:"w5", name:"World 5: Combos",    unlockStars: unlock[4], stages: w5Stages },
-    { id:"w6", name:"World 6: Mixed",     unlockStars: unlock[5], stages: w6Stages },
-    { id:"w7", name:"World 7: Rhythm",    unlockStars: unlock[6], stages: w7Stages },
-    { id:"w8", name:"World 8: Numbers",   unlockStars: unlock[7], stages: w8Stages },
-    { id:"w9", name:"World 9: Mastery",   unlockStars: unlock[8], stages: w9Stages },
+    { id:"w1", name:"ពិភពទី ១: មូលដ្ឋាន",    unlockStars: unlock[0], stages: w1Stages },
+    { id:"w2", name:"ពិភពទី ២: ព្យញ្ជនៈ",unlockStars: unlock[1], stages: w2Stages },
+    { id:"w3", name:"ពិភពទី ៣: ស្រៈ",    unlockStars: unlock[2], stages: w3Stages },
+    { id:"w4", name:"ពិភពទី ៤: សញ្ញា",     unlockStars: unlock[3], stages: w4Stages },
+    { id:"w5", name:"ពិភពទី ៥: ការផ្សំ",    unlockStars: unlock[4], stages: w5Stages },
+    { id:"w6", name:"ពិភពទី ៦: ចម្រុះ",     unlockStars: unlock[5], stages: w6Stages },
+    { id:"w7", name:"ពិភពទី ៧: ចង្វាក់",    unlockStars: unlock[6], stages: w7Stages },
+    { id:"w8", name:"ពិភពទី ៨: លេខ",   unlockStars: unlock[7], stages: w8Stages },
+    { id:"w9", name:"ពិភពទី ៩: ជំនាញខ្ពស់",   unlockStars: unlock[8], stages: w9Stages },
   ];
 
   return worlds;

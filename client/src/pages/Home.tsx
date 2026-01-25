@@ -25,7 +25,7 @@ export const Home: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
               <h1 className="text-4xl font-black text-foreground mb-2 font-display">
-                <span className="text-primary">Chapter {Math.min(9, Math.floor(totalStars / 12) + 1)}:</span> {STORY_CHAPTERS[Math.min(8, Math.floor(totalStars / 12))]?.title}
+                <span className="text-primary">វគ្គទី {Math.min(9, Math.floor(totalStars / 12) + 1)}:</span> {STORY_CHAPTERS[Math.min(8, Math.floor(totalStars / 12))]?.title}
               </h1>
               <p className="text-muted-foreground max-w-2xl text-lg italic">
                 "{STORY_CHAPTERS[Math.min(8, Math.floor(totalStars / 12))]?.intro}"
@@ -36,7 +36,7 @@ export const Home: React.FC = () => {
               <div className="text-6xl animate-bounce">
                 {STORY_CHAPTERS[Math.min(8, Math.floor(totalStars / 12))]?.monsterEmoji}
               </div>
-              <div className="text-xs font-bold text-red-400 uppercase tracking-widest">Target: {STORY_CHAPTERS[Math.min(8, Math.floor(totalStars / 12))]?.monsterName}</div>
+              <div className="text-xs font-bold text-red-400 uppercase tracking-widest">គោលដៅ: {STORY_CHAPTERS[Math.min(8, Math.floor(totalStars / 12))]?.monsterName}</div>
             </div>
           </div>
           
@@ -44,22 +44,22 @@ export const Home: React.FC = () => {
              <input 
                value={profile.name}
                onChange={(e) => setProfileName(e.target.value)}
-               className="bg-secondary border border-border rounded-xl px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 w-64"
-               placeholder="Scribe Name..."
+               className="bg-secondary border border-border rounded-xl px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 w-64 font-body"
+               placeholder="ឈ្មោះអ្នកសរសេរ..."
              />
              <div className="flex gap-2 ml-auto">
               <Link href="/badges">
-                <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-slate-300 text-slate-700 hover:bg-white hover:text-primary transition-all shadow-sm">
-                  <span className="font-bold">Collection</span>
+                <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-slate-300 text-slate-700 hover:bg-white hover:text-primary transition-all shadow-sm font-body">
+                  <span className="font-bold">ការប្រមូល</span>
                   <span className="bg-slate-200 px-2 py-0.5 rounded text-xs font-mono">
                     {badgesOwned.length}
                   </span>
                 </Button>
               </Link>
-              <Button variant="ghost" size="sm" className="text-xs text-red-500 font-bold hover:bg-red-50 hover:text-red-600 transition-colors" onClick={() => {
-                if(confirm("Erase your legend?")) resetProgress();
+              <Button variant="ghost" size="sm" className="text-xs text-red-500 font-bold hover:bg-red-50 hover:text-red-600 transition-colors font-body" onClick={() => {
+                if(confirm("លុបការរីកចម្រើនរបស់អ្នក?")) resetProgress();
               }}>
-                Reset Journey
+                ចាប់ផ្តើមឡើងវិញ
               </Button>
              </div>
           </div>
@@ -86,28 +86,28 @@ export const Home: React.FC = () => {
                   </div>
                   {!isUnlocked && (
                     <div className="px-3 py-1 rounded-full bg-secondary border border-border text-xs font-mono text-muted-foreground">
-                      Need {world.unlockStars} ⭐
+                      ត្រូវការ {world.unlockStars} ⭐
                     </div>
                   )}
                 </div>
                 
-                <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
+                <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors font-display">
                   {world.name}
                 </h3>
-                <p className="text-sm text-muted-foreground mb-6">
-                  {world.stages.length} Stages • Focus on basic consonants
+                <p className="text-sm text-muted-foreground mb-6 font-body">
+                  {world.stages.length} វគ្គ • ផ្តោតលើព្យញ្ជនៈមូលដ្ឋាន
                 </p>
 
                 <Link href={isUnlocked ? `/world/${world.id}` : "#"}>
                   <Button 
-                    className="w-full gap-2" 
+                    className="w-full gap-2 font-body" 
                     variant={isUnlocked ? "secondary" : "ghost"}
                     disabled={!isUnlocked}
                   >
                     {isUnlocked ? (
-                      <>Enter World <Play size={14} /></>
+                      <>ចូលទៅកាន់ពិភព <Play size={14} /></>
                     ) : (
-                      <>Locked <Lock size={14} /></>
+                      <>ជាប់សោ <Lock size={14} /></>
                     )}
                   </Button>
                 </Link>
