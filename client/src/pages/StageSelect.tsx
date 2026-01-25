@@ -26,7 +26,7 @@ export const StageSelect: React.FC = () => {
 
       <div className="container mx-auto px-4 mt-8 max-w-5xl">
         <div className="flex flex-col md:flex-row md:items-center gap-6 mb-12 glass-panel p-8 rounded-3xl border-primary/20">
-          <Link href="/">
+          <Link href="/home">
             <Button variant="secondary" size="icon" className="rounded-full shrink-0">
               <ArrowLeft size={18} />
             </Button>
