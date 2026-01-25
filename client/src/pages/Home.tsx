@@ -61,6 +61,18 @@ export const Home: React.FC = () => {
               }}>
                 ចាប់ផ្តើមឡើងវិញ
               </Button>
+              <Button variant="ghost" size="sm" className="text-xs text-amber-500 font-bold hover:bg-amber-50 hover:text-amber-600 transition-colors font-body" onClick={() => {
+                if(confirm("បើកគ្រប់វគ្គទាំងអស់? (Easy Mode)")) {
+                  const { recordStageResult } = useGameStore.getState();
+                  WORLDS.forEach(w => {
+                    w.stages.forEach(s => {
+                      recordStageResult(w.id, s.id, 3);
+                    });
+                  });
+                }
+              }}>
+                បើកគ្រប់វគ្គ (Easy Mode)
+              </Button>
              </div>
           </div>
         </div>
