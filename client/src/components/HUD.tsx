@@ -87,7 +87,7 @@ export const HUD: React.FC = () => {
           <span className="text-sm font-black text-yellow-700 dark:text-yellow-500">{stars}</span>
         </div>
 
-        <Link href="/home">
+        <Link href="/">
            <button className="px-4 py-1.5 rounded-full bg-primary hover:opacity-90 text-sm font-bold text-primary-foreground transition-all font-body">
              ទំព័រដើម
            </button>
