@@ -19,15 +19,15 @@ export const Badges: React.FC = () => {
 
       <div className="container mx-auto px-4 mt-8 max-w-5xl">
         <div className="flex items-center gap-4 mb-8">
-          <Link href="/">
+          <Link href="/home">
             <Button variant="secondary" size="icon" className="rounded-full">
               <ArrowLeft size={18} />
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-black text-foreground">Collection</h1>
-            <p className="text-muted-foreground font-medium">
-              Unlocked: <span className="text-primary font-bold">{badgesOwned.length}</span> / {ALL_BADGES.length}
+            <h1 className="text-3xl font-black text-foreground">ការប្រមូល</h1>
+            <p className="text-muted-foreground font-medium font-body">
+              បានបើកសោ: <span className="text-primary font-bold">{badgesOwned.length}</span> / {ALL_BADGES.length}
             </p>
           </div>
         </div>
@@ -59,13 +59,13 @@ export const Badges: React.FC = () => {
                     {badge.name}
                   </div>
                   {!isOwned && (
-                    <div className="text-[10px] text-muted-foreground flex items-center justify-center gap-1 mt-1 font-medium">
-                      <Lock size={8} /> Needs {badge.unlock.value} ⭐
+                    <div className="text-[10px] text-muted-foreground flex items-center justify-center gap-1 mt-1 font-medium font-body">
+                      <Lock size={8} /> ត្រូវការ {badge.unlock.value} ⭐
                     </div>
                   )}
                   {isSelected && (
-                    <div className="text-[10px] text-primary font-black uppercase tracking-widest mt-1">
-                      Equipped
+                    <div className="text-[10px] text-primary font-black uppercase tracking-widest mt-1 font-body">
+                      កំពុងប្រើ
                     </div>
                   )}
                 </div>
