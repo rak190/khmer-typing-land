@@ -43,26 +43,26 @@ export const Landing: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FDFCF0] flex flex-col items-center justify-center relative overflow-hidden font-body text-[#3E2723]">
       {/* Playful Floating Elements */}
-      <div className="absolute top-10 left-10 text-4xl animate-bounce-slow opacity-20">⌨️</div>
-      <div className="absolute top-20 right-20 text-4xl animate-bounce-slow opacity-20 delay-700">⭐</div>
-      <div className="absolute bottom-10 left-20 text-4xl animate-bounce-slow opacity-20 delay-1000">🎮</div>
-      <div className="absolute bottom-20 right-10 text-4xl animate-bounce-slow opacity-20 delay-300">🏆</div>
+      <div className="absolute top-10 left-10 text-5xl animate-bounce-slow opacity-30">⌨️</div>
+      <div className="absolute top-20 right-20 text-5xl animate-bounce-slow opacity-30 delay-700">⭐</div>
+      <div className="absolute bottom-10 left-20 text-5xl animate-bounce-slow opacity-30 delay-1000">🎮</div>
+      <div className="absolute bottom-20 right-10 text-5xl animate-bounce-slow opacity-30 delay-300">🏆</div>
+      <div className="absolute top-1/4 left-[15%] text-6xl animate-pulse opacity-20 delay-500">✨</div>
+      <div className="absolute top-1/3 right-[15%] text-6xl animate-pulse opacity-20 delay-1000">🎨</div>
+      <div className="absolute bottom-1/4 left-[20%] text-6xl animate-pulse opacity-20 delay-200">🚀</div>
+      <div className="absolute top-1/2 left-8 text-5xl animate-bounce-slow opacity-15">🎈</div>
+      <div className="absolute top-1/2 right-8 text-5xl animate-bounce-slow opacity-15 delay-1000">🍀</div>
+      <div className="absolute top-[10%] left-1/2 -translate-x-1/2 text-6xl animate-pulse opacity-10">☁️</div>
 
       {/* Texture: Krama / Sandstone */}
       <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cloud-fun.png')]" />
       
       {/* Angkor Watermark */}
-      <div className="absolute inset-0 opacity-[0.08] pointer-events-none flex items-center justify-center">
-        <div className="w-[85%] h-[85%] bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Angkor_Wat_silhouette.svg/1024px-Angkor_Wat_silhouette.svg.png')] bg-no-repeat bg-center bg-contain" />
+      <div className="absolute inset-0 opacity-[0.1] pointer-events-none flex items-center justify-center">
+        <div className="w-[75%] h-[75%] bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Angkor_Wat_silhouette.svg/1024px-Angkor_Wat_silhouette.svg.png')] bg-no-repeat bg-center bg-contain" />
       </div>
 
-      {/* Kbach Corner Ornaments */}
-      <div className="absolute top-8 left-8 w-32 h-32 border-t-8 border-l-8 border-[#D4AF37]/30 rounded-tl-[3rem] opacity-40" />
-      <div className="absolute top-8 right-8 w-32 h-32 border-t-8 border-r-8 border-[#D4AF37]/30 rounded-tr-[3rem] opacity-40" />
-      <div className="absolute bottom-8 left-8 w-32 h-32 border-b-8 border-l-8 border-[#D4AF37]/30 rounded-bl-[3rem] opacity-40" />
-      <div className="absolute bottom-8 right-8 w-32 h-32 border-b-8 border-r-8 border-[#D4AF37]/30 rounded-br-[3rem] opacity-40" />
-
-      <div className="container mx-auto px-4 text-center z-10 max-w-5xl">
+      <div className="container mx-auto px-4 text-center z-10 max-w-[1400px] min-h-screen flex flex-col justify-center py-12">
         {!showPlayerSelect ? (
           <>
             <div className="mb-8 flex justify-center">
