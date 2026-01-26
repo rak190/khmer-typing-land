@@ -22,25 +22,34 @@ body {
 }
 
 .certificate-container {
-    padding: 20px;
+    width: 297mm;
+    height: 210mm;
+    background: white url('cert-bg.png') no-repeat center center;
+    background-size: cover;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .certificate-card {
-    width: 1100px;
-    height: 770px;
-    background: var(--sandstone);
     position: relative;
-    padding: 60px;
+    z-index: 2;
+    text-align: center;
+    width: 85%;
+    height: 85%;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 40px;
+    border-radius: 40px;
+    backdrop-filter: blur(10px);
+    border: 3px solid var(--gold);
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-    border-radius: 40px;
-    overflow: hidden;
-    background-image: 
-        radial-gradient(circle at 2px 2px, rgba(212, 175, 55, 0.05) 1px, transparent 0);
-    background-size: 32px 32px;
+    justify-content: space-between;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
 }
 
 .border-overlay {
