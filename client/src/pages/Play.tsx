@@ -68,7 +68,7 @@ export const Play: React.FC = () => {
   // Difficulty tuning
   const stageNo = parseInt(stageId?.replace("s","") || "1");
   const platformCount = 10 + stageNo * 2;
-  const runGoal = 16 + stageNo * 2;
+  const runGoal = 50 + stageNo * 5; // Increased from 16
   const killsGoal = 10 + stageNo * 2;
 
   const handlePhaseComplete = (phaseStats: { hits: number, miss: number }) => {

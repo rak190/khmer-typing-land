@@ -77,10 +77,21 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
       // Update DOM
       if (heroRef.current) {
         heroRef.current.style.transform = `translateY(${-stateRef.current.y}px)`;
-        // Visual speed tilt
+        // Visual speed tilt and vibration
         const tilt = Math.min(stateRef.current.speed * 10, 25);
-        heroRef.current.style.transform += ` rotate(${tilt}deg)`;
+        const vibrate = stateRef.current.speed > 1.5 ? (Math.random() - 0.5) * 2 : 0;
+        heroRef.current.style.transform += ` rotate(${tilt}deg) translateX(${vibrate}px)`;
       }
+
+      // Parallax Background elements
+      const bgElements = document.querySelectorAll('.parallax-bg');
+      bgElements.forEach((el: any) => {
+        const speed = parseFloat(el.dataset.speed || "1");
+        const currentX = parseFloat(el.dataset.x || "0");
+        const newX = (currentX - (stateRef.current.speed * speed)) % 1000;
+        el.dataset.x = newX.toString();
+        el.style.transform = `translateX(${newX}px)`;
+      });
 
       // Progress based on speed
       if (stateRef.current.frames % Math.max(1, Math.floor(12 / stateRef.current.speed)) === 0) {
@@ -169,7 +180,15 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
         )}
 
         {/* Game World */}
-        <div className="absolute inset-0 flex items-end pb-8 px-16">
+        <div className="absolute inset-0 flex items-end pb-8 px-16 overflow-hidden">
+          {/* Background Mountains (Parallax) */}
+          <div 
+            className="parallax-bg absolute bottom-12 left-0 w-[2000px] h-32 opacity-10 pointer-events-none" 
+            data-speed="0.2"
+            data-x="0"
+            style={{ backgroundImage: 'radial-gradient(circle at 50% 100%, #1A237E 0%, transparent 70%)', backgroundSize: '400px 200px', backgroundRepeat: 'repeat-x' }}
+          />
+
           {/* Ground with moving texture */}
           <div className="absolute bottom-0 left-0 w-full h-8 bg-white/5 border-t border-white/10 overflow-hidden">
              <div 
