@@ -4,7 +4,7 @@ import { buildWorlds } from '@/lib/curriculum';
 import { cn } from '@/lib/utils';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { Lock, Unlock, Play } from 'lucide-react';
+import { Lock, Unlock, Play, GraduationCap } from 'lucide-react';
 import { HUD } from '@/components/HUD';
 
 import { STORY_CHAPTERS } from '@/lib/story';
@@ -48,6 +48,12 @@ export const Home: React.FC = () => {
                placeholder="ឈ្មោះអ្នកសរសេរ..."
              />
              <div className="flex gap-2 ml-auto">
+              <Link href="/library">
+                <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-blue-300 text-blue-700 hover:bg-white hover:text-blue-800 transition-all shadow-sm font-body">
+                  <GraduationCap size={16} />
+                  <span className="font-bold">បណ្ណាល័យ</span>
+                </Button>
+              </Link>
               <Link href="/badges">
                 <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-slate-300 text-slate-700 hover:bg-white hover:text-primary transition-all shadow-sm font-body">
                   <span className="font-bold">ការប្រមូល</span>

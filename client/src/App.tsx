@@ -4,6 +4,7 @@ import { Home } from "@/pages/Home";
 import { StageSelect } from "@/pages/StageSelect";
 import { Play } from "@/pages/Play";
 import { Badges } from "@/pages/Badges";
+import { Library } from "@/pages/Library";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -14,6 +15,7 @@ function Router() {
       <Route path="/world/:id" component={StageSelect} />
       <Route path="/play/:wid/:sid" component={Play} />
       <Route path="/badges" component={Badges} />
+      <Route path="/library" component={Library} />
       <Route component={NotFound} />
     </Switch>
   );
