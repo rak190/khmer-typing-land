@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Completion Certificate - Khmer Typing Land</title>
+    <link rel="stylesheet" href="certificate.css">
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="certificate-container">
+        <div class="certificate-card">
+            <!-- Decorative Border -->
+            <div class="border-overlay"></div>
+            
+            <!-- Mascot Corner -->
+            <img id="certMascotImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=Lucky&backgroundColor=b6e3f4" alt="Mascot" class="mascot-sticker">
+
+            <header>
+                <h1 class="main-title">លិខិតបញ្ជាក់ការបញ្ចប់វគ្គ</h1>
+                <h2 class="sub-title">CERTIFICATE OF COMPLETION</h2>
+                <h3 class="game-title">Khmer Typing Land</h3>
+            </header>
+
+            <main>
+                <p class="certifies-text">លិខិតនេះបញ្ជាក់ថា / This certifies that</p>
+                <h2 id="certName" class="user-name">ឈ្មោះអ្នកលេង</h2>
+                
+                <div class="divider">
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                </div>
+
+                <p class="achievement-text">
+                    បានបញ្ចប់ដោយជោគជ័យនូវ <span class="highlight">ពិភពទី <span id="certWorldNum">1</span></span><br>
+                    Has successfully completed <span id="certWorld" class="highlight">World Name</span>
+                </p>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-label">ល្បឿន (WPM)</span>
+                        <span id="certStatsWpm" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">ភាពត្រឹមត្រូវ (ACC)</span>
+                        <span id="certStatsAcc" class="stat-value">0%</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">ពិន្ទុសរុប (SCORE)</span>
+                        <span id="certStatsScore" class="stat-value">0</span>
+                    </div>
+                </div>
+
+                <div class="badge-container">
+                    <div class="badge-wrapper">
+                        <img id="certBadgeImg" src="https://api.dicebear.com/7.x/shapes/svg?seed=badge&flip=true" alt="World Badge">
+                        <div class="badge-shine"></div>
+                    </div>
+                </div>
+            </main>
+
+            <footer>
+                <div class="footer-info">
+                    <div class="info-item">
+                        <span class="label">កាលបរិច្ឆេទ / Date:</span>
+                        <span id="certDate">--/--/----</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">លេខសម្គាល់ / ID:</span>
+                        <span id="certId">KTL-000000</span>
+                    </div>
+                </div>
+                <div class="qr-placeholder">
+                    <div class="qr-code"></div>
+                    <span>VERIFY</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
