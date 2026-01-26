@@ -63,7 +63,7 @@ class SoundManager {
 
     if (!this.bgAudio) {
       this.bgAudio = new Audio(
-        "/attached_assets/Sakura-Girl-Daisy-chosic.com__1768701930800.mp3",
+        "/game-bg.mp3",
       );
       this.bgAudio.loop = true;
       this.bgAudio.volume = 0.3;
