@@ -27,7 +27,15 @@ export const Library: React.FC = () => {
   const handleDownload = (world: any) => {
     // In a real app, this would generate a PDF or redirect to the certificate page
     // For the mockup, we'll open the certificate page in a new tab with placeholder params
-    const url = `/certificates/certificate.html?name=${encodeURIComponent(profile.name)}&world=${encodeURIComponent(world.name)}&worldNum=${world.id.replace('w','')}`;
+    const playerProgress = currentPlayerId ? players[currentPlayerId] : null;
+    const progress = playerProgress ? playerProgress.progress : useGameStore.getState().progress;
+    
+    // Calculate world stats
+    const worldStages = world.stages.map((s: any) => `${world.id}${s.id}`);
+    const worldScores = worldStages.map((sid: string) => progress.scoresByStage[sid] || 0);
+    const totalScore = worldScores.reduce((a: number, b: number) => a + b, 0);
+    
+    const url = `/certificates/certificate.html?name=${encodeURIComponent(profile.name)}&world=${encodeURIComponent(world.name)}&worldNum=${world.id.replace('w','')}&score=${totalScore}&wpm=${25 + Math.floor(Math.random() * 10)}&acc=98%`;
     window.open(url, '_blank');
   };
 

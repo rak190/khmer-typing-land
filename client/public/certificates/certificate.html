@@ -25,13 +25,33 @@
 
             <main>
                 <p class="certifies-text">លិខិតនេះបញ្ជាក់ថា / This certifies that</p>
-                <h2 id="certName" class="user-name">ឈ្មោះសិស្ស</h2>
+                <h2 id="certName" class="user-name">ឈ្មោះអ្នកប្រើប្រាស់</h2>
                 
                 <div class="divider">
                     <span class="star">⭐</span>
                     <span class="star">⭐</span>
                     <span class="star">⭐</span>
                 </div>
+
+                <script>
+                    // Extract parameters from URL
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const name = urlParams.get('name');
+                    const world = urlParams.get('world');
+                    const worldNum = urlParams.get('worldNum');
+                    const wpm = urlParams.get('wpm') || '0';
+                    const acc = urlParams.get('acc') || '0%';
+                    const score = urlParams.get('score') || '0';
+                    const date = urlParams.get('date') || new Date().toLocaleDateString('km-KH');
+
+                    if (name) document.getElementById('certName').textContent = name;
+                    if (world) document.getElementById('certWorld').textContent = world;
+                    if (worldNum) document.getElementById('certWorldNum').textContent = worldNum;
+                    if (wpm) document.getElementById('certStatsWpm').textContent = wpm;
+                    if (acc) document.getElementById('certStatsAcc').textContent = acc;
+                    if (score) document.getElementById('certStatsScore').textContent = score;
+                    if (date) document.getElementById('certDate').textContent = date;
+                </script>
 
                 <p class="achievement-text">
                     បានបញ្ចប់ដោយជោគជ័យនូវ <span class="highlight">ពិភពទី <span id="certWorldNum">1</span></span><br>

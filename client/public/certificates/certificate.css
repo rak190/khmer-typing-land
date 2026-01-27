@@ -116,10 +116,11 @@ header {
     padding-bottom: 10px;
     border-bottom: 3px double var(--gold);
     display: inline-block;
+    min-width: 300px;
 }
 
 .divider {
-    margin: 20px 0;
+    margin: 10px 0 20px 0;
 }
 
 .star {
