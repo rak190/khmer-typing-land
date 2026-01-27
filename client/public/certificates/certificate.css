@@ -110,13 +110,13 @@ header {
 
 .user-name {
     font-family: 'Moul', cursive;
-    font-size: 56px;
+    font-size: 82px;
     color: var(--primary);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 3px double var(--gold);
+    margin: 30px 0;
+    padding-bottom: 5px;
+    border-bottom: 5px double var(--gold);
     display: inline-block;
-    min-width: 300px;
+    min-width: 450px;
 }
 
 .divider {

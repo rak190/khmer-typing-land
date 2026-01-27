@@ -5,6 +5,7 @@ import { buildWorlds } from './curriculum';
 
 interface Progress {
   starsByStage: Record<string, number>; // "w1s1" -> 0..3
+  scoresByStage: Record<string, number>; // "w1s1" -> score
 }
 
 interface Player {
@@ -40,7 +41,7 @@ interface GameState {
 
 const DEFAULT_STATE = {
   profile: { name: "Player" },
-  progress: { starsByStage: {} },
+  progress: { starsByStage: {}, scoresByStage: {} },
   badgesOwned: ["B001"],
   selectedBadgeId: "B001",
   players: {},
@@ -68,18 +69,26 @@ export const useGameStore = create<GameState>()(
         return newState;
       }),
 
-      recordStageResult: (worldId, stageId, stars) => {
+      recordStageResult: (worldId: string, stageId: string, stars: number): { newBadges: string[] } => {
         const state = get();
         const stageKey = `${worldId}${stageId}`;
         const prevStars = state.progress.starsByStage[stageKey] || 0;
         
+        // Always update score if it's higher or first time
+        const currentScore = stars * 1000; // Mock score calculation
+        const scores = state.progress.scoresByStage || {};
+        const newScoresByStage: Record<string, number> = { 
+          ...scores, 
+          [stageKey]: Math.max(scores[stageKey] || 0, currentScore) 
+        };
+
         if (stars > prevStars) {
-          const newStarsByStage = { ...state.progress.starsByStage, [stageKey]: stars };
-          const totalStars = Object.values(newStarsByStage).reduce((a, b) => a + b, 0);
+          const newStarsByStage: Record<string, number> = { ...state.progress.starsByStage, [stageKey]: stars };
+          const totalStars = Object.values(newStarsByStage).reduce((a: number, b: number) => a + b, 0);
           const newBadges = unlockBadgesByStars(ALL_BADGES, state.badgesOwned, totalStars);
           
           const newState = {
-            progress: { ...state.progress, starsByStage: newStarsByStage },
+            progress: { ...state.progress, starsByStage: newStarsByStage, scoresByStage: newScoresByStage },
             badgesOwned: [...state.badgesOwned, ...newBadges],
             selectedBadgeId: newBadges.length > 0 ? newBadges[newBadges.length - 1] : state.selectedBadgeId
           };
@@ -100,6 +109,23 @@ export const useGameStore = create<GameState>()(
           return { newBadges };
         }
         
+        // Update scores even if stars didn't increase
+        const updatedProgress = { ...state.progress, scoresByStage: newScoresByStage };
+
+        if (state.currentPlayerId) {
+          const updatedPlayers = { ...state.players };
+          updatedPlayers[state.currentPlayerId] = {
+            ...updatedPlayers[state.currentPlayerId],
+            progress: updatedProgress,
+            badgesOwned: state.badgesOwned,
+            selectedBadgeId: state.selectedBadgeId,
+            name: state.profile.name
+          };
+          set({ progress: updatedProgress, players: updatedPlayers });
+        } else {
+          set({ progress: updatedProgress });
+        }
+
         return { newBadges: [] };
       },
 
@@ -126,7 +152,7 @@ export const useGameStore = create<GameState>()(
         if (state.players[name]) return state;
         const newPlayer: Player = {
           name,
-          progress: { starsByStage: {} },
+          progress: { starsByStage: {}, scoresByStage: {} },
           badgesOwned: ["B001"],
           selectedBadgeId: "B001"
         };
