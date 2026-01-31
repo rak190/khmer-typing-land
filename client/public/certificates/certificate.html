@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>World Completion Certificate - Khmer Typing Land</title>
     <link rel="stylesheet" href="certificate.css">
-    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;600;700&family=Noto+Sans+Khmer:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 <body>
     <div class="certificate-container" id="certificate">
@@ -16,12 +17,15 @@
             <div class="border-overlay"></div>
             
             <!-- Mascot Corner -->
-            <img id="certMascotImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=Lucky&backgroundColor=b6e3f4" alt="Mascot" class="mascot-sticker">
+            <div class="robot-badge" aria-hidden="true">
+                <img id="certMascotImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=Lucky&backgroundColor=b6e3f4" alt="Mascot" class="mascot-sticker">
+            </div>
 
             <header>
                 <h1 class="main-title">លិខិតបញ្ជាក់ការបញ្ចប់វគ្គ</h1>
                 <h2 class="sub-title">CERTIFICATE OF COMPLETION</h2>
                 <h3 class="game-title">Khmer Typing Land</h3>
+                <div class="watermark" aria-hidden="true"></div>
             </header>
 
             <main>
@@ -57,10 +61,53 @@
                     if (name) document.getElementById('certName').textContent = name;
                     if (world) document.getElementById('certWorld').textContent = world;
                     if (worldNum) document.getElementById('certWorldNum').textContent = worldNum;
-                    document.getElementById('certStatsWpm').textContent = wpm;
-                    document.getElementById('certStatsAcc').textContent = acc;
-                    document.getElementById('certStatsScore').textContent = score;
+                    const wpmEl = document.getElementById('certStatsWpm');
+                    const accEl = document.getElementById('certStatsAcc');
+                    const scoreEl = document.getElementById('certStatsScore');
+
+                    wpmEl.textContent = wpm;
+                    accEl.textContent = acc;
+                    scoreEl.textContent = score;
+
+                    const wpmV = Number(wpm);
+                    const accV = Number(String(acc).replace('%',''));
+                    const scoreV = Number(score);
+
+                    function setStatTone(el, v, good, mid) {
+                        el.classList.remove('tone-good', 'tone-mid', 'tone-low');
+                        if (!Number.isFinite(v)) return;
+                        if (v >= good) el.classList.add('tone-good');
+                        else if (v >= mid) el.classList.add('tone-mid');
+                        else el.classList.add('tone-low');
+                    }
+
+                    setStatTone(wpmEl, wpmV, 35, 20);
+                    setStatTone(accEl, accV, 95, 85);
+                    setStatTone(scoreEl, scoreV, 9000, 4500);
+
                     if (date) document.getElementById('certDate').textContent = date;
+
+                    // QR code (links to Khmer Typing Land)
+                    (async () => {
+                        try {
+                            const qrCanvas = document.getElementById('certQr');
+                            if (!qrCanvas) return;
+                            const QRCode = window.QRCode;
+                            if (!QRCode) return;
+
+                            const targetUrl = urlParams.get('qr') || 'https://khmertypingland.example';
+                            await QRCode.toCanvas(qrCanvas, targetUrl, {
+                                margin: 1,
+                                width: 120,
+                                color: {
+                                    dark: '#1A237E',
+                                    light: '#FFFFFF'
+                                }
+                            });
+                        } catch (e) {
+                            // ignore
+                        }
+                    })();
                 </script>
 
                 <p class="achievement-text">
@@ -103,7 +150,7 @@
                     </div>
                 </div>
                 <div class="qr-placeholder">
-                    <div class="qr-code"></div>
+                    <canvas id="certQr" class="qr-code" width="120" height="120" aria-label="QR"></canvas>
                     <span>VERIFY</span>
                 </div>
             </footer>
@@ -115,22 +162,29 @@
     </div>
 
     <script>
-        function downloadCertificate() {
+        async function downloadCertificate() {
             const cert = document.getElementById('certificate');
             const btn = document.querySelector('.download-btn');
             btn.style.display = 'none';
 
-            html2canvas(cert, {
-                useCORS: true,
-                scale: 2,
-                backgroundColor: null
-            }).then(canvas => {
+            const qrEl = document.getElementById('certQr');
+            const prevQrDisplay = qrEl ? qrEl.style.display : '';
+            if (qrEl) qrEl.style.display = 'block';
+
+            try {
+                const canvas = await html2canvas(cert, {
+                    useCORS: true,
+                    scale: 2,
+                    backgroundColor: null
+                });
                 const link = document.createElement('a');
                 link.download = `Khmer-Typing-Certificate-${document.getElementById('certName').textContent}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
+            } finally {
+                if (qrEl) qrEl.style.display = prevQrDisplay;
                 btn.style.display = 'block';
-            });
+            }
         }
     </script>
 </body>
