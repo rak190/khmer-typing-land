@@ -6,6 +6,8 @@ import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/lib/store";
 import { buildWorlds } from "@/lib/curriculum";
+import { sounds } from "@/lib/sounds";
+import { Celebration, StreakFlame } from "@/components/Celebration";
 
 const WORLDS = buildWorlds();
 
@@ -37,6 +39,7 @@ export const AccuracyMode: React.FC = () => {
   const [hits, setHits] = useState(0);
   const [miss, setMiss] = useState(0);
   const [perfectStreak, setPerfectStreak] = useState(0);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -78,6 +81,15 @@ export const AccuracyMode: React.FC = () => {
   useEffect(() => {
     if (phase === "running" && timeLeft === 0) {
       setPhase("done");
+      setShowCelebration(true);
+      
+      const total = hits + miss;
+      const acc = total > 0 ? (hits / total) * 100 : 0;
+      if (acc >= 95) {
+        sounds.playVictory();
+      } else {
+        sounds.playLevelUp();
+      }
     }
   }, [phase, timeLeft]);
 
@@ -115,6 +127,7 @@ export const AccuracyMode: React.FC = () => {
     setMiss(0);
     setPerfectStreak(0);
     setTarget("");
+    setShowCelebration(false);
     requestAnimationFrame(() => inputRef.current?.focus());
   };
 
@@ -128,11 +141,19 @@ export const AccuracyMode: React.FC = () => {
 
     if (lastChar === target) {
       setHits((h) => h + 1);
-      setPerfectStreak((s) => s + 1);
+      setPerfectStreak((s) => {
+        const newStreak = s + 1;
+        sounds.playStreak(newStreak);
+        return newStreak;
+      });
       const next = pool[Math.floor(Math.random() * pool.length)] || "ក";
       setTarget(next);
     } else {
-      // Harsh penalty: any mistake breaks the run.
+      if (perfectStreak >= 3) {
+        sounds.playComboBreak();
+      } else {
+        sounds.playWrong();
+      }
       setMiss((m) => m + 1);
       setPerfectStreak(0);
     }
@@ -146,6 +167,14 @@ export const AccuracyMode: React.FC = () => {
   return (
     <div className="min-h-screen bg-background pb-20 pt-20">
       <HUD />
+      
+      {showCelebration && phase === "done" && (
+        <Celebration 
+          type={miss === 0 ? "victory" : "stars"} 
+          intensity={miss === 0 ? "high" : accuracy >= 90 ? "medium" : "low"}
+          onComplete={() => setShowCelebration(false)}
+        />
+      )}
 
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="flex items-center gap-4 mb-8">
@@ -178,8 +207,9 @@ export const AccuracyMode: React.FC = () => {
                 <div className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                   <ShieldCheck size={14} /> Perfect
                 </div>
-                <div className="text-4xl font-mono font-black text-foreground mt-2" data-testid="text-perfect-streak">
+                <div className="text-4xl font-mono font-black text-foreground mt-2 flex items-center gap-2" data-testid="text-perfect-streak">
                   {perfectStreak}
+                  <StreakFlame streak={perfectStreak} />
                 </div>
               </div>
             </div>

@@ -6,6 +6,8 @@ import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/lib/store";
 import { buildWorlds } from "@/lib/curriculum";
+import { sounds } from "@/lib/sounds";
+import { Celebration } from "@/components/Celebration";
 
 const WORLDS = buildWorlds();
 
@@ -40,6 +42,8 @@ export const TimedTest: React.FC = () => {
 
   const [hits, setHits] = useState(0);
   const [miss, setMiss] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -94,6 +98,13 @@ export const TimedTest: React.FC = () => {
     const stars = accuracy >= 95 ? 3 : accuracy >= 85 ? 2 : accuracy >= 70 ? 1 : 0;
 
     recordStageResult("tt", `s${duration}`, stars, { wpm, accuracy });
+    
+    setShowCelebration(true);
+    if (stars >= 2) {
+      sounds.playVictory();
+    } else {
+      sounds.playLevelUp();
+    }
   }, [phase, hits, miss, duration, recordStageResult]);
 
   const start = () => {
@@ -111,7 +122,9 @@ export const TimedTest: React.FC = () => {
     setTyped("");
     setHits(0);
     setMiss(0);
+    setStreak(0);
     setTarget("");
+    setShowCelebration(false);
     requestAnimationFrame(() => inputRef.current?.focus());
   };
 
@@ -127,11 +140,22 @@ export const TimedTest: React.FC = () => {
 
     if (lastChar === target) {
       setHits((h) => h + 1);
+      setStreak((s) => {
+        const newStreak = s + 1;
+        sounds.playStreak(newStreak);
+        return newStreak;
+      });
       setLastMistake(null);
       const next = pool[Math.floor(Math.random() * pool.length)] || "ក";
       setTarget(next);
     } else {
       setMiss((m) => m + 1);
+      if (streak >= 3) {
+        sounds.playComboBreak();
+      } else {
+        sounds.playWrong();
+      }
+      setStreak(0);
       setLastMistake({ expected: target, got: lastChar });
     }
   };
@@ -144,6 +168,14 @@ export const TimedTest: React.FC = () => {
   return (
     <div className="min-h-screen bg-background pb-20 pt-20">
       <HUD />
+      
+      {showCelebration && phase === "done" && (
+        <Celebration 
+          type="stars" 
+          intensity={accuracy >= 90 ? "high" : "medium"}
+          onComplete={() => setShowCelebration(false)}
+        />
+      )}
 
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="flex items-center gap-4 mb-8">

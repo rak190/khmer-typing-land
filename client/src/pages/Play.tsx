@@ -10,6 +10,7 @@ import { GameRunner } from '@/components/game/GameRunner';
 import { GameDefender } from '@/components/game/GameDefender';
 import { makeBadges } from '@/lib/badges';
 import { cn } from '@/lib/utils';
+import { Celebration } from '@/components/Celebration';
 
 import { sounds } from '@/lib/sounds';
 import { STORY_CHAPTERS, RANDOM_EVENTS, EASTER_EGGS } from '@/lib/story';
@@ -30,6 +31,7 @@ export const Play: React.FC = () => {
   const [activeEvent, setActiveEvent] = useState<typeof RANDOM_EVENTS[0] | null>(null);
   const [activeEgg, setActiveEgg] = useState<typeof EASTER_EGGS[0] | null>(null);
   const [eggInput, setEggInput] = useState("");
+  const [showCelebration, setShowCelebration] = useState(false);
   
   const worldId = params?.wid;
   const stageId = params?.sid;
@@ -93,6 +95,15 @@ export const Play: React.FC = () => {
       const res = recordStageResult(worldId!, stageId!, stars, { wpm, accuracy: acc });
       setNewBadges(res.newBadges);
       setPhase("result");
+      setShowCelebration(true);
+      
+      if (res.newBadges.length > 0) {
+        sounds.playBadgeUnlock();
+      } else if (stars >= 2) {
+        sounds.playVictory();
+      } else {
+        sounds.playLevelUp();
+      }
     }
   };
 
@@ -217,8 +228,16 @@ export const Play: React.FC = () => {
         )}
         
         {phase === "result" && (
-          <div className="glass-panel p-10 rounded-3xl text-center max-w-lg w-full animate-in zoom-in-95 duration-300">
-            <h1 className="text-4xl font-black text-white mb-2">Lesson Complete! 🎉</h1>
+          <>
+            {showCelebration && (
+              <Celebration 
+                type={newBadges.length > 0 ? "victory" : "confetti"} 
+                intensity={newBadges.length > 0 ? "high" : "medium"}
+                onComplete={() => setShowCelebration(false)}
+              />
+            )}
+            <div className="glass-panel p-10 rounded-3xl text-center max-w-lg w-full animate-in zoom-in-95 duration-300">
+              <h1 className="text-4xl font-black text-white mb-2">Lesson Complete! 🎉</h1>
             
             {/* Stars */}
             <div className="flex justify-center gap-2 my-6">
@@ -308,6 +327,7 @@ export const Play: React.FC = () => {
               </Button>
             </div>
           </div>
+          </>
         )}
       </div>
     </div>

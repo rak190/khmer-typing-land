@@ -5,6 +5,8 @@ import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { sounds } from "@/lib/sounds";
+import { Celebration } from "@/components/Celebration";
 import {
   CulturalText,
   getContentByCategory,
@@ -38,6 +40,8 @@ export const CulturalChallenges: React.FC = () => {
   const [typedText, setTypedText] = useState("");
   const [results, setResults] = useState<{ correct: boolean; wpm: number; accuracy: number }[]>([]);
   const [startTime, setStartTime] = useState(0);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [streak, setStreak] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const currentChallenge = challenges[currentIndex];
@@ -73,6 +77,8 @@ export const CulturalChallenges: React.FC = () => {
       const accuracy = Math.round(((value.length - errors) / value.length) * 100);
 
       setResults([...results, { correct: true, wpm, accuracy }]);
+      sounds.playCorrect();
+      setStreak(streak + 1);
 
       if (currentIndex < challenges.length - 1) {
         setCurrentIndex(currentIndex + 1);
@@ -80,6 +86,8 @@ export const CulturalChallenges: React.FC = () => {
         setStartTime(Date.now());
       } else {
         setPhase("results");
+        setShowCelebration(true);
+        sounds.playVictory();
       }
     }
   };
@@ -282,9 +290,18 @@ export const CulturalChallenges: React.FC = () => {
     return (
       <div className="min-h-screen bg-background pb-20 pt-20">
         <HUD />
+        
+        {showCelebration && (
+          <Celebration 
+            type="victory" 
+            intensity={correctCount >= 4 ? "high" : "medium"}
+            onComplete={() => setShowCelebration(false)}
+          />
+        )}
+        
         <div className="container mx-auto px-4 max-w-4xl mt-8">
           <div className="text-center mb-8">
-            <div className="text-6xl mb-4">🏛️</div>
+            <div className="text-6xl mb-4 animate-bounce-in">🏛️</div>
             <h1 className="text-4xl font-black font-display text-foreground mb-2">
               បញ្ហាប្រឈមបានបញ្ចប់!
             </h1>
