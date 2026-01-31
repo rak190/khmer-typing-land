@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, TrendingUp, Target, AlertTriangle } from "lucide-react";
+import { ArrowLeft, TrendingUp, Target, AlertTriangle, Activity } from "lucide-react";
 
 import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
@@ -67,21 +67,66 @@ function computeSessionSeries(starsByStage: Record<string, number>): SessionStat
   });
 }
 
-export const Stats: React.FC = () => {
-  const { progress, getTotalStars } = useGameStore();
-  const totalStars = getTotalStars();
+interface SessionData {
+  id: string;
+  mode: string;
+  wpm: number;
+  accuracy: number;
+  errors: number;
+  stars: number;
+  completedAt: string;
+}
 
-  const series = useMemo(
-    () => computeSessionSeries(progress?.starsByStage || {}),
-    [progress]
-  );
+export const Stats: React.FC = () => {
+  const { progress, getTotalStars, profile } = useGameStore();
+  const totalStars = getTotalStars();
+  const [sessions, setSessions] = useState<SessionData[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchSessions() {
+      try {
+        const response = await fetch(`/api/sessions/player/${profile.name}?limit=30`);
+        if (response.ok) {
+          const data = await response.json();
+          setSessions(data);
+        } else {
+          // Fall back to mock data
+          setSessions([]);
+        }
+      } catch (error) {
+        console.error("Error fetching sessions:", error);
+        setSessions([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchSessions();
+  }, [profile.name]);
+
+  const series = useMemo(() => {
+    if (sessions.length > 0) {
+      return sessions.slice(0, 12).reverse().map((s, idx) => ({
+        id: s.id,
+        label: `${idx + 1}`,
+        wpm: s.wpm,
+        accuracy: s.accuracy,
+        errors: s.errors,
+      }));
+    }
+    return computeSessionSeries(progress?.starsByStage || {});
+  }, [sessions, progress]);
 
   const latest = series[series.length - 1];
-  const bestWpm = series.length ? Math.max(...series.map((d) => d.wpm)) : 0;
-  const bestAcc = series.length ? Math.max(...series.map((d) => d.accuracy)) : 0;
-  const totalErrors = series.length
-    ? series.reduce((acc, d) => acc + d.errors, 0)
-    : 0;
+  const bestWpm = sessions.length > 0 
+    ? Math.max(...sessions.map((s) => s.wpm))
+    : series.length ? Math.max(...series.map((d) => d.wpm)) : 0;
+  const bestAcc = sessions.length > 0
+    ? Math.max(...sessions.map((s) => s.accuracy))
+    : series.length ? Math.max(...series.map((d) => d.accuracy)) : 0;
+  const totalErrors = sessions.length > 0
+    ? sessions.reduce((acc, s) => acc + s.errors, 0)
+    : series.reduce((acc, d) => acc + d.errors, 0);
 
   const unlockedWorlds = useMemo(() => {
     const stars = totalStars;
@@ -247,12 +292,25 @@ export const Stats: React.FC = () => {
             </ChartContainer>
           </div>
 
-          {!series.length && (
+          {loading && (
+            <div className="mt-6 text-sm text-muted-foreground flex items-center gap-2">
+              <Activity className="animate-spin" size={16} />
+              Loading your stats...
+            </div>
+          )}
+          
+          {!loading && !series.length && (
             <div
               className="mt-6 text-sm text-muted-foreground"
               data-testid="text-no-stats"
             >
               Play a few stages to populate your stats.
+            </div>
+          )}
+
+          {!loading && sessions.length > 0 && (
+            <div className="mt-6 text-sm text-emerald-600 font-bold" data-testid="text-real-data">
+              ✓ Showing your real typing session data ({sessions.length} sessions tracked)
             </div>
           )}
         </Card>
