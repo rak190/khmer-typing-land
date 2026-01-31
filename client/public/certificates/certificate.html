@@ -40,17 +40,26 @@
                     const name = urlParams.get('name');
                     const world = urlParams.get('world');
                     const worldNum = urlParams.get('worldNum');
-                    const wpm = urlParams.get('wpm') || '0';
-                    const acc = urlParams.get('acc') || '0%';
-                    const score = urlParams.get('score') || '0';
+                    const wpmRaw = urlParams.get('wpm');
+                    const accRaw = urlParams.get('acc');
+                    const scoreRaw = urlParams.get('score');
+
+                    const wpm = (wpmRaw && !Number.isNaN(Number(wpmRaw))) ? String(Math.max(0, Math.round(Number(wpmRaw)))) : '0';
+
+                    const accNum = (accRaw && !Number.isNaN(Number(String(accRaw).replace('%',''))))
+                      ? Math.max(0, Math.min(100, Number(String(accRaw).replace('%',''))))
+                      : 0;
+                    const acc = `${Math.round(accNum)}%`;
+
+                    const score = (scoreRaw && !Number.isNaN(Number(scoreRaw))) ? String(Math.max(0, Math.round(Number(scoreRaw)))) : '0';
                     const date = urlParams.get('date') || new Date().toLocaleDateString('km-KH');
 
                     if (name) document.getElementById('certName').textContent = name;
                     if (world) document.getElementById('certWorld').textContent = world;
                     if (worldNum) document.getElementById('certWorldNum').textContent = worldNum;
-                    if (wpm) document.getElementById('certStatsWpm').textContent = wpm;
-                    if (acc) document.getElementById('certStatsAcc').textContent = acc;
-                    if (score) document.getElementById('certStatsScore').textContent = score;
+                    document.getElementById('certStatsWpm').textContent = wpm;
+                    document.getElementById('certStatsAcc').textContent = acc;
+                    document.getElementById('certStatsScore').textContent = score;
                     if (date) document.getElementById('certDate').textContent = date;
                 </script>
 

@@ -179,8 +179,8 @@ export const useGameStore = create<GameState>()(
         return {
           players: remainingPlayers,
           ...(isCurrent ? {
-            currentPlayerId: null,
             ...DEFAULT_STATE,
+            currentPlayerId: null,
             players: remainingPlayers
           } : {})
         };
