@@ -16,7 +16,6 @@ export const Badges: React.FC = () => {
   return (
     <div className="min-h-screen bg-background pb-20 pt-20">
       <HUD />
-
       <div className="container mx-auto px-4 mt-8 max-w-5xl">
         <div className="flex items-center gap-4 mb-8">
           <Link href="/home">
@@ -25,7 +24,7 @@ export const Badges: React.FC = () => {
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-black text-foreground">ការប្រមូល</h1>
+            <h1 className="text-3xl font-black text-foreground">រូបតំណាង</h1>
             <p className="text-muted-foreground font-medium font-body">
               បានបើកសោ: <span className="text-primary font-bold">{badgesOwned.length}</span> / {ALL_BADGES.length}
             </p>
