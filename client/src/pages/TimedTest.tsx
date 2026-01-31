@@ -115,6 +115,8 @@ export const TimedTest: React.FC = () => {
     requestAnimationFrame(() => inputRef.current?.focus());
   };
 
+  const [lastMistake, setLastMistake] = useState<{ expected: string; got: string } | null>(null);
+
   const handleInputChange = (v: string) => {
     if (phase !== "running") return;
 
@@ -125,10 +127,12 @@ export const TimedTest: React.FC = () => {
 
     if (lastChar === target) {
       setHits((h) => h + 1);
+      setLastMistake(null);
       const next = pool[Math.floor(Math.random() * pool.length)] || "ក";
       setTarget(next);
     } else {
       setMiss((m) => m + 1);
+      setLastMistake({ expected: target, got: lastChar });
     }
   };
 
@@ -179,6 +183,17 @@ export const TimedTest: React.FC = () => {
             </div>
 
             <div className="relative">
+              {lastMistake && phase === "running" && (
+                <div className="mb-3 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3" data-testid="panel-error-feedback">
+                  <div className="text-xs font-black uppercase tracking-widest text-red-400">Oops</div>
+                  <div className="mt-1 text-sm text-red-200">
+                    Expected <span className="font-khmer font-black">{lastMistake.expected}</span> but you typed <span className="font-khmer font-black">{lastMistake.got}</span>.
+                  </div>
+                  <div className="mt-1 text-xs text-red-200/80">
+                    Hint: look at the highlighted key below.
+                  </div>
+                </div>
+              )}
               <input
                 ref={inputRef}
                 value={typed}

@@ -26,8 +26,13 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
   const [combo, setCombo] = useState(0);
   const [speedMult, setSpeedMult] = useState(1);
 
+  // Progressive speed challenge: speed ramps up while the player maintains accuracy.
+  // We treat combo as an "accuracy streak" (resets on any miss).
   const baseSpeedBoost = difficulty === "beginner" ? 0.08 : difficulty === "intermediate" ? 0.11 : 0.14;
   const maxSpeedBoost = difficulty === "beginner" ? 1.8 : difficulty === "intermediate" ? 2.0 : 2.2;
+
+  const [streakSeconds, setStreakSeconds] = useState(0);
+  const streakTimerRef = useRef<number | null>(null);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
@@ -67,6 +72,31 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
       stateRef.current.vy = Math.min(stateRef.current.vy, 18);
     }
   };
+
+  // Progressive speed timer (counts only while streak is active)
+  useEffect(() => {
+    if (combo <= 0) {
+      setStreakSeconds(0);
+      if (streakTimerRef.current) {
+        window.clearInterval(streakTimerRef.current);
+        streakTimerRef.current = null;
+      }
+      return;
+    }
+
+    if (!streakTimerRef.current) {
+      streakTimerRef.current = window.setInterval(() => {
+        setStreakSeconds((s) => s + 1);
+      }, 1000);
+    }
+
+    return () => {
+      if (streakTimerRef.current) {
+        window.clearInterval(streakTimerRef.current);
+        streakTimerRef.current = null;
+      }
+    };
+  }, [combo]);
 
   // Game Loop
   useEffect(() => {
@@ -133,7 +163,11 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
         // Combo & Speed logic
         const newCombo = combo + 1;
         setCombo(newCombo);
-        const newSpeed = 1 + Math.min(newCombo * baseSpeedBoost, maxSpeedBoost);
+
+        // Ramp speed based on combo AND sustained streak time.
+        // Every 5 seconds of streak adds a small bump (capped by maxSpeedBoost).
+        const timeBonus = Math.floor(streakSeconds / 5) * (baseSpeedBoost * 0.5);
+        const newSpeed = 1 + Math.min(newCombo * baseSpeedBoost + timeBonus, maxSpeedBoost);
         stateRef.current.speed = newSpeed;
         setSpeedMult(newSpeed);
 
@@ -169,9 +203,10 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span>Runner Mode</span>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <span className="text-foreground">Goal: {dist}/{distanceGoal}m</span>
             <span className="text-primary font-bold">{speedMult.toFixed(1)}x Speed</span>
+            <span className="text-muted-foreground">Streak: {streakSeconds}s</span>
             <span className="text-accent font-bold">Hits: {hits}</span>
           </div>
         </div>
