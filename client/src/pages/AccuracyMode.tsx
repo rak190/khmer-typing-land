@@ -84,7 +84,8 @@ export const AccuracyMode: React.FC = () => {
   useEffect(() => {
     if (phase !== "done") return;
 
-    const accuracy = miss === 0 ? 100 : Math.max(0, Math.round((hits / Math.max(1, hits + miss)) * 100));
+    const total = hits + miss;
+    const accuracy = total > 0 ? Math.round((hits / total) * 100) : 100;
 
     // In accuracy mode, rewards favor perfect runs.
     const stars = miss === 0 ? 3 : accuracy >= 95 ? 2 : accuracy >= 85 ? 1 : 0;
@@ -137,7 +138,10 @@ export const AccuracyMode: React.FC = () => {
     }
   };
 
-  const accuracy = miss === 0 ? 100 : Math.round((hits / Math.max(1, hits + miss)) * 100);
+  const total = hits + miss;
+  const accuracy = total > 0 ? Math.round((hits / total) * 100) : 100;
+  const elapsedSeconds = Math.max(1, duration - timeLeft);
+  const wpmLive = Math.round((hits / 5) / Math.max(0.01, elapsedSeconds / 60));
 
   return (
     <div className="min-h-screen bg-background pb-20 pt-20">
