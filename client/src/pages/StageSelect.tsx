@@ -33,21 +33,11 @@ export const StageSelect: React.FC = () => {
           </Link>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-3xl font-black text-foreground" data-testid="text-world-title">{world.name}</h1>
-              <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest" data-testid="text-world-chapter">Chapter {world.id.replace('w','')}</span>
-              {world.theme && (
-                <span className="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-black uppercase tracking-widest" data-testid="text-world-theme">
-                  {world.theme.emoji} {world.theme.title}
-                </span>
-              )}
+              <h1 className="text-3xl font-black text-foreground">{world.name}</h1>
+              <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest">Chapter {world.id.replace('w','')}</span>
             </div>
-            <h2 className="text-xl font-bold text-primary mb-3" data-testid="text-world-quest">Quest: {chapter?.title}</h2>
-            <p className="text-muted-foreground italic text-lg leading-relaxed" data-testid="text-world-intro">"{chapter?.intro}"</p>
-            {world.theme && (
-              <p className="mt-3 text-sm text-muted-foreground" data-testid="text-world-theme-description">
-                {world.theme.description}
-              </p>
-            )}
+            <h2 className="text-xl font-bold text-primary mb-3">Quest: {chapter?.title}</h2>
+            <p className="text-muted-foreground italic text-lg leading-relaxed">"{chapter?.intro}"</p>
           </div>
           <div className="flex flex-col items-center justify-center p-6 bg-secondary rounded-2xl border border-border min-w-[150px]">
             <div className="text-5xl mb-2 animate-pulse">{chapter?.monsterEmoji}</div>
@@ -62,7 +52,7 @@ export const StageSelect: React.FC = () => {
             const stars = progress.starsByStage[stageKey] || 0;
             
             return (
-              <div key={stage.id} className="glass-panel p-5 rounded-2xl group hover:border-primary/50 transition-all" data-testid={`card-stage-${stage.id}`}>
+              <div key={stage.id} className="glass-panel p-5 rounded-2xl group hover:border-primary/50 transition-all">
                 <div className="flex justify-between items-start mb-4">
                   <div className="font-mono text-xs text-primary/70 uppercase tracking-widest border border-primary/20 px-2 py-0.5 rounded">
                     {stage.id.toUpperCase()}
@@ -80,10 +70,10 @@ export const StageSelect: React.FC = () => {
                   </div>
                 </div>
                 
-                <h3 className="text-lg font-bold text-foreground mb-4 line-clamp-1" data-testid={`text-stage-name-${stage.id}`}>{stage.name}</h3>
+                <h3 className="text-lg font-bold text-foreground mb-4 line-clamp-1">{stage.name}</h3>
                 
                 <Link href={`/play/${world.id}/${stage.id}`}>
-                  <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors" data-testid={`button-play-stage-${stage.id}`}>
+                  <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                     Play
                   </Button>
                 </Link>

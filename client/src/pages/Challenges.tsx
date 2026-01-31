@@ -2,7 +2,7 @@ import React from 'react';
 import { useGameStore } from '@/lib/store';
 import { HUD } from '@/components/HUD';
 import { Button } from '@/components/ui/button';
-import { Trophy, Timer, Target, Users, ArrowLeft, FileText } from 'lucide-react';
+import { Trophy, Timer, Target, Users, ArrowLeft } from 'lucide-react';
 import { Link } from 'wouter';
 
 export const Challenges: React.FC = () => {
@@ -31,65 +31,32 @@ export const Challenges: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {/* Timed Test Card */}
+          {/* Daily Challenge Card */}
           <div className="glass-panel p-8 rounded-3xl border-primary/20 bg-primary/5 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
               <Timer size={120} />
             </div>
             <div className="relative z-10">
               <div className="bg-primary text-primary-foreground text-[10px] font-bold px-2 py-1 rounded w-fit mb-4 uppercase tracking-widest">
-                Timed Test
+                Daily Quest
               </div>
-              <h2 className="text-2xl font-bold mb-2">វាយលឿនក្រោមសម្ពាធ (Speed Under Pressure)</h2>
-              <p className="text-muted-foreground mb-6">Type as many words as possible before time runs out.</p>
+              <h2 className="text-2xl font-bold mb-2">ព្យញ្ជនៈមូលដ្ឋាន (Basic Consonants)</h2>
+              <p className="text-muted-foreground mb-6">Complete the basic consonant set as fast as possible.</p>
               
               <div className="flex items-center gap-6 mb-8">
                 <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground uppercase">Modes</span>
-                  <span className="text-xl font-bold">WPM • Accuracy</span>
+                  <span className="text-xs text-muted-foreground uppercase">Best Time</span>
+                  <span className="text-xl font-bold">0:42</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground uppercase">Duration</span>
-                  <span className="text-xl font-bold text-amber-500">30s / 60s / 120s</span>
+                  <span className="text-xs text-muted-foreground uppercase">Reward</span>
+                  <span className="text-xl font-bold text-amber-500">500 XP</span>
                 </div>
               </div>
 
-              <Link href="/timed">
-                <Button className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 rounded-xl" data-testid="button-play-timed">
-                  Play Timed Test
-                </Button>
-              </Link>
-            </div>
-          </div>
-
-          {/* Free Typing Card */}
-          <div className="glass-panel p-8 rounded-3xl border-emerald-200 bg-emerald-50/50 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <FileText size={120} className="text-emerald-700" />
-            </div>
-            <div className="relative z-10">
-              <div className="bg-emerald-600 text-white text-[10px] font-bold px-2 py-1 rounded w-fit mb-4 uppercase tracking-widest">
-                Free Typing
-              </div>
-              <h2 className="text-2xl font-bold mb-2">Free Typing Mode (អត្ថបទផ្ទាល់ខ្លួន)</h2>
-              <p className="text-muted-foreground mb-6">Paste or upload your own text and practice freely.</p>
-
-              <div className="flex items-center gap-6 mb-8">
-                <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground uppercase">Inputs</span>
-                  <span className="text-xl font-bold">Paste • Upload .txt</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground uppercase">Metrics</span>
-                  <span className="text-xl font-bold text-emerald-700">WPM • Accuracy</span>
-                </div>
-              </div>
-
-              <Link href="/free">
-                <Button className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold h-12 rounded-xl" data-testid="button-play-free">
-                  Start Free Typing
-                </Button>
-              </Link>
+              <Button className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 rounded-xl" data-testid="button-play-daily">
+                Play Now
+              </Button>
             </div>
           </div>
 

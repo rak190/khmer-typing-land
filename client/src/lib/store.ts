@@ -180,12 +180,7 @@ export const useGameStore = create<GameState>()(
         if (state.players[name]) return state;
         const newPlayer: Player = {
           name,
-          progress: { 
-            starsByStage: {}, 
-            scoresByStage: {},
-            bestWpmByStage: {},
-            bestAccuracyByStage: {}
-          },
+          progress: { starsByStage: {}, scoresByStage: {} },
           badgesOwned: ["B001"],
           selectedBadgeId: "B001"
         };
