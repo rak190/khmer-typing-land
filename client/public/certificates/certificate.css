@@ -143,32 +143,71 @@ header {
 
 .stats-grid {
     display: flex;
-    gap: 40px;
-    margin-bottom: 40px;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin: 20px 0 35px 0;
+    padding: 25px 40px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 241, 233, 0.8) 100%);
+    border: 3px solid var(--gold);
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.5);
+    min-width: 600px;
 }
 
 .stat-box {
-    background: white;
-    padding: 15px 30px;
-    border-radius: 20px;
-    border: 2px solid rgba(212, 175, 55, 0.2);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    background: transparent;
+    padding: 10px 15px;
+    border-radius: 15px;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    min-width: 120px;
+}
+
+.stat-box:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.stat-info {
+    text-align: center;
 }
 
 .stat-label {
     display: block;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 800;
     color: var(--gold);
     text-transform: uppercase;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
+    letter-spacing: 1px;
 }
 
 .stat-value {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 32px;
+    font-weight: 900;
     color: var(--primary);
+    line-height: 1;
 }
+
+/* Status Colors for Stats */
+.stat-box.high .stat-value { color: #2E7D32; }
+.stat-box.medium .stat-value { color: #F57F17; }
+.stat-box.low .stat-value { color: #C62828; }
+
+.stat-box.high { background: rgba(76, 175, 80, 0.05); }
+.stat-box.medium { background: rgba(255, 193, 7, 0.05); }
+.stat-box.low { background: rgba(244, 67, 54, 0.05); }
 
 .badge-container {
     position: relative;
