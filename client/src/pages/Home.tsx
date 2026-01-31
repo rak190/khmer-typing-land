@@ -161,7 +161,7 @@ export const Home: React.FC = () => {
                 ចាប់ផ្តើមឡើងវិញ
               </Button>
               {totalStars >= WORLDS.reduce((acc, w) => acc + w.stages.length * 3, 0) ? (
-                <Button variant="ghost" size="sm" className="text-xs text-blue-500 font-bold hover:bg-blue-50 hover:text-blue-600 transition-colors font-body" data-testid="button-general-mode" onClick={() => {
+                <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-blue-300 text-blue-500 font-bold hover:bg-white hover:text-blue-600 transition-all shadow-sm font-body text-xs" data-testid="button-general-mode" onClick={() => {
                   if(confirm("ត្រឡប់ទៅរបៀបធម្មតាវិញ? (General Mode)")) {
                     resetProgress();
                   }
@@ -169,7 +169,7 @@ export const Home: React.FC = () => {
                   របៀបធម្មតា (General Mode)
                 </Button>
               ) : (
-                <Button variant="ghost" size="sm" className="text-xs text-amber-500 font-bold hover:bg-amber-50 hover:text-amber-600 transition-colors font-body" data-testid="button-easy-mode" onClick={() => {
+                <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-amber-300 text-amber-500 font-bold hover:bg-white hover:text-amber-600 transition-all shadow-sm font-body text-xs" data-testid="button-easy-mode" onClick={() => {
                   if(confirm("បើកគ្រប់វគ្គទាំងអស់? (Easy Mode)")) {
                     const { recordStageResult } = useGameStore.getState();
                     WORLDS.forEach(w => {
