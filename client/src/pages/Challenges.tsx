@@ -54,9 +54,11 @@ export const Challenges: React.FC = () => {
                 </div>
               </div>
 
-              <Button className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 rounded-xl" data-testid="button-play-daily">
-                Play Now
-              </Button>
+              <Link href="/timed">
+                <Button className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 rounded-xl" data-testid="button-play-daily">
+                  Play Now
+                </Button>
+              </Link>
             </div>
           </div>
 
