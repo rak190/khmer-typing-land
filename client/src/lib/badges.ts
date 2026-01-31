@@ -2,13 +2,16 @@ export interface Badge {
   id: string;
   icon: string;
   name: string;
-  unlock: { type: "stars"; value: number };
+  unlock: 
+    | { type: "stars"; value: number }
+    | { type: "wpm"; value: number }
+    | { type: "accuracy"; value: number };
 }
 
 const ICONS = [
   "🐯","🐲","🦁","🐼","🦊","🐵","🐸","🐰","🐶","🐱",
   "🦄","🐷","🦉","🐨","🦖","🦕","🐙","🦋","🐝","🐢",
-  "🦜","🐬","🐳","🦈","🦓","🦒","🐘","🦌","🐅","🐺",
+  "🦜","🐬","🐳","🦈","🦓","🦒","🐘","鹿","🐅","🐺",
   "🐗","🐧","🦭","🦦","🦥","🐿️","🦩","🦚","🐊","🦂",
   "🕊️","🦇","🐍","🦀","🦞","🦐","🐟","🐞","🦗","🪲"
 ];
@@ -28,6 +31,12 @@ export function makeBadges(): Badge[] {
       unlock: { type:"stars", value: threshold }
     });
   }
+  
+  // Custom Performance Badges
+  badges.push({ id: "P001", icon: "⚡", name: "Speed Demon", unlock: { type: "wpm", value: 40 } });
+  badges.push({ id: "P002", icon: "🏹", name: "Sharp Shooter", unlock: { type: "accuracy", value: 100 } });
+  badges.push({ id: "P003", icon: "🌀", name: "Whiz Kid", unlock: { type: "wpm", value: 60 } });
+
   // Make a few "special" looking ones at key milestones
   const specials = [
     { idx: 1,   name:"Starter Paw" },
@@ -47,13 +56,23 @@ export function makeBadges(): Badge[] {
   return badges;
 }
 
-export function unlockBadgesByStars(badges: Badge[], ownedIds: string[], totalStars: number): string[] {
+export function unlockBadges(
+  badges: Badge[], 
+  ownedIds: string[], 
+  stats: { totalStars: number; maxWpm: number; maxAccuracy: number }
+): string[] {
   const owned = new Set(ownedIds);
   const newly: string[] = [];
 
   for(const b of badges){
     if(owned.has(b.id)) continue;
-    if(b.unlock.type === "stars" && totalStars >= b.unlock.value){
+    
+    let canUnlock = false;
+    if(b.unlock.type === "stars" && stats.totalStars >= b.unlock.value) canUnlock = true;
+    if(b.unlock.type === "wpm" && stats.maxWpm >= b.unlock.value) canUnlock = true;
+    if(b.unlock.type === "accuracy" && stats.maxAccuracy >= b.unlock.value) canUnlock = true;
+
+    if(canUnlock) {
       owned.add(b.id);
       newly.push(b.id);
     }

@@ -84,10 +84,13 @@ export const Play: React.FC = () => {
     else if (phase === "defender") {
       // Calculate Stars
       const total = newStats.hits + newStats.miss;
-      const acc = total > 0 ? newStats.hits / total : 0;
-      const stars = acc >= 0.95 ? 3 : acc >= 0.85 ? 2 : acc >= 0.70 ? 1 : 0;
+      const acc = total > 0 ? (newStats.hits / total) * 100 : 0;
+      const stars = acc >= 95 ? 3 : acc >= 85 ? 2 : acc >= 70 ? 1 : 0;
       
-      const res = recordStageResult(worldId!, stageId!, stars);
+      // Performance stats
+      const wpm = Math.round(newStats.hits / 1.5); 
+
+      const res = recordStageResult(worldId!, stageId!, stars, { wpm, accuracy: acc });
       setNewBadges(res.newBadges);
       setPhase("result");
     }
@@ -232,7 +235,13 @@ export const Play: React.FC = () => {
               })}
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="grid grid-cols-3 gap-4 mb-8">
+              <div className="bg-white/5 rounded-xl p-4">
+                <div className="text-sm text-slate-400 uppercase tracking-widest">WPM</div>
+                <div className="text-2xl font-mono font-bold text-primary">
+                  {Math.round(stats.hits / 1.5)}
+                </div>
+              </div>
               <div className="bg-white/5 rounded-xl p-4">
                 <div className="text-sm text-slate-400 uppercase tracking-widest">Accuracy</div>
                 <div className="text-2xl font-mono font-bold text-white">
