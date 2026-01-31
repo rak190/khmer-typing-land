@@ -4,7 +4,7 @@ import { buildWorlds } from '@/lib/curriculum';
 import { cn } from '@/lib/utils';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { Lock, Unlock, Play, GraduationCap } from 'lucide-react';
+import { Lock, Play, GraduationCap, BarChart3 } from 'lucide-react';
 import { HUD } from '@/components/HUD';
 
 import { STORY_CHAPTERS } from '@/lib/story';
@@ -46,29 +46,41 @@ export const Home: React.FC = () => {
                onChange={(e) => setProfileName(e.target.value)}
                className="bg-secondary border border-border rounded-xl px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 w-64 font-body"
                placeholder="ឈ្មោះអ្នកសរសេរ..."
+               data-testid="input-profile-name"
              />
-             <div className="flex gap-2 ml-auto">
+             <div className="flex gap-2 ml-auto flex-wrap justify-end">
+              <Link href="/stats">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 bg-white/50 border-violet-300 text-violet-700 hover:bg-white hover:text-violet-800 transition-all shadow-sm font-body"
+                  data-testid="link-stats"
+                >
+                  <BarChart3 size={16} />
+                  <span className="font-bold">ស្ថិតិ</span>
+                </Button>
+              </Link>
               <Link href="/library">
-                <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-blue-300 text-blue-700 hover:bg-white hover:text-blue-800 transition-all shadow-sm font-body">
+                <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-blue-300 text-blue-700 hover:bg-white hover:text-blue-800 transition-all shadow-sm font-body" data-testid="link-library">
                   <GraduationCap size={16} />
                   <span className="font-bold">បណ្ណាល័យ</span>
                 </Button>
               </Link>
               <Link href="/badges">
-                <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-slate-300 text-slate-700 hover:bg-white hover:text-primary transition-all shadow-sm font-body">
+                <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-slate-300 text-slate-700 hover:bg-white hover:text-primary transition-all shadow-sm font-body" data-testid="link-badges">
                   <span className="font-bold">ការប្រមូល</span>
-                  <span className="bg-slate-200 px-2 py-0.5 rounded text-xs font-mono">
+                  <span className="bg-slate-200 px-2 py-0.5 rounded text-xs font-mono" data-testid="text-badges-count">
                     {badgesOwned.length}
                   </span>
                 </Button>
               </Link>
-              <Button variant="ghost" size="sm" className="text-xs text-red-500 font-bold hover:bg-red-50 hover:text-red-600 transition-colors font-body" onClick={() => {
+              <Button variant="ghost" size="sm" className="text-xs text-red-500 font-bold hover:bg-red-50 hover:text-red-600 transition-colors font-body" data-testid="button-reset-progress" onClick={() => {
                 if(confirm("លុបការរីកចម្រើនរបស់អ្នក?")) resetProgress();
               }}>
                 ចាប់ផ្តើមឡើងវិញ
               </Button>
               {totalStars >= WORLDS.reduce((acc, w) => acc + w.stages.length * 3, 0) ? (
-                <Button variant="ghost" size="sm" className="text-xs text-blue-500 font-bold hover:bg-blue-50 hover:text-blue-600 transition-colors font-body" onClick={() => {
+                <Button variant="ghost" size="sm" className="text-xs text-blue-500 font-bold hover:bg-blue-50 hover:text-blue-600 transition-colors font-body" data-testid="button-general-mode" onClick={() => {
                   if(confirm("ត្រឡប់ទៅរបៀបធម្មតាវិញ? (General Mode)")) {
                     resetProgress();
                   }
@@ -76,7 +88,7 @@ export const Home: React.FC = () => {
                   របៀបធម្មតា (General Mode)
                 </Button>
               ) : (
-                <Button variant="ghost" size="sm" className="text-xs text-amber-500 font-bold hover:bg-amber-50 hover:text-amber-600 transition-colors font-body" onClick={() => {
+                <Button variant="ghost" size="sm" className="text-xs text-amber-500 font-bold hover:bg-amber-50 hover:text-amber-600 transition-colors font-body" data-testid="button-easy-mode" onClick={() => {
                   if(confirm("បើកគ្រប់វគ្គទាំងអស់? (Easy Mode)")) {
                     const { recordStageResult } = useGameStore.getState();
                     WORLDS.forEach(w => {
@@ -95,7 +107,7 @@ export const Home: React.FC = () => {
 
         {/* Worlds Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {WORLDS.map((world, i) => {
+          {WORLDS.map((world) => {
             const isUnlocked = totalStars >= world.unlockStars;
             
             return (
@@ -113,16 +125,16 @@ export const Home: React.FC = () => {
                     {isUnlocked ? "🌍" : "🔒"}
                   </div>
                   {!isUnlocked && (
-                    <div className="px-3 py-1 rounded-full bg-secondary border border-border text-xs font-mono text-muted-foreground">
+                    <div className="px-3 py-1 rounded-full bg-secondary border border-border text-xs font-mono text-muted-foreground" data-testid={`text-world-lock-${world.id}`}>
                       ត្រូវការ {world.unlockStars} ⭐
                     </div>
                   )}
                 </div>
                 
-                <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors font-display">
+                <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors font-display" data-testid={`text-world-name-${world.id}`}>
                   {world.name}
                 </h3>
-                <p className="text-sm text-muted-foreground mb-6 font-body">
+                <p className="text-sm text-muted-foreground mb-6 font-body" data-testid={`text-world-meta-${world.id}`}>
                   {world.stages.length} វគ្គ • ផ្តោតលើព្យញ្ជនៈមូលដ្ឋាន
                 </p>
 
@@ -131,6 +143,7 @@ export const Home: React.FC = () => {
                     className="w-full gap-2 font-body" 
                     variant={isUnlocked ? "secondary" : "ghost"}
                     disabled={!isUnlocked}
+                    data-testid={`button-enter-world-${world.id}`}
                   >
                     {isUnlocked ? (
                       <>ចូលទៅកាន់ពិភព <Play size={14} /></>

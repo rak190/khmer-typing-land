@@ -176,13 +176,13 @@ export const useGameStore = create<GameState>()(
       deletePlayer: (name) => set((state) => {
         const { [name]: _, ...remainingPlayers } = state.players;
         const isCurrent = state.currentPlayerId === name;
+
+        if (!isCurrent) return { players: remainingPlayers };
+
         return {
+          ...DEFAULT_STATE,
           players: remainingPlayers,
-          ...(isCurrent ? {
-            currentPlayerId: null,
-            ...DEFAULT_STATE,
-            players: remainingPlayers
-          } : {})
+          currentPlayerId: null
         };
       }),
 

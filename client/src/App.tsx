@@ -5,6 +5,7 @@ import { StageSelect } from "@/pages/StageSelect";
 import { Play } from "@/pages/Play";
 import { Badges } from "@/pages/Badges";
 import { Library } from "@/pages/Library";
+import { Stats } from "@/pages/Stats";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/play/:wid/:sid" component={Play} />
       <Route path="/badges" component={Badges} />
       <Route path="/library" component={Library} />
+      <Route path="/stats" component={Stats} />
       <Route component={NotFound} />
     </Switch>
   );
