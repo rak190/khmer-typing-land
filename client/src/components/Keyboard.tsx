@@ -215,10 +215,6 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
             <span className="text-muted-foreground">ស្ថានភាព:</span>
             <span className="font-bold text-foreground w-12">{mod}</span>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary border border-border">
-            <span className="text-muted-foreground">ម្រាមដៃ:</span>
-            <span className="font-bold text-primary">មើលការបញ្ជាក់</span>
-          </div>
         </div>
         <div className="text-xs text-muted-foreground hidden sm:block italic">
            ធ្វើតាម <b>ពន្លឺ</b>: ពណ៌លឿងទុំសម្រាប់ប៊ូតុងបញ្ជា, ពណ៌ខៀវសម្រាប់តួអក្សរ។
@@ -226,10 +222,6 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
       </div>
 
       <div className="relative flex flex-col gap-1.5 items-center z-10">
-        <div className="absolute inset-x-0 top-0 bottom-0 pointer-events-none opacity-40 z-0">
-          <HandsOverlay activeFinger={activeFinger} target={target} />
-        </div>
-
         {KEY_ROWS.map((row, i) => (
           <div key={i} className="flex gap-1.5 relative z-10">
             {row.map(k => {
