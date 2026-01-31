@@ -33,11 +33,21 @@ export const StageSelect: React.FC = () => {
           </Link>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-3xl font-black text-foreground">{world.name}</h1>
-              <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest">Chapter {world.id.replace('w','')}</span>
+              <h1 className="text-3xl font-black text-foreground" data-testid="text-world-title">{world.name}</h1>
+              <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest" data-testid="text-world-chapter">Chapter {world.id.replace('w','')}</span>
+              {world.theme && (
+                <span className="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-black uppercase tracking-widest" data-testid="text-world-theme">
+                  {world.theme.emoji} {world.theme.title}
+                </span>
+              )}
             </div>
-            <h2 className="text-xl font-bold text-primary mb-3">Quest: {chapter?.title}</h2>
-            <p className="text-muted-foreground italic text-lg leading-relaxed">"{chapter?.intro}"</p>
+            <h2 className="text-xl font-bold text-primary mb-3" data-testid="text-world-quest">Quest: {chapter?.title}</h2>
+            <p className="text-muted-foreground italic text-lg leading-relaxed" data-testid="text-world-intro">"{chapter?.intro}"</p>
+            {world.theme && (
+              <p className="mt-3 text-sm text-muted-foreground" data-testid="text-world-theme-description">
+                {world.theme.description}
+              </p>
+            )}
           </div>
           <div className="flex flex-col items-center justify-center p-6 bg-secondary rounded-2xl border border-border min-w-[150px]">
             <div className="text-5xl mb-2 animate-pulse">{chapter?.monsterEmoji}</div>
