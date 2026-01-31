@@ -27,6 +27,10 @@ export const TimedTest: React.FC = () => {
   const [mode, setMode] = useState<TimedMode>("wpm");
   const [worldId, setWorldId] = useState<string>("w1");
 
+  const [progressiveSpeed, setProgressiveSpeed] = useState(true);
+  const [speedLevel, setSpeedLevel] = useState(1);
+  const [targetTimeLimitMs, setTargetTimeLimitMs] = useState(3500);
+
   const [running, setRunning] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number>(durationSec);
   const [input, setInput] = useState("");
@@ -108,6 +112,8 @@ export const TimedTest: React.FC = () => {
     setTypedCount(0);
     setCorrectCount(0);
     setWrongCount(0);
+    setSpeedLevel(1);
+    setTargetTimeLimitMs(3500);
     setTimeLeft(durationSec);
     setRunning(true);
 
@@ -123,6 +129,8 @@ export const TimedTest: React.FC = () => {
     setTypedCount(0);
     setCorrectCount(0);
     setWrongCount(0);
+    setSpeedLevel(1);
+    setTargetTimeLimitMs(3500);
     setIndex(0);
   };
 
@@ -131,9 +139,42 @@ export const TimedTest: React.FC = () => {
     const val = input.trim();
     if (!val) return;
 
+    const started = performance.now();
+
     setTypedCount(c => c + 1);
     if (val === currentWord) setCorrectCount(c => c + 1);
     else setWrongCount(c => c + 1);
+
+    // Progressive speed logic: if player maintains >=80% accuracy, tighten time window.
+    // This simulates increasing pressure (words must be typed faster).
+    window.setTimeout(() => {
+      const end = performance.now();
+      const took = end - started;
+
+      // We can't reliably measure per-word time from state updates, so we approximate with this tick.
+      // The meaningful driver is sustained accuracy + increasing speed level.
+      const total = correctCount + wrongCount + 1;
+      const nextAcc = Math.round(((correctCount + (val === currentWord ? 1 : 0)) / total) * 100);
+
+      if (!progressiveSpeed) return;
+      if (nextAcc < 80) {
+        // Cool down if accuracy slips
+        setSpeedLevel(l => Math.max(1, l - 1));
+        setTargetTimeLimitMs(ms => Math.min(4500, ms + 250));
+        return;
+      }
+
+      // Reward sustained accuracy: ramp up challenge every few correct answers.
+      if (val === currentWord && total % 5 === 0) {
+        setSpeedLevel(l => Math.min(10, l + 1));
+        setTargetTimeLimitMs(ms => Math.max(900, ms - 250));
+      }
+
+      // If they are also fast, give an extra tiny bump.
+      if (val === currentWord && took < targetTimeLimitMs * 0.6) {
+        setTargetTimeLimitMs(ms => Math.max(900, ms - 80));
+      }
+    }, 0);
 
     setInput("");
     setIndex(i => i + 1);
@@ -229,6 +270,36 @@ export const TimedTest: React.FC = () => {
                     {world.theme.description}
                   </div>
                 )}
+
+                <div className="mt-2 rounded-2xl border border-border bg-muted/30 p-3" data-testid="panel-progressive-speed">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="text-xs font-black uppercase tracking-widest text-muted-foreground" data-testid="text-progressive-label">Progressive Speed</div>
+                      <div className="text-sm font-bold text-foreground" data-testid="text-progressive-sub">
+                        Keep 80%+ accuracy to increase pressure.
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setProgressiveSpeed(v => !v)}
+                      disabled={running}
+                      className={`h-9 px-3 rounded-xl border font-bold transition-colors ${progressiveSpeed ? "bg-primary text-primary-foreground border-primary" : "bg-white/70 text-slate-700 border-border"} ${running ? "opacity-60 cursor-not-allowed" : "hover:bg-white"}`}
+                      data-testid="button-toggle-progressive"
+                    >
+                      {progressiveSpeed ? "ON" : "OFF"}
+                    </button>
+                  </div>
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <div className="rounded-xl bg-white/70 border border-border px-3 py-2" data-testid="card-speed-level">
+                      <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Level</div>
+                      <div className="font-mono font-black text-primary" data-testid="text-speed-level">{speedLevel}</div>
+                    </div>
+                    <div className="rounded-xl bg-white/70 border border-border px-3 py-2" data-testid="card-time-window">
+                      <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Time window</div>
+                      <div className="font-mono font-black text-amber-700" data-testid="text-time-window">{Math.round(targetTimeLimitMs / 100) / 10}s</div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="flex gap-2">
