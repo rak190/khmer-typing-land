@@ -37,6 +37,24 @@
                     <span class="star">⭐</span>
                 </div>
 
+                <div class="stats-grid">
+                    <div class="stat-box box-wpm">
+                        <span class="stat-label"><i class="icon-wpm">⏱️</i> WPM</span>
+                        <span id="certStatsWpm" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-box box-acc">
+                        <span class="stat-label"><i class="icon-acc">🎯</i> ACC</span>
+                        <span id="certStatsAcc" class="stat-value">0%</span>
+                    </div>
+                    <div class="stat-box box-score">
+                        <span class="stat-label"><i class="icon-score">⭐</i> SCORE</span>
+                        <span id="certStatsScore" class="stat-value">0</span>
+                    </div>
+                </div>
+
+                <p class="achievement-text">
+                    Has successfully completed <span id="certWorld" class="highlight">World Name</span>
+                </p>
                 <script>
                     // Extract parameters from URL
                     const urlParams = new URLSearchParams(window.location.search);
@@ -68,52 +86,8 @@
                     accEl.textContent = acc;
                     scoreEl.textContent = score;
 
-                    const wpmV = Number(wpm);
-                    const accV = Number(String(acc).replace('%',''));
-                    const scoreV = Number(score);
-
-                    function setStatTone(el, v, good, mid) {
-                        el.classList.remove('tone-good', 'tone-mid', 'tone-low');
-                        if (!Number.isFinite(v)) return;
-                        if (v >= good) el.classList.add('tone-good');
-                        else if (v >= mid) el.classList.add('tone-mid');
-                        else el.classList.add('tone-low');
-                    }
-
-                    setStatTone(wpmEl, wpmV, 35, 20);
-                    setStatTone(accEl, accV, 95, 85);
-                    setStatTone(scoreEl, scoreV, 9000, 4500);
-
                     if (date) document.getElementById('certDate').textContent = date;
-
                 </script>
-
-                <p class="achievement-text">
-                    បានបញ្ចប់ដោយជោគជ័យនូវ <span class="highlight">ពិភពទី <span id="certWorldNum">1</span></span><br>
-                    Has successfully completed <span id="certWorld" class="highlight">World Name</span>
-                </p>
-
-                <div class="badge-container">
-                    <div class="badge-wrapper">
-                        <img id="certBadgeImg" src="https://api.dicebear.com/7.x/shapes/svg?seed=badge&flip=true" alt="World Badge">
-                        <div class="badge-shine"></div>
-                    </div>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <span class="stat-label">ល្បឿន (WPM)</span>
-                        <span id="certStatsWpm" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-label">ភាពត្រឹមត្រូវ (ACC)</span>
-                        <span id="certStatsAcc" class="stat-value">0%</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-label">ពិន្ទុសរុប (SCORE)</span>
-                        <span id="certStatsScore" class="stat-value">0</span>
-                    </div>
-                </div>
             </main>
 
             <footer>
