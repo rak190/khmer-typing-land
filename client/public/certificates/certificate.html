@@ -6,9 +6,10 @@
     <title>World Completion Certificate - Khmer Typing Land</title>
     <link rel="stylesheet" href="certificate.css">
     <link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-    <div class="certificate-container">
+    <div class="certificate-container" id="certificate">
         <!-- Background Image is now handled via CSS -->
         <div class="certificate-card">
             <!-- Decorative Border -->
@@ -99,5 +100,29 @@
             </footer>
         </div>
     </div>
+
+    <div class="actions">
+        <button onclick="downloadCertificate()" class="download-btn">Download as Image</button>
+    </div>
+
+    <script>
+        function downloadCertificate() {
+            const cert = document.getElementById('certificate');
+            const btn = document.querySelector('.download-btn');
+            btn.style.display = 'none';
+
+            html2canvas(cert, {
+                useCORS: true,
+                scale: 2,
+                backgroundColor: null
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Khmer-Typing-Certificate-${document.getElementById('certName').textContent}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                btn.style.display = 'block';
+            });
+        }
+    </script>
 </body>
 </html>

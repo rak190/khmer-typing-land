@@ -248,4 +248,31 @@ footer {
 @media print {
     body { background: none; }
     .certificate-card { box-shadow: none; border-radius: 0; }
+    .actions { display: none; }
+}
+
+.actions {
+    position: fixed;
+    bottom: 20px;
+    z-index: 100;
+}
+
+.download-btn {
+    padding: 15px 30px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Kantumruy Pro', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3);
+    transition: all 0.2s;
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(26, 35, 126, 0.4);
+    background: #283593;
 }
