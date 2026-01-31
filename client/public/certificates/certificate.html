@@ -48,11 +48,12 @@
                     const date = urlParams.get('date') || new Date().toLocaleDateString('km-KH');
 
                     document.getElementById('certName').textContent = name;
-                    document.getElementById('certWorld').textContent = world;
-                    
-                    const khNumbers = ['០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩'];
-                    const khNum = worldNum.toString().split('').map(d => khNumbers[parseInt(d)] || d).join('');
-                    document.getElementById('certWorldNum').textContent = khNum;
+
+                    // World name (Khmer + English line)
+                    const worldEl = document.getElementById('certWorld');
+                    if (worldEl) worldEl.textContent = world;
+                    const worldEnEl = document.getElementById('certWorldEn');
+                    if (worldEnEl) worldEnEl.textContent = world;
 
                     if (date) document.getElementById('certDate').textContent = date;
                     if (wpm) {
@@ -83,8 +84,8 @@
                 </script>
 
                 <p class="achievement-text">
-                    បានបញ្ចប់ដោយជោគជ័យនូវ <span class="highlight">ពិភពទី <span id="certWorldNum">...</span></span><br>
-                    Has successfully completed <span class="highlight" id="certWorld">...</span>
+                    បានបញ្ចប់ដោយជោគជ័យនូវ <span class="highlight" id="certWorld">World Name</span><br>
+                    Has successfully completed <span class="highlight" id="certWorldEn">World Name</span>
                 </p>
 
                 <!-- Stats grid removed as per request -->
