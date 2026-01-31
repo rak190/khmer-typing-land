@@ -26,10 +26,12 @@ interface GameState {
   currentPlayerId: string | null;
 
   difficulty: "beginner" | "intermediate" | "expert";
+  immersionMode: boolean; // Full Khmer UI mode
 
   // Actions
   setProfileName: (name: string) => void;
   setDifficulty: (difficulty: "beginner" | "intermediate" | "expert") => void;
+  setImmersionMode: (enabled: boolean) => void;
   recordStageResult: (worldId: string, stageId: string, stars: number, performance?: { wpm: number; accuracy: number }) => { newBadges: string[] };
   selectBadge: (id: string) => void;
   resetProgress: () => void;
@@ -56,7 +58,8 @@ const DEFAULT_STATE = {
   selectedBadgeId: "B001",
   players: {},
   currentPlayerId: null,
-  difficulty: "beginner" as const
+  difficulty: "beginner" as const,
+  immersionMode: false
 };
 
 const ALL_BADGES = makeBadges();
@@ -93,6 +96,8 @@ export const useGameStore = create<GameState>()(
         }
         return next;
       }),
+
+      setImmersionMode: (enabled) => set({ immersionMode: enabled }),
 
       recordStageResult: (worldId: string, stageId: string, stars: number, performance?: { wpm: number; accuracy: number }): { newBadges: string[] } => {
         const state = get();
@@ -265,7 +270,8 @@ export const useGameStore = create<GameState>()(
         selectedBadgeId: state.selectedBadgeId,
         players: state.players,
         currentPlayerId: state.currentPlayerId,
-        difficulty: state.difficulty
+        difficulty: state.difficulty,
+        immersionMode: state.immersionMode
       }),
     }
   )

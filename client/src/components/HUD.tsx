@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useGameStore } from '@/lib/store';
-import { Badge, Volume2, VolumeX, Sun, Moon, Palette } from 'lucide-react';
+import { Badge, Volume2, VolumeX, Sun, Moon, Palette, Languages } from 'lucide-react';
 import { makeBadges } from '@/lib/badges';
 import { Link } from 'wouter';
 import { sounds } from '@/lib/sounds';
+import { useTranslation } from '@/lib/useTranslation';
 
 const ALL_BADGES = makeBadges();
 
 export const HUD: React.FC = () => {
-  const { profile, selectedBadgeId, getTotalStars } = useGameStore();
+  const { profile, selectedBadgeId, getTotalStars, immersionMode, setImmersionMode } = useGameStore();
+  const { t, lang } = useTranslation();
   const [isMuted, setIsMuted] = useState(true);
   const [theme, setTheme] = useState<'light' | 'dark'>(
     typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'
@@ -61,10 +63,18 @@ export const HUD: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-3">
+        <button 
+          onClick={() => setImmersionMode(!immersionMode)}
+          className={`p-2 rounded-full border transition-colors ${immersionMode ? 'bg-primary text-primary-foreground border-primary' : 'bg-secondary border-border text-foreground hover:text-primary'}`}
+          title={immersionMode ? "Switch to English" : "ភាសាខ្មែរពេញ"}
+        >
+          <Languages size={18} />
+        </button>
+
         <Link href="/themes">
           <button 
             className="p-2 rounded-full bg-secondary border border-border text-foreground hover:text-primary transition-colors"
-            title="Customize Theme"
+            title={t.themeSettings}
           >
             <Palette size={18} />
           </button>
@@ -98,7 +108,7 @@ export const HUD: React.FC = () => {
 
         <Link href="/">
            <button className="px-4 py-1.5 rounded-full bg-primary hover:opacity-90 text-sm font-bold text-primary-foreground transition-all font-body">
-             ទំព័រដើម
+             {t.home}
            </button>
         </Link>
       </div>

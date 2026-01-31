@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, Check, Palette } from "lucide-react";
+import { ArrowLeft, Check, Palette, Languages } from "lucide-react";
 import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/lib/store";
@@ -8,7 +8,7 @@ import { THEMES, getThemeById, applyTheme } from "@/lib/themes";
 import { cn } from "@/lib/utils";
 
 export const ThemeSelector: React.FC = () => {
-  const { profile } = useGameStore();
+  const { profile, immersionMode, setImmersionMode } = useGameStore();
   const [selectedTheme, setSelectedTheme] = useState("angkor-classic");
   const [fontStyle, setFontStyle] = useState("battambang");
 
@@ -119,6 +119,45 @@ export const ThemeSelector: React.FC = () => {
                 Kantumruy Pro
               </Button>
             </div>
+          </div>
+
+          <div className="border-t border-border pt-6 mt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-black text-foreground flex items-center gap-2">
+                  <Languages size={20} className="text-primary" />
+                  របៀបខ្មែរពេញ / Immersion Mode
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Play the entire game in Khmer with all text, instructions, and challenges in Khmer
+                </p>
+              </div>
+              <button
+                onClick={() => setImmersionMode(!immersionMode)}
+                className={cn(
+                  "relative w-14 h-8 rounded-full transition-colors",
+                  immersionMode ? "bg-primary" : "bg-muted"
+                )}
+                data-testid="toggle-immersion-mode"
+              >
+                <div
+                  className={cn(
+                    "absolute top-1 w-6 h-6 rounded-full bg-white shadow-md transition-all",
+                    immersionMode ? "left-7" : "left-1"
+                  )}
+                />
+              </button>
+            </div>
+            {immersionMode && (
+              <div className="mt-4 p-4 rounded-xl bg-primary/10 border border-primary/20">
+                <p className="text-sm font-bold text-primary">
+                  ✓ របៀបខ្មែរពេញបានបើក - អត្ថបទទាំងអស់នឹងបង្ហាញជាភាសាខ្មែរ
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Immersion mode enabled - All text will be shown in Khmer
+                </p>
+              </div>
+            )}
           </div>
         </div>
 

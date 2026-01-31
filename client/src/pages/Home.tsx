@@ -4,8 +4,9 @@ import { buildWorlds } from '@/lib/curriculum';
 import { cn } from '@/lib/utils';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { Lock, Play, GraduationCap, BarChart3, Trophy, Timer, Keyboard, ShieldCheck, Users } from 'lucide-react';
+import { Lock, Play, GraduationCap, BarChart3, Trophy, Timer, Keyboard, ShieldCheck, Users, Landmark } from 'lucide-react';
 import { HUD } from '@/components/HUD';
+import { useTranslation } from '@/lib/useTranslation';
 
 import { STORY_CHAPTERS } from '@/lib/story';
 
@@ -13,6 +14,7 @@ const WORLDS = buildWorlds();
 
 export const Home: React.FC = () => {
   const { getTotalStars, profile, setProfileName, badgesOwned, resetProgress, difficulty, setDifficulty } = useGameStore();
+  const { t, lang } = useTranslation();
   const totalStars = getTotalStars();
 
   return (
@@ -50,16 +52,16 @@ export const Home: React.FC = () => {
              />
              <div className="flex gap-2 ml-auto flex-wrap justify-end">
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/50 border border-amber-300 shadow-sm" data-testid="group-difficulty">
-                <span className="text-[10px] font-black uppercase tracking-widest text-amber-700">កម្រិត</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-700">{t.difficulty}</span>
                 <select
                   value={difficulty || "beginner"}
                   onChange={(e) => setDifficulty(e.target.value as any)}
                   className="bg-transparent text-sm font-bold text-amber-900 focus:outline-none"
                   data-testid="select-difficulty"
                 >
-                  <option value="beginner">អ្នកចាប់ផ្តើម</option>
-                  <option value="intermediate">អ្នកកម្រិតមធ្យម</option>
-                  <option value="expert">អ្នកជំនាញ</option>
+                  <option value="beginner">{t.beginner}</option>
+                  <option value="intermediate">{t.intermediate}</option>
+                  <option value="expert">{t.expert}</option>
                 </select>
               </div>
               <Link href="/stats">
@@ -70,7 +72,7 @@ export const Home: React.FC = () => {
                   data-testid="link-stats"
                 >
                   <BarChart3 size={16} />
-                  <span className="font-bold">ស្ថិតិ</span>
+                  <span className="font-bold">{t.stats}</span>
                 </Button>
               </Link>
               <Link href="/challenges">
@@ -81,7 +83,7 @@ export const Home: React.FC = () => {
                   data-testid="link-challenges"
                 >
                   <Trophy size={16} />
-                  <span className="font-bold">ការប្រកួត</span>
+                  <span className="font-bold">{t.challenges}</span>
                 </Button>
               </Link>
               <Link href="/multiplayer">
@@ -92,7 +94,7 @@ export const Home: React.FC = () => {
                   data-testid="link-multiplayer"
                 >
                   <Users size={16} />
-                  <span className="font-bold">ប្រកួតផ្ទាល់</span>
+                  <span className="font-bold">{t.multiplayer}</span>
                 </Button>
               </Link>
               <Link href="/timed">
@@ -103,7 +105,7 @@ export const Home: React.FC = () => {
                   data-testid="link-timedtest"
                 >
                   <Timer size={16} />
-                  <span className="font-bold">ប្រឡងពេលវេលា</span>
+                  <span className="font-bold">{t.timedTest}</span>
                 </Button>
               </Link>
               <Link href="/free">
@@ -114,7 +116,7 @@ export const Home: React.FC = () => {
                   data-testid="link-freetyping"
                 >
                   <Keyboard size={16} />
-                  <span className="font-bold">សរសេរដោយសេរី</span>
+                  <span className="font-bold">{t.freeTyping}</span>
                 </Button>
               </Link>
               <Link href="/accuracy">
@@ -125,18 +127,29 @@ export const Home: React.FC = () => {
                   data-testid="link-accuracy-mode"
                 >
                   <ShieldCheck size={16} />
-                  <span className="font-bold">ភាពត្រឹមត្រូវ</span>
+                  <span className="font-bold">{t.accuracyMode}</span>
+                </Button>
+              </Link>
+              <Link href="/cultural">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 bg-white/50 border-amber-300 text-amber-700 hover:bg-white hover:text-amber-800 transition-all shadow-sm font-body"
+                  data-testid="link-cultural"
+                >
+                  <Landmark size={16} />
+                  <span className="font-bold">{t.culturalChallenges}</span>
                 </Button>
               </Link>
               <Link href="/library">
                 <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-blue-300 text-blue-700 hover:bg-white hover:text-blue-800 transition-all shadow-sm font-body" data-testid="link-library">
                   <GraduationCap size={16} />
-                  <span className="font-bold">បណ្ណាល័យ</span>
+                  <span className="font-bold">{t.library}</span>
                 </Button>
               </Link>
               <Link href="/badges">
                 <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-slate-300 text-slate-700 hover:bg-white hover:text-primary transition-all shadow-sm font-body" data-testid="link-badges">
-                  <span className="font-bold">ការប្រមូល</span>
+                  <span className="font-bold">{t.collection}</span>
                   <span className="bg-slate-200 px-2 py-0.5 rounded text-xs font-mono" data-testid="text-badges-count">
                     {badgesOwned.length}
                   </span>

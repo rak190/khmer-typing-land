@@ -12,6 +12,7 @@ import { FreeTyping } from "@/pages/FreeTyping";
 import { AccuracyMode } from "@/pages/AccuracyMode";
 import { Multiplayer } from "@/pages/Multiplayer";
 import { ThemeSelector } from "@/pages/ThemeSelector";
+import { CulturalChallenges } from "@/pages/CulturalChallenges";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -30,6 +31,7 @@ function Router() {
       <Route path="/free" component={FreeTyping} />
       <Route path="/multiplayer" component={Multiplayer} />
       <Route path="/themes" component={ThemeSelector} />
+      <Route path="/cultural" component={CulturalChallenges} />
       <Route component={NotFound} />
     </Switch>
   );
