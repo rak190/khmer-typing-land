@@ -8,6 +8,7 @@ import { Library } from "@/pages/Library";
 import { Stats } from "@/pages/Stats";
 import { Challenges } from "@/pages/Challenges";
 import { TimedTest } from "@/pages/TimedTest";
+import { FreeTyping } from "@/pages/FreeTyping";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/stats" component={Stats} />
       <Route path="/challenges" component={Challenges} />
       <Route path="/timed" component={TimedTest} />
+      <Route path="/free" component={FreeTyping} />
       <Route component={NotFound} />
     </Switch>
   );
