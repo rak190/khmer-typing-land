@@ -155,7 +155,7 @@ export const Home: React.FC = () => {
                   </span>
                 </Button>
               </Link>
-              <Button variant="ghost" size="sm" className="text-xs text-red-500 font-bold hover:bg-red-50 hover:text-red-600 transition-colors font-body" data-testid="button-reset-progress" onClick={() => {
+              <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-red-300 text-red-500 hover:bg-white hover:text-red-600 transition-all shadow-sm font-body text-xs font-bold" data-testid="button-reset-progress" onClick={() => {
                 if(confirm("លុបការរីកចម្រើនរបស់អ្នក?")) resetProgress();
               }}>
                 ចាប់ផ្តើមឡើងវិញ
