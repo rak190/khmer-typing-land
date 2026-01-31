@@ -6,6 +6,7 @@ import { Play } from "@/pages/Play";
 import { Badges } from "@/pages/Badges";
 import { Library } from "@/pages/Library";
 import { Stats } from "@/pages/Stats";
+import { Challenges } from "@/pages/Challenges";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/badges" component={Badges} />
       <Route path="/library" component={Library} />
       <Route path="/stats" component={Stats} />
+      <Route path="/challenges" component={Challenges} />
       <Route component={NotFound} />
     </Switch>
   );

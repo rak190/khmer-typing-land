@@ -4,7 +4,7 @@ import { buildWorlds } from '@/lib/curriculum';
 import { cn } from '@/lib/utils';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { Lock, Play, GraduationCap, BarChart3 } from 'lucide-react';
+import { Lock, Play, GraduationCap, BarChart3, Trophy } from 'lucide-react';
 import { HUD } from '@/components/HUD';
 
 import { STORY_CHAPTERS } from '@/lib/story';
@@ -71,6 +71,17 @@ export const Home: React.FC = () => {
                 >
                   <BarChart3 size={16} />
                   <span className="font-bold">ស្ថិតិ</span>
+                </Button>
+              </Link>
+              <Link href="/challenges">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 bg-white/50 border-amber-300 text-amber-700 hover:bg-white hover:text-amber-800 transition-all shadow-sm font-body"
+                  data-testid="link-challenges"
+                >
+                  <Trophy size={16} />
+                  <span className="font-bold">ការប្រកួត</span>
                 </Button>
               </Link>
               <Link href="/library">
