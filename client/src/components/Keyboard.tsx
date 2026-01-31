@@ -212,16 +212,16 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
       <div className="flex justify-between items-center text-sm">
         <div className="flex gap-4">
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary border border-border">
-            <span className="text-muted-foreground">State:</span>
+            <span className="text-muted-foreground">ស្ថានភាព:</span>
             <span className="font-bold text-foreground w-12">{mod}</span>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary border border-border">
-            <span className="text-muted-foreground">Finger:</span>
-            <span className="font-bold text-primary">See Highlight</span>
+            <span className="text-muted-foreground">ម្រាមដៃ:</span>
+            <span className="font-bold text-primary">មើលការបញ្ជាក់</span>
           </div>
         </div>
         <div className="text-xs text-muted-foreground hidden sm:block italic">
-           Follow the <b>Glow</b>: Amber for Modifiers, Blue for Characters.
+           ធ្វើតាម <b>ពន្លឺ</b>: ពណ៌លឿងទុំសម្រាប់ប៊ូតុងបញ្ជា, ពណ៌ខៀវសម្រាប់តួអក្សរ។
         </div>
       </div>
 
