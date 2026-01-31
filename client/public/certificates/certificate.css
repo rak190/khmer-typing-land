@@ -25,7 +25,7 @@ body {
     width: 297mm;
     height: 210mm;
     background: white url('cert-bg.png') no-repeat center center;
-    background-size: cover;
+    background-size: 100% 100%;
     position: relative;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     overflow: hidden;
@@ -33,6 +33,12 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+@page {
+    size: A4 landscape;
+    margin: 0;
+}
+
 
 .certificate-card {
     position: relative;

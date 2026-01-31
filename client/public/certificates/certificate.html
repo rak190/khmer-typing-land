@@ -40,7 +40,7 @@
                     // Extract parameters from URL
                     const urlParams = new URLSearchParams(window.location.search);
                     const name = urlParams.get('name') || 'ឈ្មោះអ្នកប្រើប្រាស់';
-                    const world = urlParams.get('world') || 'World Name';
+                    const world = urlParams.get('world') || 'Angkor Adventure';
                     const worldNum = urlParams.get('worldNum') || '1';
                     const wpm = urlParams.get('wpm') || '0';
                     const acc = urlParams.get('acc') || '0%';
@@ -83,8 +83,8 @@
                 </script>
 
                 <p class="achievement-text">
-                    បានបញ្ចប់ដោយជោគជ័យនូវ <span class="highlight">ពិភពទី <span id="certWorldNum">?</span></span><br>
-                    Has successfully completed <span class="highlight" id="certWorld">?</span>
+                    បានបញ្ចប់ដោយជោគជ័យនូវ <span class="highlight">ពិភពទី <span id="certWorldNum">...</span></span><br>
+                    Has successfully completed <span class="highlight" id="certWorld">...</span>
                 </p>
 
                 <!-- Stats grid removed as per request -->
