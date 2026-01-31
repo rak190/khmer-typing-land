@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>World Completion Certificate - Khmer Typing Land</title>
     <link rel="stylesheet" href="certificate.css">
-    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;600;700&family=Noto+Sans+Khmer:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
@@ -14,18 +14,14 @@
         <div class="certificate-card">
             <!-- Decorative Border -->
             <div class="border-overlay"></div>
-            <div class="corner-top-left" aria-hidden="true"></div>
             
             <!-- Mascot Corner -->
-            <div class="robot-badge" aria-hidden="true">
-                <img id="certMascotImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=Lucky&backgroundColor=b6e3f4" alt="Mascot" class="mascot-sticker">
-            </div>
+            <img id="certMascotImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=Lucky&backgroundColor=b6e3f4" alt="Mascot" class="mascot-sticker">
 
             <header>
                 <h1 class="main-title">លិខិតបញ្ជាក់ការបញ្ចប់វគ្គ</h1>
                 <h2 class="sub-title">CERTIFICATE OF COMPLETION</h2>
                 <h3 class="game-title">Khmer Typing Land</h3>
-                <div class="watermark" aria-hidden="true"></div>
             </header>
 
             <main>
@@ -38,64 +34,52 @@
                     <span class="star">⭐</span>
                 </div>
 
-                <div class="stats-grid">
-                    <div class="stat-box box-wpm">
-                        <span class="stat-label"><i class="icon-wpm">⌨️</i> WPM</span>
-                        <span id="certStatsWpm" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-box box-acc">
-                        <span class="stat-label"><i class="icon-acc">✔︎</i> ACC</span>
-                        <span id="certStatsAcc" class="stat-value">0%</span>
-                    </div>
-                    <div class="stat-box box-score">
-                        <span class="stat-label"><i class="icon-score">★</i> SCORE</span>
-                        <span id="certStatsScore" class="stat-value">0</span>
-                    </div>
-                </div>
-
-                <p class="achievement-text">
-                    Has successfully completed <span id="certWorld" class="highlight">World Name</span>
-                </p>
-
-                <div class="badge-container" aria-hidden="true">
-                    <div class="badge-wrapper">
-                        <img id="certBadgeImg" src="https://api.dicebear.com/7.x/shapes/svg?seed=badge&flip=true" alt="World Badge">
-                        <div class="badge-shine"></div>
-                    </div>
-                </div>
                 <script>
                     // Extract parameters from URL
                     const urlParams = new URLSearchParams(window.location.search);
                     const name = urlParams.get('name');
                     const world = urlParams.get('world');
                     const worldNum = urlParams.get('worldNum');
-                    const wpmRaw = urlParams.get('wpm');
-                    const accRaw = urlParams.get('acc');
-                    const scoreRaw = urlParams.get('score');
-
-                    const wpm = (wpmRaw && !Number.isNaN(Number(wpmRaw))) ? String(Math.max(0, Math.round(Number(wpmRaw)))) : '0';
-
-                    const accNum = (accRaw && !Number.isNaN(Number(String(accRaw).replace('%',''))))
-                      ? Math.max(0, Math.min(100, Number(String(accRaw).replace('%',''))))
-                      : 0;
-                    const acc = `${Math.round(accNum)}%`;
-
-                    const score = (scoreRaw && !Number.isNaN(Number(scoreRaw))) ? String(Math.max(0, Math.round(Number(scoreRaw)))) : '0';
+                    const wpm = urlParams.get('wpm') || '0';
+                    const acc = urlParams.get('acc') || '0%';
+                    const score = urlParams.get('score') || '0';
                     const date = urlParams.get('date') || new Date().toLocaleDateString('km-KH');
 
                     if (name) document.getElementById('certName').textContent = name;
                     if (world) document.getElementById('certWorld').textContent = world;
                     if (worldNum) document.getElementById('certWorldNum').textContent = worldNum;
-                    const wpmEl = document.getElementById('certStatsWpm');
-                    const accEl = document.getElementById('certStatsAcc');
-                    const scoreEl = document.getElementById('certStatsScore');
-
-                    wpmEl.textContent = wpm;
-                    accEl.textContent = acc;
-                    scoreEl.textContent = score;
-
+                    if (wpm) document.getElementById('certStatsWpm').textContent = wpm;
+                    if (acc) document.getElementById('certStatsAcc').textContent = acc;
+                    if (score) document.getElementById('certStatsScore').textContent = score;
                     if (date) document.getElementById('certDate').textContent = date;
                 </script>
+
+                <p class="achievement-text">
+                    បានបញ្ចប់ដោយជោគជ័យនូវ <span class="highlight">ពិភពទី <span id="certWorldNum">1</span></span><br>
+                    Has successfully completed <span id="certWorld" class="highlight">World Name</span>
+                </p>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-label">ល្បឿន (WPM)</span>
+                        <span id="certStatsWpm" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">ភាពត្រឹមត្រូវ (ACC)</span>
+                        <span id="certStatsAcc" class="stat-value">0%</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">ពិន្ទុសរុប (SCORE)</span>
+                        <span id="certStatsScore" class="stat-value">0</span>
+                    </div>
+                </div>
+
+                <div class="badge-container">
+                    <div class="badge-wrapper">
+                        <img id="certBadgeImg" src="https://api.dicebear.com/7.x/shapes/svg?seed=badge&flip=true" alt="World Badge">
+                        <div class="badge-shine"></div>
+                    </div>
+                </div>
             </main>
 
             <footer>
@@ -109,6 +93,10 @@
                         <span id="certId">KTL-000000</span>
                     </div>
                 </div>
+                <div class="qr-placeholder">
+                    <div class="qr-code"></div>
+                    <span>VERIFY</span>
+                </div>
             </footer>
         </div>
     </div>
@@ -118,25 +106,22 @@
     </div>
 
     <script>
-        async function downloadCertificate() {
+        function downloadCertificate() {
             const cert = document.getElementById('certificate');
             const btn = document.querySelector('.download-btn');
             btn.style.display = 'none';
 
-
-            try {
-                const canvas = await html2canvas(cert, {
-                    useCORS: true,
-                    scale: 2,
-                    backgroundColor: null
-                });
+            html2canvas(cert, {
+                useCORS: true,
+                scale: 2,
+                backgroundColor: null
+            }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `Khmer-Typing-Certificate-${document.getElementById('certName').textContent}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-            } finally {
                 btn.style.display = 'block';
-            }
+            });
         }
     </script>
 </body>

@@ -61,13 +61,12 @@ class SoundManager {
     if (this.isBgPlaying) return;
     this.init();
 
-
     if (!this.bgAudio) {
       this.bgAudio = new Audio(
         "/game-bg.mp3",
       );
       this.bgAudio.loop = true;
-      this.bgAudio.volume = 0.18;
+      this.bgAudio.volume = 0.3;
     }
 
     const playPromise = this.bgAudio.play();
