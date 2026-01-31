@@ -48,9 +48,30 @@
                     if (name) document.getElementById('certName').textContent = name;
                     if (world) document.getElementById('certWorld').textContent = world;
                     if (worldNum) document.getElementById('certWorldNum').textContent = worldNum;
-                    if (wpm) document.getElementById('certStatsWpm').textContent = wpm;
-                    if (acc) document.getElementById('certStatsAcc').textContent = acc;
-                    if (score) document.getElementById('certStatsScore').textContent = score;
+                    if (wpm) {
+                        const val = parseInt(wpm);
+                        document.getElementById('certStatsWpm').textContent = wpm;
+                        const box = document.getElementById('boxWpm');
+                        if (val > 40) box.classList.add('high');
+                        else if (val > 20) box.classList.add('medium');
+                        else box.classList.add('low');
+                    }
+                    if (acc) {
+                        const val = parseInt(acc);
+                        document.getElementById('certStatsAcc').textContent = acc;
+                        const box = document.getElementById('boxAcc');
+                        if (val > 95) box.classList.add('high');
+                        else if (val > 85) box.classList.add('medium');
+                        else box.classList.add('low');
+                    }
+                    if (score) {
+                        const val = parseInt(score);
+                        document.getElementById('certStatsScore').textContent = score;
+                        const box = document.getElementById('boxScore');
+                        if (val > 5000) box.classList.add('high');
+                        else if (val > 2000) box.classList.add('medium');
+                        else box.classList.add('low');
+                    }
                     if (date) document.getElementById('certDate').textContent = date;
                 </script>
 
@@ -60,17 +81,26 @@
                 </p>
 
                 <div class="stats-grid">
-                    <div class="stat-box">
-                        <span class="stat-label">ល្បឿន (WPM)</span>
-                        <span id="certStatsWpm" class="stat-value">0</span>
+                    <div class="stat-box" id="boxWpm">
+                        <div class="stat-icon">⌨️</div>
+                        <div class="stat-info">
+                            <span class="stat-label">WPM</span>
+                            <span id="certStatsWpm" class="stat-value">0</span>
+                        </div>
                     </div>
-                    <div class="stat-box">
-                        <span class="stat-label">ភាពត្រឹមត្រូវ (ACC)</span>
-                        <span id="certStatsAcc" class="stat-value">0%</span>
+                    <div class="stat-box" id="boxAcc">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <span class="stat-label">ACC</span>
+                            <span id="certStatsAcc" class="stat-value">0%</span>
+                        </div>
                     </div>
-                    <div class="stat-box">
-                        <span class="stat-label">ពិន្ទុសរុប (SCORE)</span>
-                        <span id="certStatsScore" class="stat-value">0</span>
+                    <div class="stat-box" id="boxScore">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <span class="stat-label">SCORE</span>
+                            <span id="certStatsScore" class="stat-value">0</span>
+                        </div>
                     </div>
                 </div>
 
