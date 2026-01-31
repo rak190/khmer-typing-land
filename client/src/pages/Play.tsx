@@ -63,7 +63,7 @@ export const Play: React.FC = () => {
     }
   }, [phase, getTotalStars]);
 
-  if (!world || !stage) return <div>Stage not found</div>;
+  if (!world || !stage) return <div data-testid="status-stage-not-found">Stage not found</div>;
 
   // Difficulty tuning
   const stageNo = parseInt(stageId?.replace("s","") || "1");
@@ -147,7 +147,7 @@ export const Play: React.FC = () => {
               </div>
             )}
 
-            <Button size="lg" className="px-12 py-8 text-2xl font-black bg-primary hover:bg-primary/80 text-primary-foreground rounded-2xl shadow-xl shadow-primary/20" onClick={() => setPhase("platform")}>
+            <Button size="lg" className="px-12 py-8 text-2xl font-black bg-primary hover:bg-primary/80 text-primary-foreground rounded-2xl shadow-xl shadow-primary/20" onClick={() => setPhase("platform")} data-testid="button-begin-quest">
               BEGIN QUEST
             </Button>
           </div>

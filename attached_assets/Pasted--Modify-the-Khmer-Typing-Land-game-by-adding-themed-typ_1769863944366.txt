@@ -1,0 +1,91 @@
+"Modify the Khmer Typing Land game by adding themed typing challenges that increase in difficulty from easy to hard, to help players improve their Khmer Unicode typing skills. The challenges should focus on progressively more complex text and typing tasks, and should align with Cambodian culture and language. The challenges are structured as follows:
+
+1. Level 1: Basic Khmer Alphabet
+
+Theme: Khmer Consonants and Vowels
+
+Players will type individual Khmer consonants and vowels to familiarize themselves with the Khmer Unicode keyboard layout.
+
+Example: "ក", "ខ", "គ", "ឃ", "គ", "កា", "គី".
+
+2. Level 2: Simple Words (2-3 Characters)
+
+Theme: Common Simple Words
+
+Players will type short, easy words in Khmer, such as names and simple nouns.
+
+Example: "សុខ", "ផ្ទះ", "កំលោះ", "ជាតិ".
+
+3. Level 3: Common Phrases
+
+Theme: Greetings and Everyday Phrases
+
+Players will type short phrases used in daily conversations.
+
+Example: "ជំរាបសួរ", "សូមអរគុណ", "អ្នកសុខសប្បាយរមណីយ".
+
+4. Level 4: Sentences with Complex Vowels
+
+Theme: Khmer Sentences with Complex Vowel Combinations
+
+Players will type sentences with complex vowel sounds (diacritics and combinations).
+
+Example: "កូនស្រីស្រស់មើល", "ពន្លឺក្នុងលំនៅកំចាត់".
+
+5. Level 5: Cultural Terms
+
+Theme: Cambodian Culture and Traditions
+
+Players will type words and phrases related to Cambodia’s culture, history, and festivals.
+
+Example: "បូជា", "ព្រះរាជពិធី", "អាណាព្យាបាល", "កម្ពុជាកម្ពុជា".
+
+6. Level 6: Typing Khmer Proverbs
+
+Theme: Khmer Proverbs and Idiomatic Phrases
+
+Players will type well-known Khmer proverbs and sayings.
+
+Example: "មើលទាំងអស់ដូចជាការងារ", "ឈរដូចដើមឈើក៏មិនអាចទៅទេ".
+
+7. Level 7: Academic Texts or Legal Terminology
+
+Theme: Formal Language and Complex Terminology
+
+Players will type academic or legal sentences that are long and have more complicated structures.
+
+Example: "ការប្តេជ្ញាចិត្តសម្រាប់កិច្ចប្រជុំសាធារណៈ", "វិធានការបញ្ជាក់អំពីការបញ្ជូនចេញក្នុងក្របខ័ណ្ឌសាស្ដ្រ".
+
+8. Level 8: News Headlines
+
+Theme: Typing Current Events and News Headlines
+
+Players will type news headlines or short stories from current events in Cambodia.
+
+Example: "សង្គ្រាមទីបំផុតនៅប្រទេសប្រជុំជាតិ", "ដំណឹងទាន់ពេលឆាប់ឆាប់សំរាប់គ្រួសារជាតិកម្ពុជា".
+
+9. Level 9: Storytelling and Paragraph Typing
+
+Theme: Typing Short Stories or Descriptive Texts
+
+Players will type short stories or descriptive paragraphs containing complex Khmer words, idioms, and sentences.
+
+Example: "សូមស្គាល់ផ្ទះដ៏ស្រស់ស្អាតបំផុតនៅក្នុងប្រទេសកម្ពុជាសព្វថ្ងៃនេះ".
+
+10. Level 10: Speed Challenge
+
+Theme: High-Speed Typing of Long Khmer Text
+
+Players must type long paragraphs at high speed, focusing on both speed and accuracy. The difficulty increases by making the text longer or more complex.
+
+Example: A long passage from a Cambodian novel or news article.
+
+Additional Features:
+
+Hints and Assistance: Offer players hints when they make repeated mistakes (e.g., suggesting the correct character for a frequently mistyped letter).
+
+Adaptive Speed: Automatically increase typing speed as players advance through levels, based on their performance.
+
+Leaderboard/Competitions: Introduce leaderboards or daily challenges to create a competitive aspect where players can try to beat their friends or others in typing speed or accuracy.
+
+These challenges will progressively improve users' typing skills in Khmer Unicode, starting with easy tasks and gradually advancing to more difficult ones. The game should keep players motivated and engaged while reinforcing their knowledge of Khmer typing."

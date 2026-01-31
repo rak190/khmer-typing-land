@@ -62,7 +62,7 @@ export const StageSelect: React.FC = () => {
             const stars = progress.starsByStage[stageKey] || 0;
             
             return (
-              <div key={stage.id} className="glass-panel p-5 rounded-2xl group hover:border-primary/50 transition-all">
+              <div key={stage.id} className="glass-panel p-5 rounded-2xl group hover:border-primary/50 transition-all" data-testid={`card-stage-${stage.id}`}>
                 <div className="flex justify-between items-start mb-4">
                   <div className="font-mono text-xs text-primary/70 uppercase tracking-widest border border-primary/20 px-2 py-0.5 rounded">
                     {stage.id.toUpperCase()}
@@ -80,10 +80,10 @@ export const StageSelect: React.FC = () => {
                   </div>
                 </div>
                 
-                <h3 className="text-lg font-bold text-foreground mb-4 line-clamp-1">{stage.name}</h3>
+                <h3 className="text-lg font-bold text-foreground mb-4 line-clamp-1" data-testid={`text-stage-name-${stage.id}`}>{stage.name}</h3>
                 
                 <Link href={`/play/${world.id}/${stage.id}`}>
-                  <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors" data-testid={`button-play-stage-${stage.id}`}>
                     Play
                   </Button>
                 </Link>
