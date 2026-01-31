@@ -11,9 +11,12 @@ interface KeyProps {
   correct?: boolean;
   wrong?: boolean;
   mod: "BASE" | "SHIFT" | "ALTGR";
+  className?: string;
+  isModifierNeeded?: boolean;
+  isTargetKey?: boolean;
 }
 
-const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, className }) => {
+const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, className, isModifierNeeded, isTargetKey }) => {
   const map = NIDA_MAP[code];
   
   // Decide what to show
@@ -37,18 +40,20 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
         w === "w4" && "w-[112px]",
         w === "w5" && "w-[158px]",
         !w && "w-[46px]",
-        active && "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-primary/10",
-        correct && "ring-2 ring-accent ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-accent/10",
-        wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-destructive/10",
+        active && "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg",
+        correct && "ring-2 ring-accent ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-accent/20",
+        wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-destructive/20",
+        isTargetKey && "bg-primary/20 border-primary/50 text-primary shadow-[0_0_15px_rgba(59,130,246,0.2)]",
+        isModifierNeeded && "bg-amber-400/20 border-amber-500/50 text-amber-600 shadow-[0_0_15px_rgba(251,191,36,0.2)]",
         !map && !fixed && "opacity-50",
         className
       )}
     >
-      <span className={cn("text-lg font-black transition-all font-khmer", active ? "text-primary scale-110" : "text-slate-600")}>
+      <span className={cn("text-lg font-black transition-all font-khmer", (isTargetKey || active) ? "text-primary scale-110" : isModifierNeeded ? "text-amber-600" : "text-slate-600")}>
         {label}
       </span>
       
-      <span className={cn("absolute right-1 bottom-0.5 text-[8px] font-mono transition-colors", active ? "text-primary/40" : "text-slate-400")}>
+      <span className={cn("absolute right-1 bottom-0.5 text-[8px] font-mono transition-colors", (isTargetKey || active) ? "text-primary/40" : isModifierNeeded ? "text-amber-600/40" : "text-slate-400")}>
         {code.replace(/Key|Digit/, "")}
       </span>
     </div>
@@ -198,11 +203,9 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
 
   const fingerName = useMemo(() => {
     if (!activeFinger) return "—";
-    let name = FINGER[activeFinger as keyof typeof FINGER] || "—";
-    if (needsShift) name = `Shift + ${name}`;
-    if (needsAltGr) name = `AltGr + ${name}`;
+    const name = FINGER[activeFinger as keyof typeof FINGER] || "—";
     return name;
-  }, [activeFinger, needsShift, needsAltGr]);
+  }, [activeFinger]);
 
   return (
     <div className={cn("flex flex-col gap-4 p-4 rounded-3xl bg-card/50 border border-border w-full max-w-[1000px] mx-auto backdrop-blur-sm relative shadow-inner", className)}>
@@ -242,9 +245,11 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
                   active={isTargetKey || isModifierNeeded}
                   correct={correct && isTargetKey}
                   wrong={wrongCode === k.code}
+                  isTargetKey={isTargetKey}
+                  isModifierNeeded={isModifierNeeded}
                   className={cn(
-                    isTargetKey && "shadow-[0_0_20px_rgba(59,130,246,0.3)] border-primary ring-2 ring-primary/30",
-                    isModifierNeeded && "shadow-[0_0_20px_rgba(251,191,36,0.3)] border-amber-500 ring-2 ring-amber-500/30 animate-pulse"
+                    isTargetKey && "ring-primary/30",
+                    isModifierNeeded && "ring-amber-500/30 animate-pulse"
                   )}
                 />
               );
