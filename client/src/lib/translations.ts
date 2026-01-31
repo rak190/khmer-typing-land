@@ -217,7 +217,7 @@ export const TRANSLATIONS: Record<"en" | "km", TranslationSet> = {
     // Library
     library: "បណ្ណាល័យ",
     badges: "មេដាយ",
-    collection: "ការប្រមូល",
+    collection: "រូបតំណាង",
   },
 };
 
