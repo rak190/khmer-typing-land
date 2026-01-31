@@ -15,7 +15,6 @@ export interface TranslationSet {
   multiplayer: string;
   challenges: string;
   culturalChallenges: string;
-  survivalMode: string;
   
   // Stats
   stats: string;
@@ -91,7 +90,6 @@ export const TRANSLATIONS: Record<"en" | "km", TranslationSet> = {
     multiplayer: "Multiplayer",
     challenges: "Challenges",
     culturalChallenges: "Cultural Challenges",
-    survivalMode: "Survival Mode",
     
     // Stats
     stats: "Stats",
@@ -162,10 +160,9 @@ export const TRANSLATIONS: Record<"en" | "km", TranslationSet> = {
     timedTest: "ប្រឡងពេលវេលា",
     freeTyping: "សរសេរដោយសេរី",
     accuracyMode: "ភាពត្រឹមត្រូវ",
-    multiplayer: "ប្រកួតផ្ទorg់",
+    multiplayer: "ប្រកួតផ្ទាល់",
     challenges: "ការប្រកួត",
     culturalChallenges: "សិក្សាវប្បធម៌",
-    survivalMode: "រស់រានមានជីវិត",
     
     // Stats
     stats: "ស្ថិតិ",
