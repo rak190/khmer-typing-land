@@ -162,7 +162,7 @@ export const TRANSLATIONS: Record<"en" | "km", TranslationSet> = {
     accuracyMode: "ភាពត្រឹមត្រូវ",
     multiplayer: "ប្រកួតផ្ទាល់",
     challenges: "ការប្រកួត",
-    culturalChallenges: "សិក្សាវប្បធម៌",
+    culturalChallenges: "ប្រកួតប្រជែងវប្បធម៌",
     
     // Stats
     stats: "ស្ថិតិ",
