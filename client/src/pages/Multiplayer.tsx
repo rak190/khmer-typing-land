@@ -326,7 +326,7 @@ export const Multiplayer: React.FC = () => {
             <div className="lg:col-span-2 space-y-6">
               <div className="glass-panel rounded-3xl p-8 border-border bg-card">
                 <div className="text-2xl font-khmer leading-relaxed mb-6 text-foreground/80">
-                  {targetText.split("").map((char, idx) => {
+                  {targetText.split("").map((char: string, idx: number) => {
                     const typed = typedText[idx];
                     const isTyped = idx < typedText.length;
                     const isCorrect = typed === char;
