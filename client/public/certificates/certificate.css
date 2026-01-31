@@ -200,8 +200,7 @@ header {
 .stat-box.low { background: rgba(244, 67, 54, 0.05); }
 
 .badge-container {
-    position: relative;
-    margin-top: 10px;
+    display: none;
 }
 
 .badge-wrapper {
