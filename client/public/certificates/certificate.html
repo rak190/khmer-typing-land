@@ -48,8 +48,15 @@
                     const date = urlParams.get('date') || new Date().toLocaleDateString('km-KH');
 
                     if (name) document.getElementById('certName').textContent = name;
-                    if (world) document.getElementById('certWorld').textContent = world;
-                    if (worldNum) document.getElementById('certWorldNum').textContent = worldNum;
+                    if (world) {
+                        document.getElementById('certWorld').textContent = world;
+                        // Also update Khmer world name if possible, or just the World Name span
+                    }
+                    if (worldNum) {
+                        const khNumbers = ['០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩'];
+                        const khNum = worldNum.split('').map(d => khNumbers[parseInt(d)] || d).join('');
+                        document.getElementById('certWorldNum').textContent = khNum;
+                    }
                     if (wpm) {
                         const val = parseInt(wpm);
                         document.getElementById('certStatsWpm').textContent = wpm;
