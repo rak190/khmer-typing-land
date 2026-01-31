@@ -39,6 +39,10 @@ export const TimedTest: React.FC = () => {
   const [wrongCount, setWrongCount] = useState(0);
   const [round, setRound] = useState(0);
 
+  const [showFeedback, setShowFeedback] = useState(true);
+  const [isWrongNow, setIsWrongNow] = useState(false);
+  const [hintIndex, setHintIndex] = useState<number | null>(null);
+
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const world = useMemo(() => WORLDS.find(w => w.id === worldId) || WORLDS[0], [worldId]);
@@ -114,6 +118,8 @@ export const TimedTest: React.FC = () => {
     setWrongCount(0);
     setSpeedLevel(1);
     setTargetTimeLimitMs(3500);
+    setIsWrongNow(false);
+    setHintIndex(null);
     setTimeLeft(durationSec);
     setRunning(true);
 
@@ -131,19 +137,42 @@ export const TimedTest: React.FC = () => {
     setWrongCount(0);
     setSpeedLevel(1);
     setTargetTimeLimitMs(3500);
+    setIsWrongNow(false);
+    setHintIndex(null);
     setIndex(0);
   };
 
   const submit = () => {
     if (!running) return;
-    const val = input.trim();
-    if (!val) return;
+    const val = input;
+    const expectedWord = currentWord;
 
     const started = performance.now();
 
+    const mismatchAt = (() => {
+      const a = (val || "").trim();
+      const b = (expectedWord || "").trim();
+      const n = Math.min(a.length, b.length);
+      for (let i = 0; i < n; i++) {
+        if (a[i] !== b[i]) return i;
+      }
+      if (a.length !== b.length) return n;
+      return null;
+    })();
+
+    const isCorrect = mismatchAt === null;
+
     setTypedCount(c => c + 1);
-    if (val === currentWord) setCorrectCount(c => c + 1);
+    if (isCorrect) setCorrectCount(c => c + 1);
     else setWrongCount(c => c + 1);
+
+    if (showFeedback) {
+      setIsWrongNow(!isCorrect);
+      setHintIndex(isCorrect ? null : mismatchAt);
+    } else {
+      setIsWrongNow(false);
+      setHintIndex(null);
+    }
 
     // Progressive speed logic: if player maintains >=80% accuracy, tighten time window.
     // This simulates increasing pressure (words must be typed faster).
@@ -151,10 +180,8 @@ export const TimedTest: React.FC = () => {
       const end = performance.now();
       const took = end - started;
 
-      // We can't reliably measure per-word time from state updates, so we approximate with this tick.
-      // The meaningful driver is sustained accuracy + increasing speed level.
       const total = correctCount + wrongCount + 1;
-      const nextAcc = Math.round(((correctCount + (val === currentWord ? 1 : 0)) / total) * 100);
+      const nextAcc = Math.round(((correctCount + (isCorrect ? 1 : 0)) / total) * 100);
 
       if (!progressiveSpeed) return;
       if (nextAcc < 80) {
@@ -165,19 +192,27 @@ export const TimedTest: React.FC = () => {
       }
 
       // Reward sustained accuracy: ramp up challenge every few correct answers.
-      if (val === currentWord && total % 5 === 0) {
+      if (isCorrect && total % 5 === 0) {
         setSpeedLevel(l => Math.min(10, l + 1));
         setTargetTimeLimitMs(ms => Math.max(900, ms - 250));
       }
 
       // If they are also fast, give an extra tiny bump.
-      if (val === currentWord && took < targetTimeLimitMs * 0.6) {
+      if (isCorrect && took < targetTimeLimitMs * 0.6) {
         setTargetTimeLimitMs(ms => Math.max(900, ms - 80));
       }
     }, 0);
 
     setInput("");
     setIndex(i => i + 1);
+
+    // Clear feedback after a brief moment so it feels responsive but not noisy.
+    if (showFeedback && !isCorrect) {
+      window.setTimeout(() => {
+        setIsWrongNow(false);
+        setHintIndex(null);
+      }, 900);
+    }
   };
 
   return (
@@ -359,21 +394,92 @@ export const TimedTest: React.FC = () => {
               <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3" data-testid="text-target-label">
                 Target word
               </div>
-              <div className="text-5xl font-black tracking-tight text-slate-900 font-display" data-testid="text-current-word">
+              <div
+                className={`text-5xl font-black tracking-tight font-display transition-colors ${isWrongNow ? "text-red-600" : "text-slate-900"}`}
+                data-testid="text-current-word"
+              >
                 {currentWord}
+              </div>
+
+              <div className="mt-3 rounded-2xl border border-border bg-white/60 p-3" data-testid="panel-live-feedback">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <div className="text-sm font-bold text-slate-700" data-testid="text-feedback-title">
+                      Live feedback
+                    </div>
+                    <div className="text-xs text-muted-foreground" data-testid="text-feedback-sub">
+                      Highlights the first wrong character position.
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowFeedback(v => !v)}
+                    className={`h-8 px-3 rounded-xl border text-xs font-black transition-colors ${showFeedback ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-700 border-border"}`}
+                    data-testid="button-toggle-feedback"
+                  >
+                    {showFeedback ? "ON" : "OFF"}
+                  </button>
+                </div>
+
+                {showFeedback && (
+                  <>
+                    {isWrongNow ? (
+                      <div className="mt-2">
+                        <div className="text-sm font-black text-red-700" data-testid="status-incorrect">
+                          Incorrect — check the highlighted position.
+                        </div>
+                        <div className="mt-2 flex flex-wrap items-center gap-2">
+                          <div className="text-xs font-bold text-slate-600" data-testid="text-hint-label">Hint:</div>
+                          <div className="rounded-xl bg-red-50 border border-red-200 px-3 py-2 font-mono font-black text-red-700" data-testid="text-hint-index">
+                            {hintIndex === null ? "—" : `Mismatch at #${hintIndex + 1}`}
+                          </div>
+                          <div className="rounded-xl bg-white border border-border px-3 py-2 font-mono font-black text-slate-900" data-testid="text-hint-expected">
+                            {hintIndex === null ? "Expected: —" : `Expected: ${currentWord[hintIndex] || "(end)"}`}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mt-2 text-sm text-muted-foreground" data-testid="status-correct">
+                        Type the word and press Enter. Mistakes will show you exactly where you diverged.
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
 
               <div className="mt-6 flex gap-3">
                 <input
                   ref={inputRef}
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setInput(v);
+                    if (!showFeedback) return;
+
+                    const expected = currentWord;
+                    const a = (v || "").trim();
+                    const b = (expected || "").trim();
+                    const n = Math.min(a.length, b.length);
+                    let mismatch: number | null = null;
+                    for (let i = 0; i < n; i++) {
+                      if (a[i] !== b[i]) { mismatch = i; break; }
+                    }
+                    if (mismatch === null && a.length > b.length) mismatch = n;
+
+                    if (mismatch !== null && a.length > 0) {
+                      setIsWrongNow(true);
+                      setHintIndex(mismatch);
+                    } else {
+                      setIsWrongNow(false);
+                      setHintIndex(null);
+                    }
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") submit();
                   }}
                   disabled={!running}
                   placeholder={running ? "Type and press Enter" : "Press Start to begin"}
-                  className="flex-1 bg-white border border-border rounded-2xl px-5 py-4 text-xl font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/40 disabled:opacity-60"
+                  className={`flex-1 bg-white border rounded-2xl px-5 py-4 text-xl font-bold text-slate-900 focus:outline-none focus:ring-2 disabled:opacity-60 transition-colors ${isWrongNow ? "border-red-300 focus:ring-red-200" : "border-border focus:ring-primary/40"}`}
                   data-testid="input-timed"
                 />
                 <Button
