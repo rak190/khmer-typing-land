@@ -59,7 +59,7 @@ const DEFAULT_STATE = {
   players: {},
   currentPlayerId: null,
   difficulty: "beginner" as const,
-  immersionMode: false
+  immersionMode: true
 };
 
 const ALL_BADGES = makeBadges();
