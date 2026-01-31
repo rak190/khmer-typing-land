@@ -4,7 +4,7 @@ import { buildWorlds } from '@/lib/curriculum';
 import { cn } from '@/lib/utils';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { Lock, Play, GraduationCap, BarChart3, Trophy, Timer, Keyboard, ShieldCheck, Users, Landmark } from 'lucide-react';
+import { Lock, Play, GraduationCap, BarChart3, Trophy, Timer, Keyboard, ShieldCheck, Users, Landmark, Heart } from 'lucide-react';
 import { HUD } from '@/components/HUD';
 import { useTranslation } from '@/lib/useTranslation';
 
@@ -128,6 +128,17 @@ export const Home: React.FC = () => {
                 >
                   <Landmark size={16} />
                   <span className="font-bold">{t.culturalChallenges}</span>
+                </Button>
+              </Link>
+              <Link href="/survival">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 bg-white/50 border-red-300 text-red-700 hover:bg-white hover:text-red-800 transition-all shadow-sm font-body"
+                  data-testid="link-survival"
+                >
+                  <Heart size={16} />
+                  <span className="font-bold">{t.survivalMode}</span>
                 </Button>
               </Link>
               <Link href="/library">
