@@ -61,32 +61,44 @@ function buildStagesFrom(namePrefix: string, baseList: string[], extrasByStage: 
 export function buildWorlds(): World[] {
   const unlock = [0,12,24,36,48,60,72,84,96];
 
-  // WORLD 1: Basic consonants (small sets)
+  // WORLD 1: Cambodian culture (places/heritage)
+  const CULTURE_WORDS = [
+    "អង្គរ","អង្គរវត្ត","ប្រាសាទ","សៀមរាប","ភ្នំពេញ","កម្ពុជា","ទន្លេ","មេគង្គ","បឹង","ភូមិ","ផ្សារ","វត្ត",
+    "បុរាណ","ប្រវត្តិសាស្ត្រ","វប្បធម៌","ជាតិ","ទង់ជាតិ","រាជធានី","ទេសចរណ៍","សិល្បៈ","របាំ","អប្សរា"
+  ];
   const w1Stages = buildStagesFrom(
-    "Consonants (Basics)",
-    CONSONANTS.slice(0, 27), 
-    { 7:[" "], 8:[" "], 9:[" "] }
+    "វប្បធម៌កម្ពុជា (Culture)",
+    [...CULTURE_WORDS, " ", "។"],
+    { 9:[" ", "។", "៖"] }
   );
 
-  // WORLD 2: Full consonants + speed
+  // WORLD 2: Nature & places (weather/landscape)
+  const NATURE_WORDS = [
+    "ភ្នំ","ព្រៃ","សមុទ្រ","ខ្សាច់","ទឹក","ភ្លៀង","ខ្យល់","ពពក","ព្រះអាទិត្យ","ព្រះច័ន្ទ","ផ្កាយ","ផ្កា",
+    "ដើមឈើ","ស្លឹក","ទន្លេ","ជ្រោះ","វាល","ស្រែ","ទឹកធ្លាក់","រដូវ"
+  ];
   const w2Stages = buildStagesFrom(
-    "Consonants (Full)",
-    CONSONANTS,
-    { 9:[" ", "។"] }
+    "ធម្មជាតិ (Nature)",
+    [...NATURE_WORDS, " ", "។", "?"],
+    { 9:[" ", "។", "؟", "!"].filter(Boolean) as any }
   );
 
-  // WORLD 3: Vowels & vowel signs
+  // WORLD 3: Daily life (common phrases)
+  const DAILY_PHRASES = [
+    "សួស្តី","អរគុណ","សូម","ជួយ","ខ្ញុំ","អ្នក","ថ្ងៃនេះ","ស្អែក","សូមទោស","មិនអី","ជួបគ្នា","សុខសប្បាយ",
+    "ទៅណា","មកពីណា","ចូលចិត្ត","ប៉ុន្មាន","សូមអញ្ជើញ","ល្អណាស់"
+  ];
   const w3Stages = buildStagesFrom(
-    "Vowels & Signs",
-    VOWELS_SIGNS,
-    { 1:["ក","គ"], 2:["ត","ន"], 3:["ប","ម"], 9:[" "]}
+    "ជីវិតប្រចាំថ្ងៃ (Daily)",
+    [...DAILY_PHRASES, " ", "។"],
+    { 9:[" ", "។", "؟", "!"] as any }
   );
 
-  // WORLD 4: Marks + Coeng practice
+  // WORLD 4: Khmer script mastery (letters & marks)
   const w4Stages = buildStagesFrom(
-    "Marks + Subscript",
-    [...SUBSCRIPT, "់","៉","៊","ះ","ំ","៌","៍","៎"],
-    { 5:["ក","គ","ត","ន"], 6:["ប","ម","ស","ហ"], 9:[" "]}
+    "អក្សរខ្មែរ (Script Mastery)",
+    [...CONSONANTS, ...VOWELS_SIGNS, ...SUBSCRIPT, "់","៉","៊","ះ","ំ","៌","៍","៎", " ", "។"],
+    { 9:[" ", "។", "៖", "៕"] }
   );
 
   // WORLD 5: Common combos + food vocab
@@ -105,29 +117,45 @@ export function buildWorlds(): World[] {
     { 9:[" ", "។", "៖"] }
   );
 
-  // WORLD 7: Rhythm
+  // WORLD 7: Phrases + punctuation (rhythm)
+  const RHYTHM_PHRASES = [
+    "សូមអរគុណ។","សូមទោស។","ខ្ញុំចូលចិត្ត។","ថ្ងៃនេះល្អណាស់!","អ្នកសុខសប្បាយទេ?","ជួបគ្នាស្អែក។",
+    "សូមជួយខ្ញុំ។","ខ្ញុំទៅផ្សារ។","ខ្ញុំមកពីភ្នំពេញ។","សូមអញ្ជើញ!"
+  ];
   const w7Stages = buildStagesFrom(
-    "Punctuation + Rhythm",
-    [...PUNCT, " "],
-    { 4:[...CONSONANTS.slice(0,10)], 5:[...VOWELS_SIGNS.slice(0,10)], 9:["៕"] }
+    "ឃ្លា និងសញ្ញាវាក្យ (Rhythm)",
+    [...RHYTHM_PHRASES, ...PUNCT, " "],
+    { 9:["៕","៖","?","!"] }
   );
 
-  // WORLD 8: Numbers
+  // WORLD 8: Numbers + money + time
+  const NUMBER_WORDS = [
+    "០","១","២","៣","៤","៥","៦","៧","៨","៩",
+    "១០","២០","៣០","៥០","១០០","១,០០០",
+    "រៀល","ដុល្លារ","ម៉ោង","នាទី","ថ្ងៃ","ខែ","ឆ្នាំ","តម្លៃ","ប៉ុន្មាន"
+  ];
   const w8Stages = buildStagesFrom(
-    "Numbers + Mixed",
-    [...KHMER_DIGITS, ...CONSONANTS.slice(0, 20), ...VOWELS_SIGNS.slice(0, 10), " "],
-    { 9:["។","៕"] }
+    "លេខ និងពេលវេលា (Numbers)",
+    [...NUMBER_WORDS, " ", "។", "?"],
+    { 9:["។","៕","?","!"] }
   );
 
-  // WORLD 9: Mastery
-  const MASTER_POOL = Array.from(new Set([
-    ...CONSONANTS, ...VOWELS_SIGNS, ...COMMON_COMBOS, ...PUNCT, ...KHMER_DIGITS, " "
-  ]));
-
+  // WORLD 9: Mastery (sentences)
+  const SENTENCES = [
+    "ខ្ញុំចូលចិត្តអាហារខ្មែរ។",
+    "ថ្ងៃនេះខ្ញុំទៅផ្សារជាមួយមិត្ត។",
+    "ភ្លៀងធ្លាក់នៅល្ងាច។",
+    "អង្គរវត្តជាប្រាសាទល្បី។",
+    "សូមអរគុណចំពោះការជួយ។",
+    "អ្នកសុខសប្បាយទេ?",
+    "ខ្ញុំមកពីកម្ពុជា។",
+    "ខ្ញុំចង់រៀនវាយអក្សរឲ្យលឿន។",
+    "សូមអញ្ជើញចូលមក។"
+  ];
   const w9Stages = buildStagesFrom(
-    "Mastery (All)",
-    MASTER_POOL,
-    { 9:["៕","៖","ៈ"] }
+    "ប្រយោគ (Mastery)",
+    [...SENTENCES, " ", "។", "?", "!"],
+    { 9:["៕","៖","?","!"] }
   );
 
   const worlds: World[] = [
@@ -137,11 +165,11 @@ export function buildWorlds(): World[] {
       unlockStars: unlock[0], 
       stages: w1Stages,
       theme: {
-        id: "skills",
-        title: "មូលដ្ឋាន",
-        description: "រៀនព្យញ្ជនៈមូលដ្ឋាន ដើម្បីចាប់ផ្តើមដំណើរជាអ្នកសរសេរ។",
-        emoji: "🪶",
-        keywords: ["អក្សរ", "មូលដ្ឋាន", "ព្យញ្ជនៈ"]
+        id: "culture",
+        title: "វប្បធម៌កម្ពុជា",
+        description: "វាយពាក្យ និងទីកន្លែងល្បីៗរបស់កម្ពុជា ដើម្បីរៀនវាក្យសព្ទ។",
+        emoji: "🛕",
+        keywords: ["កម្ពុជា", "អង្គរ", "ប្រាសាទ", "វប្បធម៌"]
       }
     },
     { 
@@ -150,11 +178,11 @@ export function buildWorlds(): World[] {
       unlockStars: unlock[1], 
       stages: w2Stages,
       theme: {
-        id: "skills",
-        title: "ព្យញ្ជនៈពេញ",
-        description: "បង្កើនល្បឿន និងភាពម៉ត់ចត់ជាមួយព្យញ្ជនៈទាំងអស់។",
-        emoji: "⚔️",
-        keywords: ["ព្យញ្ជនៈ", "ល្បឿន", "ភាពម៉ត់ចត់"]
+        id: "nature",
+        title: "ធម្មជាតិ",
+        description: "រៀនពាក្យធម្មជាតិ (ភ្នំ ព្រៃ ទឹក ភ្លៀង...) និងវាយឲ្យរលូន។",
+        emoji: "🌿",
+        keywords: ["ធម្មជាតិ", "ភ្នំ", "ព្រៃ", "ទឹក"]
       }
     },
     { 
@@ -163,11 +191,11 @@ export function buildWorlds(): World[] {
       unlockStars: unlock[2], 
       stages: w3Stages,
       theme: {
-        id: "skills",
-        title: "ស្រៈ និងសញ្ញាស្រៈ",
-        description: "បន្ថែមស្រៈ ដើម្បីបង្កើតពាក្យបានល្អ។",
-        emoji: "💧",
-        keywords: ["ស្រៈ", "សញ្ញា", "ការផ្សំ"]
+        id: "culture",
+        title: "ជីវិតប្រចាំថ្ងៃ",
+        description: "វាយពាក្យសន្ទនា និងឃ្លាខ្លីៗ ដែលប្រើរៀងរាល់ថ្ងៃ។",
+        emoji: "🗣️",
+        keywords: ["សួស្តី", "អរគុណ", "សូម", "សូមទោស"]
       }
     },
     { 
@@ -176,11 +204,11 @@ export function buildWorlds(): World[] {
       unlockStars: unlock[3], 
       stages: w4Stages,
       theme: {
-        id: "culture",
-        title: "សញ្ញា និងអក្សរផ្សំ",
-        description: "ស្គាល់សញ្ញាពិសេស និងការប្រើ “្” ដើម្បីសរសេរឲ្យត្រឹមត្រូវ។",
-        emoji: "🗿",
-        keywords: ["សញ្ញា", "អក្សរផ្សំ", "អក្សរខ្មែរ"]
+        id: "skills",
+        title: "អក្សរខ្មែរ",
+        description: "ហ្វឹកហាត់អក្សរ ស្រៈ សញ្ញា និងអក្សរផ្សំ ដើម្បីឲ្យច្បាស់ និងត្រឹមត្រូវ។",
+        emoji: "🔤",
+        keywords: ["អក្សរខ្មែរ", "ស្រៈ", "សញ្ញា", "អក្សរផ្សំ"]
       }
     },
     { 
@@ -216,10 +244,10 @@ export function buildWorlds(): World[] {
       stages: w7Stages,
       theme: {
         id: "culture",
-        title: "វប្បធម៌ និងសញ្ញាវាក្យ",
-        description: "វាយឃ្លាខ្មែរ ឲ្យមានចង្វាក់ និងសញ្ញាវាក្យត្រឹមត្រូវ។",
-        emoji: "🎭",
-        keywords: ["វប្បធម៌", "សញ្ញាវាក្យ", "ចង្វាក់"]
+        title: "ឃ្លា និងសញ្ញាវាក្យ",
+        description: "ហ្វឹកហាត់ឃ្លា និងសញ្ញាវាក្យ (។ ? ! ៖) ដើម្បីវាយបានមានចង្វាក់។",
+        emoji: "🎶",
+        keywords: ["ឃ្លា", "សញ្ញាវាក្យ", "ចង្វាក់", "វាក្យ"]
       }
     },
     { 
@@ -228,11 +256,11 @@ export function buildWorlds(): World[] {
       unlockStars: unlock[7], 
       stages: w8Stages,
       theme: {
-        id: "nature",
-        title: "ធម្មជាតិ និងលេខ",
-        description: "បន្ថែមលេខខ្មែរ និងពាក្យធម្មជាតិ ដើម្បីបង្កើនភាពរលូន។",
-        emoji: "🌾",
-        keywords: ["ធម្មជាតិ", "លេខ", "ការអនុវត្ត"]
+        id: "culture",
+        title: "លេខ និងពេលវេលា",
+        description: "រៀនលេខ តម្លៃ ប្រាក់ និងពេលវេលា ដើម្បីប្រើក្នុងជីវិតប្រចាំថ្ងៃ។",
+        emoji: "🕒",
+        keywords: ["លេខ", "តម្លៃ", "ម៉ោង", "រៀល"]
       }
     },
     { 
@@ -242,10 +270,10 @@ export function buildWorlds(): World[] {
       stages: w9Stages,
       theme: {
         id: "skills",
-        title: "ជំនាញខ្ពស់",
-        description: "ប្រឡងចុងក្រោយ៖ ពាក្យ ចង្វាក់ និងគ្រប់អ្វីដែលបានរៀន។",
-        emoji: "👑",
-        keywords: ["ជំនាញ", "ចុងក្រោយ", "ម៉ាស្ទ័រ"]
+        title: "ប្រយោគ",
+        description: "វាយប្រយោគពេញៗ ដើម្បីបង្កើនល្បឿន និងភាពត្រឹមត្រូវ។",
+        emoji: "📜",
+        keywords: ["ប្រយោគ", "ល្បឿន", "ភាពត្រឹមត្រូវ"]
       }
     },
   ];
