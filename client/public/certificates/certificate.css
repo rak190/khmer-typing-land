@@ -351,26 +351,6 @@ footer {
     margin-right: 10px;
 }
 
-.qr-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.qr-code {
-    width: 72px;
-    height: 72px;
-    background: rgba(255, 255, 255, 0.96);
-    border: 1px solid rgba(212, 175, 55, 0.7);
-    border-radius: 12px;
-}
-
-.qr-placeholder span {
-    font-size: 10px;
-    font-weight: 900;
-    color: var(--primary);
-}
 
 @media print {
     body { background: none; }

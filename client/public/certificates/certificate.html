@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="certificate.css">
     <link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;600;700&family=Noto+Sans+Khmer:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 <body>
     <div class="certificate-container" id="certificate">
@@ -87,27 +86,6 @@
 
                     if (date) document.getElementById('certDate').textContent = date;
 
-                    // QR code (links to Khmer Typing Land)
-                    (async () => {
-                        try {
-                            const qrCanvas = document.getElementById('certQr');
-                            if (!qrCanvas) return;
-                            const QRCode = window.QRCode;
-                            if (!QRCode) return;
-
-                            const targetUrl = urlParams.get('qr') || 'https://khmertypingland.example';
-                            await QRCode.toCanvas(qrCanvas, targetUrl, {
-                                margin: 1,
-                                width: 120,
-                                color: {
-                                    dark: '#1A237E',
-                                    light: '#FFFFFF'
-                                }
-                            });
-                        } catch (e) {
-                            // ignore
-                        }
-                    })();
                 </script>
 
                 <p class="achievement-text">
@@ -149,10 +127,6 @@
                         <span id="certId">KTL-000000</span>
                     </div>
                 </div>
-                <div class="qr-placeholder">
-                    <canvas id="certQr" class="qr-code" width="120" height="120" aria-label="QR"></canvas>
-                    <span>VERIFY</span>
-                </div>
             </footer>
         </div>
     </div>
@@ -167,9 +141,6 @@
             const btn = document.querySelector('.download-btn');
             btn.style.display = 'none';
 
-            const qrEl = document.getElementById('certQr');
-            const prevQrDisplay = qrEl ? qrEl.style.display : '';
-            if (qrEl) qrEl.style.display = 'block';
 
             try {
                 const canvas = await html2canvas(cert, {
@@ -182,7 +153,6 @@
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             } finally {
-                if (qrEl) qrEl.style.display = prevQrDisplay;
                 btn.style.display = 'block';
             }
         }
