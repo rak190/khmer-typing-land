@@ -119,17 +119,6 @@ export const Home: React.FC = () => {
                   <span className="font-bold">{t.freeTyping}</span>
                 </Button>
               </Link>
-              <Link href="/accuracy">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 bg-white/50 border-emerald-300 text-emerald-700 hover:bg-white hover:text-emerald-800 transition-all shadow-sm font-body"
-                  data-testid="link-accuracy-mode"
-                >
-                  <ShieldCheck size={16} />
-                  <span className="font-bold">{t.accuracyMode}</span>
-                </Button>
-              </Link>
               <Link href="/cultural">
                 <Button
                   variant="outline"
