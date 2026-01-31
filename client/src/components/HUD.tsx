@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useGameStore } from '@/lib/store';
-import { Badge, Volume2, VolumeX, Sun, Moon } from 'lucide-react';
+import { Badge, Volume2, VolumeX, Sun, Moon, Palette } from 'lucide-react';
 import { makeBadges } from '@/lib/badges';
 import { Link } from 'wouter';
 import { sounds } from '@/lib/sounds';
@@ -61,6 +61,15 @@ export const HUD: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-3">
+        <Link href="/themes">
+          <button 
+            className="p-2 rounded-full bg-secondary border border-border text-foreground hover:text-primary transition-colors"
+            title="Customize Theme"
+          >
+            <Palette size={18} />
+          </button>
+        </Link>
+        
         <button 
           onClick={toggleTheme}
           className="p-2 rounded-full bg-secondary border border-border text-foreground hover:text-primary transition-colors"

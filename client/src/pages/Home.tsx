@@ -4,7 +4,7 @@ import { buildWorlds } from '@/lib/curriculum';
 import { cn } from '@/lib/utils';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { Lock, Play, GraduationCap, BarChart3, Trophy, Timer, Keyboard, ShieldCheck } from 'lucide-react';
+import { Lock, Play, GraduationCap, BarChart3, Trophy, Timer, Keyboard, ShieldCheck, Users } from 'lucide-react';
 import { HUD } from '@/components/HUD';
 
 import { STORY_CHAPTERS } from '@/lib/story';
@@ -82,6 +82,17 @@ export const Home: React.FC = () => {
                 >
                   <Trophy size={16} />
                   <span className="font-bold">ការប្រកួត</span>
+                </Button>
+              </Link>
+              <Link href="/multiplayer">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 bg-white/50 border-purple-300 text-purple-700 hover:bg-white hover:text-purple-800 transition-all shadow-sm font-body"
+                  data-testid="link-multiplayer"
+                >
+                  <Users size={16} />
+                  <span className="font-bold">ប្រកួតផ្ទាល់</span>
                 </Button>
               </Link>
               <Link href="/timed">

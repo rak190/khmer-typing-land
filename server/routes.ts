@@ -112,9 +112,9 @@ export async function registerRoutes(
         await storage.updateParticipantProgress(participantId, progress, wpm, accuracy);
 
         // Find the room this participant is in
-        for (const [roomCode, roomState] of activeRooms.entries()) {
+        for (const [roomCode, roomState] of Array.from(activeRooms.entries())) {
           const participant = Array.from(roomState.participants.values()).find(
-            p => p.participantId === participantId
+            (p) => p.participantId === participantId
           );
           
           if (participant) {
@@ -174,7 +174,7 @@ export async function registerRoutes(
       console.log("Client disconnected:", socket.id);
       
       // Clean up room state
-      for (const [roomCode, roomState] of activeRooms.entries()) {
+      for (const [roomCode, roomState] of Array.from(activeRooms.entries())) {
         if (roomState.participants.has(socket.id)) {
           roomState.participants.delete(socket.id);
           if (roomState.participants.size === 0) {
