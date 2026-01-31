@@ -22,18 +22,21 @@ interface GameState {
   selectedBadgeId: string;
   players: Record<string, Player>;
   currentPlayerId: string | null;
-  
+
+  difficulty: "beginner" | "intermediate" | "expert";
+
   // Actions
   setProfileName: (name: string) => void;
+  setDifficulty: (difficulty: "beginner" | "intermediate" | "expert") => void;
   recordStageResult: (worldId: string, stageId: string, stars: number) => { newBadges: string[] };
   selectBadge: (id: string) => void;
   resetProgress: () => void;
-  
+
   // Multi-player Actions
   addPlayer: (name: string) => void;
   switchPlayer: (name: string) => void;
   deletePlayer: (name: string) => void;
-  
+
   // Computed helpers (not stored)
   getTotalStars: () => number;
   getUnlockedWorlds: () => string[];
@@ -45,7 +48,8 @@ const DEFAULT_STATE = {
   badgesOwned: ["B001"],
   selectedBadgeId: "B001",
   players: {},
-  currentPlayerId: null
+  currentPlayerId: null,
+  difficulty: "beginner" as const
 };
 
 const ALL_BADGES = makeBadges();
@@ -67,6 +71,20 @@ export const useGameStore = create<GameState>()(
           return { ...newState, players: updatedPlayers };
         }
         return newState;
+      }),
+
+      setDifficulty: (difficulty) => set((state) => {
+        const next = { difficulty };
+        if (state.currentPlayerId) {
+          const updatedPlayers = { ...state.players };
+          updatedPlayers[state.currentPlayerId] = {
+            ...updatedPlayers[state.currentPlayerId],
+            // difficulty is global in this mock; we still keep it consistent when switching
+            name: state.profile.name
+          };
+          return { ...next, players: updatedPlayers };
+        }
+        return next;
       }),
 
       recordStageResult: (worldId: string, stageId: string, stars: number): { newBadges: string[] } => {
@@ -169,7 +187,8 @@ export const useGameStore = create<GameState>()(
           profile: { name: player.name },
           progress: player.progress,
           badgesOwned: player.badgesOwned,
-          selectedBadgeId: player.selectedBadgeId
+          selectedBadgeId: player.selectedBadgeId,
+          difficulty: state.difficulty
         };
       }),
 
@@ -205,7 +224,8 @@ export const useGameStore = create<GameState>()(
         badgesOwned: state.badgesOwned,
         selectedBadgeId: state.selectedBadgeId,
         players: state.players,
-        currentPlayerId: state.currentPlayerId
+        currentPlayerId: state.currentPlayerId,
+        difficulty: state.difficulty
       }),
     }
   )

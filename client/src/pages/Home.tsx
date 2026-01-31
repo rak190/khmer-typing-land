@@ -12,7 +12,7 @@ import { STORY_CHAPTERS } from '@/lib/story';
 const WORLDS = buildWorlds();
 
 export const Home: React.FC = () => {
-  const { getTotalStars, profile, setProfileName, badgesOwned, resetProgress } = useGameStore();
+  const { getTotalStars, profile, setProfileName, badgesOwned, resetProgress, difficulty, setDifficulty } = useGameStore();
   const totalStars = getTotalStars();
 
   return (
@@ -49,6 +49,19 @@ export const Home: React.FC = () => {
                data-testid="input-profile-name"
              />
              <div className="flex gap-2 ml-auto flex-wrap justify-end">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/50 border border-amber-300 shadow-sm" data-testid="group-difficulty">
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-700">Difficulty</span>
+                <select
+                  value={difficulty || "beginner"}
+                  onChange={(e) => setDifficulty(e.target.value as any)}
+                  className="bg-transparent text-sm font-bold text-amber-900 focus:outline-none"
+                  data-testid="select-difficulty"
+                >
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="expert">Expert</option>
+                </select>
+              </div>
               <Link href="/stats">
                 <Button
                   variant="outline"

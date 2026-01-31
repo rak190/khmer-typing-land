@@ -22,7 +22,7 @@ type GamePhase = "intro" | "platform" | "runner" | "defender" | "result" | "east
 export const Play: React.FC = () => {
   const [, params] = useRoute("/play/:wid/:sid");
   const [, setLocation] = useLocation();
-  const { recordStageResult, selectedBadgeId, getTotalStars } = useGameStore();
+  const { recordStageResult, selectedBadgeId, getTotalStars, difficulty } = useGameStore();
 
   const [phase, setPhase] = useState<GamePhase>("intro");
   const [stats, setStats] = useState({ hits: 0, miss: 0 });
@@ -67,9 +67,13 @@ export const Play: React.FC = () => {
 
   // Difficulty tuning
   const stageNo = parseInt(stageId?.replace("s","") || "1");
-  const platformCount = 10 + stageNo * 2;
-  const runGoal = 50 + stageNo * 5; // Increased from 16
-  const killsGoal = 10 + stageNo * 2;
+
+  const diff = difficulty || "beginner";
+  const diffFactor = diff === "beginner" ? 1 : diff === "intermediate" ? 1.25 : 1.55;
+
+  const platformCount = Math.round((10 + stageNo * 2) * diffFactor);
+  const runGoal = Math.round((50 + stageNo * 5) * diffFactor);
+  const killsGoal = Math.round((10 + stageNo * 2) * diffFactor);
 
   const handlePhaseComplete = (phaseStats: { hits: number, miss: number }) => {
     const newStats = { hits: stats.hits + phaseStats.hits, miss: stats.miss + phaseStats.miss };
@@ -194,6 +198,7 @@ export const Play: React.FC = () => {
             pool={stage.pool} 
             distanceGoal={runGoal} 
             mascot={mascot}
+            difficulty={difficulty}
             onComplete={handlePhaseComplete}
             onQuit={handleQuit}
           />

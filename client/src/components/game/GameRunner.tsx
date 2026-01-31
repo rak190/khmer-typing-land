@@ -10,11 +10,12 @@ interface GameProps {
   pool: string[];
   distanceGoal: number;
   mascot: string;
+  difficulty?: "beginner" | "intermediate" | "expert";
   onComplete: (stats: { hits: number, miss: number }) => void;
   onQuit: () => void;
 }
 
-export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, onComplete, onQuit }) => {
+export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, difficulty = "beginner", onComplete, onQuit }) => {
   const [target, setTarget] = useState<string>("");
   const [hits, setHits] = useState(0);
   const [miss, setMiss] = useState(0);
@@ -24,6 +25,9 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
 
   const [combo, setCombo] = useState(0);
   const [speedMult, setSpeedMult] = useState(1);
+
+  const baseSpeedBoost = difficulty === "beginner" ? 0.08 : difficulty === "intermediate" ? 0.11 : 0.14;
+  const maxSpeedBoost = difficulty === "beginner" ? 1.8 : difficulty === "intermediate" ? 2.0 : 2.2;
 
   const heroRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
@@ -129,7 +133,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, on
         // Combo & Speed logic
         const newCombo = combo + 1;
         setCombo(newCombo);
-        const newSpeed = 1 + Math.min(newCombo * 0.1, 2);
+        const newSpeed = 1 + Math.min(newCombo * baseSpeedBoost, maxSpeedBoost);
         stateRef.current.speed = newSpeed;
         setSpeedMult(newSpeed);
 
