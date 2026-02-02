@@ -43,9 +43,10 @@ function buildStagesFrom(namePrefix: string, baseList: string[], extrasByStage: 
   return chunks.map((c, idx) => {
     const stageNo = idx + 1;
     const extra = extrasByStage[stageNo] || [];
+    const khmerNumbers = ["១", "២", "៣", "៤", "៥", "៦", "៧", "៨", "៩"];
     return {
       id: "s" + stageNo,
-      name: `${namePrefix} — Stage ${stageNo}`,
+      name: `${namePrefix} — វគ្គទី ${khmerNumbers[idx]}`,
       pool: [...c, ...extra].filter(Boolean)
     };
   });
@@ -56,56 +57,56 @@ export function buildWorlds(): World[] {
 
   // WORLD 1: Basic consonants (small sets)
   const w1Stages = buildStagesFrom(
-    "Consonants (Basics)",
+    "ព្យញ្ជនៈ (មូលដ្ឋាន)",
     CONSONANTS.slice(0, 27), 
     { 7:[" "], 8:[" "], 9:[" "] }
   );
 
   // WORLD 2: Full consonants + speed
   const w2Stages = buildStagesFrom(
-    "Consonants (Full)",
+    "ព្យញ្ជនៈ (ពេញលេញ)",
     CONSONANTS,
     { 9:[" ", "។"] }
   );
 
   // WORLD 3: Vowels & vowel signs
   const w3Stages = buildStagesFrom(
-    "Vowels & Signs",
+    "ស្រៈ និង សញ្ញាស្រៈ",
     VOWELS_SIGNS,
     { 1:["ក","គ"], 2:["ត","ន"], 3:["ប","ម"], 9:[" "]}
   );
 
   // WORLD 4: Marks + Coeng practice
   const w4Stages = buildStagesFrom(
-    "Marks + Subscript",
+    "សញ្ញា និង ជើងអក្សរ",
     [...SUBSCRIPT, "់","៉","៊","ះ","ំ","៌","៍","៎"],
     { 5:["ក","គ","ត","ន"], 6:["ប","ម","ស","ហ"], 9:[" "]}
   );
 
   // WORLD 5: Common combos
   const w5Stages = buildStagesFrom(
-    "Common Combos",
+    "ការផ្សំពេញនិយម",
     COMMON_COMBOS,
     { 1:["ក","គ","ត","ន"], 2:["ប","ម","ស","ហ"], 9:[" ", "។"] }
   );
 
   // WORLD 6: Mixed
   const w6Stages = buildStagesFrom(
-    "Mixed Practice",
+    "ការអនុវត្តចម្រុះ",
     [...CONSONANTS.slice(0, 20), ...VOWELS_SIGNS.slice(0, 12), ...COMMON_COMBOS],
     { 9:[" ", "។", "៖"] }
   );
 
   // WORLD 7: Rhythm
   const w7Stages = buildStagesFrom(
-    "Punctuation + Rhythm",
+    "សញ្ញាវណ្ណយុត្តិ និង ចង្វាក់",
     [...PUNCT, " "],
     { 4:[...CONSONANTS.slice(0,10)], 5:[...VOWELS_SIGNS.slice(0,10)], 9:["៕"] }
   );
 
   // WORLD 8: Numbers
   const w8Stages = buildStagesFrom(
-    "Numbers + Mixed",
+    "លេខ និង ការលាយបញ្ចូលគ្នា",
     [...KHMER_DIGITS, ...CONSONANTS.slice(0, 20), ...VOWELS_SIGNS.slice(0, 10), " "],
     { 9:["។","៕"] }
   );
@@ -116,7 +117,7 @@ export function buildWorlds(): World[] {
   ]));
 
   const w9Stages = buildStagesFrom(
-    "Mastery (All)",
+    "ជំនាញខ្ពស់ (ទាំងអស់)",
     MASTER_POOL,
     { 9:["៕","៖","ៈ"] }
   );
