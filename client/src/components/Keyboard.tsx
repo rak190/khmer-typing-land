@@ -93,14 +93,14 @@ const KEY_ROWS = [
   [
     { code:"Digit1" },{ code:"Digit2" },{ code:"Digit3" },{ code:"Digit4" },{ code:"Digit5" },
     { code:"Digit6" },{ code:"Digit7" },{ code:"Digit8" },{ code:"Digit9" },{ code:"Digit0" },
-    { code:"Minus" },{ code:"Equal" },{ code:"Backspace", w:"w3", fixed:"⌫" }
+    { code:"Minus", fixed:"-" },{ code:"Equal", fixed:"=" },{ code:"Backspace", w:"w3", fixed:"⌫" }
   ],
   // Row 2
   [
     { code:"Tab", w:"w2", fixed:"Tab" },
     { code:"KeyQ" },{ code:"KeyW" },{ code:"KeyE" },{ code:"KeyR" },{ code:"KeyT" },{ code:"KeyY" },
     { code:"KeyU" },{ code:"KeyI" },{ code:"KeyO" },{ code:"KeyP" },
-    { code:"BracketLeft" },{ code:"BracketRight" },
+    { code:"BracketLeft", fixed:"[" },{ code:"BracketRight", fixed:"]" },
     { code:"Enter", w:"w3", fixed:"Enter" }
   ],
   // Row 3
@@ -108,13 +108,13 @@ const KEY_ROWS = [
     { code:"CapsLock", w:"w3", fixed:"Caps" },
     { code:"KeyA" },{ code:"KeyS" },{ code:"KeyD" },{ code:"KeyF" },{ code:"KeyG" },{ code:"KeyH" },
     { code:"KeyJ" },{ code:"KeyK" },{ code:"KeyL" },
-    { code:"Semicolon" },{ code:"Quote" }
+    { code:"Semicolon", fixed:";" },{ code:"Quote", fixed:"'" }
   ],
   // Row 4
   [
     { code:"ShiftLeft", w:"w4", fixed:"Shift" },
     { code:"KeyZ" },{ code:"KeyX" },{ code:"KeyC" },{ code:"KeyV" },{ code:"KeyB" },{ code:"KeyN" },{ code:"KeyM" },
-    { code:"Comma" },{ code:"Period" },{ code:"Slash" },
+    { code:"Comma", fixed:"," },{ code:"Period", fixed:"." },{ code:"Slash", fixed:"/" },
     { code:"ShiftRight", w:"w4", fixed:"Shift" }
   ],
   // Row 5
