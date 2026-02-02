@@ -68,7 +68,6 @@ export const HUD: React.FC = () => {
           </span>
         </div>
       </div>
-
       <div className="flex items-center gap-3">
         <Link href="/themes">
           <button 
@@ -114,7 +113,7 @@ export const HUD: React.FC = () => {
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl animate-float">🇰🇭</div>
                   <div>
-                    <h2 className="text-3xl font-black tracking-tight font-display">ពិភពវាយអត្ថបទខ្មែរ</h2>
+                    <h2 className="text-3xl font-black tracking-tight font-display">Khmer Typing Land</h2>
                     <p className="text-primary-foreground/80 font-medium font-body">ស្ទាត់ជំនាញក្នុងការវាយអត្ថបទខ្មែរ</p>
                   </div>
                 </div>
