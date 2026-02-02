@@ -21,15 +21,27 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
   
   // Decide what to show
   let label = "";
+  let subLabel = "";
   
   if (fixed) {
     label = fixed;
   } else if (map) {
     const { base, shift, altgr } = map;
-    if (mod === "SHIFT") label = shift || base;
-    else if (mod === "ALTGR") label = altgr || base;
-    else label = base;
+    if (mod === "SHIFT") {
+      label = shift || base;
+      subLabel = base;
+    } else if (mod === "ALTGR") {
+      label = altgr || base;
+      subLabel = base;
+    } else {
+      label = base;
+      subLabel = shift || "";
+    }
   }
+
+  const isShiftKey = code === "ShiftLeft" || code === "ShiftRight";
+  const isCapsLock = code === "CapsLock";
+  const isModifierActive = (isShiftKey && mod === "SHIFT") || (isCapsLock && mod === "SHIFT");
 
   return (
     <div 
@@ -45,13 +57,24 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
         wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-destructive/20",
         isTargetKey && "bg-primary/20 border-primary/50 text-primary shadow-[0_0_15px_rgba(59,130,246,0.2)]",
         isModifierNeeded && "bg-amber-400/20 border-amber-500/50 text-amber-600 shadow-[0_0_15px_rgba(251,191,36,0.2)]",
+        isModifierActive && "bg-primary/30 border-primary shadow-[0_0_20px_rgba(59,130,246,0.5)] scale-105 z-10",
         !map && !fixed && "opacity-50",
         className
       )}
     >
-      <span className={cn("text-lg font-black transition-all font-khmer", (isTargetKey || active) ? "text-primary scale-110" : isModifierNeeded ? "text-amber-600" : "text-slate-600")}>
-        {label}
-      </span>
+      <div className="flex flex-col items-center justify-center leading-tight">
+        <span className={cn(
+          "text-lg font-black transition-all font-khmer", 
+          (isTargetKey || active || isModifierActive) ? "text-primary scale-110" : isModifierNeeded ? "text-amber-600" : "text-slate-600"
+        )}>
+          {label}
+        </span>
+        {subLabel && !fixed && (
+          <span className="text-[10px] opacity-40 font-khmer font-bold">
+            {subLabel}
+          </span>
+        )}
+      </div>
       
       <span className={cn("absolute right-1 bottom-0.5 text-[8px] font-mono transition-colors", (isTargetKey || active) ? "text-primary/40" : isModifierNeeded ? "text-amber-600/40" : "text-slate-400")}>
         {code.replace(/Key|Digit/, "")}
@@ -165,7 +188,8 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
     const handleKeyDown = (e: KeyboardEvent) => {
       const altgr = e.getModifierState?.("AltGraph") || (e.ctrlKey && e.altKey);
       const shift = e.shiftKey;
-      const newMod = altgr ? "ALTGR" : shift ? "SHIFT" : "BASE";
+      const capsLock = e.getModifierState?.("CapsLock");
+      const newMod = altgr ? "ALTGR" : (shift || capsLock) ? "SHIFT" : "BASE";
       setMod(newMod);
       onModChange?.(newMod);
     };
@@ -173,7 +197,8 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
     const handleKeyUp = (e: KeyboardEvent) => {
       const altgr = e.getModifierState?.("AltGraph") || (e.ctrlKey && e.altKey);
       const shift = e.shiftKey;
-      const newMod = altgr ? "ALTGR" : shift ? "SHIFT" : "BASE";
+      const capsLock = e.getModifierState?.("CapsLock");
+      const newMod = altgr ? "ALTGR" : (shift || capsLock) ? "SHIFT" : "BASE";
       setMod(newMod);
       onModChange?.(newMod);
     };
