@@ -167,14 +167,29 @@
                     if (!obj.error) {
                         updateProgress(100, 'រួចរាល់!');
                         
-                        const link = document.createElement('a');
+                        // Convert base64 to blob for better download compatibility
+                        var byteString = atob(obj.image.split(',')[1]);
+                        var mimeString = obj.image.split(',')[0].split(':')[1].split(';')[0];
+                        var ab = new ArrayBuffer(byteString.length);
+                        var ia = new Uint8Array(ab);
+                        for (var i = 0; i < byteString.length; i++) {
+                            ia[i] = byteString.charCodeAt(i);
+                        }
+                        var blob = new Blob([ab], {type: mimeString});
+                        var blobUrl = URL.createObjectURL(blob);
+                        
+                        var link = document.createElement('a');
+                        link.href = blobUrl;
                         link.download = 'Khmer-Typing-Certificate-' + document.getElementById('certName').textContent + '.gif';
-                        link.href = obj.image;
+                        link.style.display = 'none';
                         document.body.appendChild(link);
                         link.click();
-                        document.body.removeChild(link);
                         
-                        setTimeout(resetButton, 1500);
+                        setTimeout(function() {
+                            document.body.removeChild(link);
+                            URL.revokeObjectURL(blobUrl);
+                            resetButton();
+                        }, 1500);
                     } else {
                         console.error('GIF error:', obj.error);
                         alert('មានបញ្ហា។ សូមព្យាយាមម្ដងទៀត។');
