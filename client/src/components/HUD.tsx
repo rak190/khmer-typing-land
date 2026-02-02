@@ -73,14 +73,6 @@ export const HUD: React.FC = () => {
         </Link>
         
         <button 
-          onClick={toggleTheme}
-          className="p-2 rounded-full bg-secondary border border-border text-foreground hover:text-primary transition-colors"
-          title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
-        >
-          {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-        </button>
-
-        <button 
           onClick={toggleMusic}
           className="p-2 rounded-full bg-secondary border border-border text-slate-600 dark:text-slate-400 hover:text-primary transition-colors"
           title={isMuted ? "Enable Background Music" : "Mute Background Music"}
