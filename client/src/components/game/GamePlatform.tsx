@@ -105,7 +105,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
 
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-[1200px] mx-auto gap-4">
-      <div className="glass-panel p-4 rounded-2xl w-full text-center relative overflow-hidden min-h-[350px] flex flex-col items-center justify-between pt-[10px] pb-[10px]">
+      <div className="glass-panel p-4 rounded-2xl w-full text-center relative overflow-hidden min-h-[350px] flex flex-col items-center justify-between pl-[16px] pr-[16px] pt-[10px] pb-[10px] mt-[-7px] mb-[-7px]">
         {/* Progress bar and other HUD elements */}
         
         {/* Shift Hint Sticky Note */}
