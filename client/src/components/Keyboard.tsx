@@ -57,15 +57,15 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
   return (
     <div 
       className={cn(
-        "key-cap h-14 rounded-xl border border-border text-foreground relative flex items-center justify-center transition-all duration-200",
-        w === "w2" && "w-[80px]",
-        w === "w3" && "w-[110px]",
-        w === "w4" && "w-[140px]",
-        w === "w5" && "w-[400px]",
-        !w && "w-[60px]",
-        active && "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg",
-        correct && "ring-2 ring-accent ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-accent/20",
-        wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-destructive/20",
+        "key-cap h-14 rounded-xl border border-border text-foreground relative flex items-center justify-center transition-all duration-200 hover:bg-accent/10 hover:border-accent/50 hover:shadow-md cursor-pointer",
+        w === "w2" && "w-[85px]",
+        w === "w3" && "w-[120px]",
+        w === "w4" && "w-[160px]",
+        w === "w5" && "w-[450px]",
+        !w && "w-[65px]",
+        active && "ring-2 ring-primary ring-offset-2 ring-offset-background scale-105 z-20 shadow-lg",
+        correct && "ring-2 ring-accent ring-offset-2 ring-offset-background scale-105 z-20 shadow-lg bg-accent/20",
+        wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-105 z-20 shadow-lg bg-destructive/20",
         isTargetKey && "bg-primary/20 border-primary/50 text-primary shadow-[0_0_15px_rgba(59,130,246,0.2)]",
         isModifierNeeded && "bg-amber-400/20 border-amber-500/50 text-amber-600 shadow-[0_0_15px_rgba(251,191,36,0.2)]",
         isModifierActive && mod === "SHIFT" && "bg-purple-500/30 border-purple-500 shadow-[0_0_20px_rgba(168,85,247,0.5)] scale-105 z-10",
@@ -250,14 +250,14 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
 
   return (
     <div className={cn(
-      "flex flex-col gap-3 p-10 rounded-[48px] bg-card/50 border-[2px] border-slate-300/80 w-full max-w-[1400px] mx-auto backdrop-blur-sm relative shadow-md transition-all duration-300",
-      mod === "BASE" && "bg-slate-50/40",
-      mod === "SHIFT" && "border-purple-500 shadow-[0_0_50px_rgba(168,85,247,0.4)] bg-purple-500/10",
-      mod === "ALTGR" && "border-amber-500 shadow-[0_0_50px_rgba(245,158,11,0.4)] bg-amber-500/10",
+      "flex flex-col gap-6 p-12 rounded-[60px] bg-card/50 border-[3px] border-slate-300/80 w-full max-w-[1450px] mx-auto backdrop-blur-md relative shadow-2xl transition-all duration-500 items-center justify-center",
+      mod === "BASE" && "bg-slate-50/60 shadow-slate-200/20",
+      mod === "SHIFT" && "border-purple-500 shadow-[0_0_60px_rgba(168,85,247,0.5)] bg-purple-500/15",
+      mod === "ALTGR" && "border-amber-500 shadow-[0_0_60px_rgba(245,158,11,0.5)] bg-amber-500/15",
       className
     )}>
-      <div className="flex justify-between items-center text-sm px-1 mb-1">
-        <div className="flex gap-2">
+      <div className="flex justify-between items-center w-full px-6 mb-2">
+        <div className="flex gap-3">
           <div className={cn(
             "flex items-center gap-2 px-3 py-1 rounded-full border-2 transition-all duration-300 text-sm font-black",
             mod === "BASE" && "bg-secondary border-border text-foreground",
