@@ -7,6 +7,7 @@ import { Keyboard } from '@/components/Keyboard';
 import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 import { sounds } from '@/lib/sounds';
 import { AttackEffect, SkillInfo } from './AttackEffect';
+import { getAvatarSkill } from '@/lib/avatar-skills';
 
 interface GameProps {
   pool: string[];
@@ -28,6 +29,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
   const [combo, setCombo] = useState(0);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [attackTrigger, setAttackTrigger] = useState(0);
+  const [isAttacking, setIsAttacking] = useState(false);
   
   const pick = useCallback(() => {
     return pool[Math.floor(Math.random() * pool.length)];
@@ -68,6 +70,8 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
         setDone(d => d + 1);
         setFlash("good");
         setAttackTrigger(prev => prev + 1);
+        setIsAttacking(true);
+        setTimeout(() => setIsAttacking(false), 200);
         
         if (newCombo % 5 === 0) {
           showFeedback(`${newCombo} COMBO!`);
@@ -153,6 +157,42 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
         </div>
 
         <div className="flex-1 flex flex-col items-center justify-center relative">
+          {/* Avatar Display */}
+          <div className="absolute left-8 bottom-8 flex flex-col items-center gap-1">
+            <div 
+              className={cn(
+                "w-16 h-16 border-2 rounded-xl flex items-center justify-center text-3xl transition-all",
+                isAttacking && "scale-110 -rotate-6"
+              )}
+              style={{
+                borderColor: getAvatarSkill(mascot).color,
+                backgroundColor: `${getAvatarSkill(mascot).color}20`,
+                boxShadow: isAttacking 
+                  ? `0 0 40px ${getAvatarSkill(mascot).color}` 
+                  : `0 0 20px ${getAvatarSkill(mascot).color}30`
+              }}
+            >
+              {mascot}
+              {isAttacking && (
+                <div 
+                  className="absolute -right-4 -top-2 text-xl animate-ping"
+                  style={{ filter: `drop-shadow(0 0 8px ${getAvatarSkill(mascot).color})` }}
+                >
+                  {getAvatarSkill(mascot).projectile}
+                </div>
+              )}
+            </div>
+            <span 
+              className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full"
+              style={{ 
+                color: getAvatarSkill(mascot).color,
+                backgroundColor: `${getAvatarSkill(mascot).color}15`
+              }}
+            >
+              {getAvatarSkill(mascot).name}
+            </span>
+          </div>
+
           {/* Combo Display */}
           {combo > 1 && (
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-8 flex flex-col items-center animate-bounce">

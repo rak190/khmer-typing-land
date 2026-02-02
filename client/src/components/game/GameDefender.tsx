@@ -28,6 +28,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
   const [explosion, setExplosion] = useState<{x: number, y: number, color: string} | null>(null);
   const [shield, setShield] = useState(0); // 0 to 100
   const [attackTrigger, setAttackTrigger] = useState(0);
+  const [isAttacking, setIsAttacking] = useState(false);
 
   const requestRef = useRef<number>(0);
   const boxRef = useRef<HTMLDivElement>(null);
@@ -159,6 +160,8 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
             setCombo(newCombo);
             
             setAttackTrigger(prev => prev + 1);
+            setIsAttacking(true);
+            setTimeout(() => setIsAttacking(false), 300);
             triggerExplosion(stateRef.current.enemy.x, stateRef.current.enemy.isBoss ? "purple" : "orange");
             
             stateRef.current.hits++;
@@ -245,19 +248,48 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
 
           {/* Hero */}
           <div className="absolute left-16 bottom-16 flex flex-col items-center gap-2 z-10">
-            <div className={cn(
-              "w-20 h-20 bg-primary/20 border-2 border-primary/50 rounded-2xl flex items-center justify-center text-5xl shadow-[0_0_30_rgba(90,200,250,0.3)] transition-all relative",
-              combo > 5 && "border-white shadow-[0_0_50px_rgba(255,255,255,0.4)] scale-110",
-              shield > 0 && "ring-4 ring-cyan-400/50"
-            )}>
-              <div className="absolute -inset-2 border-2 border-primary/20 rounded-3xl animate-[spin_10s_linear_infinite]" />
+            <div 
+              className={cn(
+                "w-20 h-20 border-2 rounded-2xl flex items-center justify-center text-5xl transition-all relative",
+                combo > 5 && "scale-110",
+                shield > 0 && "ring-4 ring-cyan-400/50",
+                isAttacking && "scale-125 -rotate-12"
+              )}
+              style={{
+                borderColor: getAvatarSkill(mascot).color,
+                backgroundColor: `${getAvatarSkill(mascot).color}20`,
+                boxShadow: isAttacking 
+                  ? `0 0 50px ${getAvatarSkill(mascot).color}, 0 0 100px ${getAvatarSkill(mascot).color}` 
+                  : `0 0 30px ${getAvatarSkill(mascot).color}40`
+              }}
+            >
+              <div 
+                className="absolute -inset-2 border-2 rounded-3xl animate-[spin_10s_linear_infinite]" 
+                style={{ borderColor: `${getAvatarSkill(mascot).color}30` }}
+              />
               {shield > 0 && (
                 <div className="absolute inset-0 bg-cyan-400/20 rounded-2xl animate-pulse" />
               )}
               {mascot}
+              
+              {isAttacking && (
+                <div 
+                  className="absolute -right-4 top-1/2 -translate-y-1/2 text-3xl animate-ping"
+                  style={{ filter: `drop-shadow(0 0 10px ${getAvatarSkill(mascot).color})` }}
+                >
+                  {getAvatarSkill(mascot).projectile}
+                </div>
+              )}
             </div>
-            <div className="px-3 py-1 rounded-full bg-black/40 border border-white/10 text-[10px] font-bold text-slate-400 uppercase tracking-widest backdrop-blur-sm">
-              Guardian
+            <div 
+              className="px-3 py-1 rounded-full border text-[10px] font-bold uppercase tracking-widest backdrop-blur-sm"
+              style={{
+                borderColor: `${getAvatarSkill(mascot).color}50`,
+                backgroundColor: `${getAvatarSkill(mascot).color}20`,
+                color: getAvatarSkill(mascot).color
+              }}
+            >
+              {getAvatarSkill(mascot).name}
             </div>
           </div>
 
