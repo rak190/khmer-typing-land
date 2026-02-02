@@ -126,9 +126,7 @@ export const HUD: React.FC = () => {
                     <span className="p-1.5 bg-primary/10 rounded-lg text-primary">✨</span>
                     បេសកកម្មរបស់យើង
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed font-body">
-                    ពិភពវាយអត្ថបទខ្មែរ គឺជាកម្មវិធីអប់រំតាមបែបហ្គេម ដែលបង្កើតឡើងដើម្បីថែរក្សា និងលើកកម្ពស់ភាសាខ្មែរក្នុងសម័យឌីជីថល។ គោលដៅរបស់យើងគឺធ្វើឱ្យការរៀនវាយអត្ថបទតាមរយៈក្តារចុច NiDA មានភាពសប្បាយរីករាយ និងងាយស្រួលសម្រាប់អ្នករាល់គ្នា។
-                  </p>
+                  <p className="text-muted-foreground leading-relaxed font-body">Khmer Typing Land គឺជាកម្មវិធីអប់រំតាមបែបហ្គេម ដែលបង្កើតឡើងដើម្បីថែរក្សា និងលើកកម្ពស់ភាសាខ្មែរក្នុងសម័យឌីជីថល។ គោលដៅរបស់យើងគឺធ្វើឱ្យការរៀនវាយអត្ថបទតាមរយៈKhmer Unicode មានភាពសប្បាយរីករាយ និងងាយស្រួលសម្រាប់អ្នករាល់គ្នា។</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
