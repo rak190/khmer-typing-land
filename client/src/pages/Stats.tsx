@@ -117,16 +117,16 @@ export const Stats: React.FC = () => {
     return computeSessionSeries(progress?.starsByStage || {});
   }, [sessions, progress]);
 
-  const latest = series[series.length - 1];
+  const latest = series.length > 0 ? series[series.length - 1] : null;
   const bestWpm = sessions.length > 0 
-    ? Math.max(...sessions.map((s) => s.wpm))
-    : series.length ? Math.max(...series.map((d) => d.wpm)) : 0;
+    ? Math.max(...sessions.map((s) => s.wpm || 0))
+    : series.length > 0 ? Math.max(...series.map((d) => d.wpm || 0)) : 0;
   const bestAcc = sessions.length > 0
-    ? Math.max(...sessions.map((s) => s.accuracy))
-    : series.length ? Math.max(...series.map((d) => d.accuracy)) : 0;
+    ? Math.max(...sessions.map((s) => s.accuracy || 0))
+    : series.length > 0 ? Math.max(...series.map((d) => d.accuracy || 0)) : 0;
   const totalErrors = sessions.length > 0
-    ? sessions.reduce((acc, s) => acc + s.errors, 0)
-    : series.reduce((acc, d) => acc + d.errors, 0);
+    ? sessions.reduce((acc, s) => acc + (s.errors || 0), 0)
+    : series.length > 0 ? series.reduce((acc, d) => acc + (d.errors || 0), 0) : 0;
 
   const unlockedWorlds = useMemo(() => {
     const stars = totalStars;
