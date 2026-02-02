@@ -3,7 +3,6 @@ import { findKeyForTarget, nidaFromEvent } from '@/lib/nida-map';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Keyboard } from '@/components/Keyboard';
-import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 import { sounds } from '@/lib/sounds';
 
 interface GameProps {
@@ -15,128 +14,143 @@ interface GameProps {
   onQuit: () => void;
 }
 
+interface Obstacle {
+  id: number;
+  char: string;
+  x: number;
+  passed: boolean;
+  hit: boolean;
+}
+
 export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, difficulty = "beginner", onComplete, onQuit }) => {
-  const [target, setTarget] = useState<string>("");
   const [hits, setHits] = useState(0);
   const [miss, setMiss] = useState(0);
-  const [dist, setDist] = useState(0);
+  const [score, setScore] = useState(0);
   const [activeCode, setActiveCode] = useState<string | null>(null);
   const [wrongCode, setWrongCode] = useState<string | null>(null);
-
-  const [combo, setCombo] = useState(0);
-  const [speedMult, setSpeedMult] = useState(1);
-
-  // Progressive speed challenge: speed ramps up while the player maintains accuracy.
-  // We treat combo as an "accuracy streak" (resets on any miss).
-  const baseSpeedBoost = difficulty === "beginner" ? 0.08 : difficulty === "intermediate" ? 0.11 : 0.14;
-  const maxSpeedBoost = difficulty === "beginner" ? 1.8 : difficulty === "intermediate" ? 2.0 : 2.2;
-
-  const [streakSeconds, setStreakSeconds] = useState(0);
-  const streakTimerRef = useRef<number | null>(null);
+  const [gameOver, setGameOver] = useState(false);
+  const [currentTarget, setCurrentTarget] = useState<string>("");
 
   const heroRef = useRef<HTMLDivElement>(null);
+  const groundRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
+  
+  const baseSpeed = difficulty === "beginner" ? 3 : difficulty === "intermediate" ? 4 : 5;
+  
   const stateRef = useRef({
-    y: 0,
-    vy: 0,
-    frames: 0,
-    dist: 0,
-    target: "",
+    heroY: 0,
+    heroVY: 0,
+    isJumping: false,
+    obstacles: [] as Obstacle[],
+    nextObstacleId: 0,
+    frameCount: 0,
+    spawnTimer: 0,
+    speed: baseSpeed,
+    score: 0,
     hits: 0,
     miss: 0,
-    speed: 1
+    groundOffset: 0
   });
 
   const pick = useCallback(() => {
     return pool[Math.floor(Math.random() * pool.length)];
   }, [pool]);
 
-  // Init
-  useEffect(() => {
-    const t = pick();
-    setTarget(t);
-    stateRef.current.target = t;
+  const jump = useCallback(() => {
+    if (!stateRef.current.isJumping && stateRef.current.heroY === 0) {
+      stateRef.current.isJumping = true;
+      stateRef.current.heroVY = 18;
+      sounds.playClick();
+    }
+  }, []);
+
+  const spawnObstacle = useCallback(() => {
+    const char = pick();
+    const obstacle: Obstacle = {
+      id: stateRef.current.nextObstacleId++,
+      char,
+      x: 100,
+      passed: false,
+      hit: false
+    };
+    stateRef.current.obstacles.push(obstacle);
+    setCurrentTarget(char);
+    
+    const k = findKeyForTarget(char);
+    setActiveCode(k?.code || null);
   }, [pick]);
 
-  // Keyboard hints
   useEffect(() => {
-    if(!target) return;
-    const k = findKeyForTarget(target);
-    setActiveCode(k?.code || null);
-  }, [target]);
+    spawnObstacle();
+  }, []);
 
-  const jump = () => {
-    if (stateRef.current.y === 0) {
-      sounds.playClick();
-      stateRef.current.vy = 12 + (stateRef.current.speed - 1) * 2; // jump higher if faster
-      stateRef.current.vy = Math.min(stateRef.current.vy, 18);
-    }
-  };
-
-  // Progressive speed timer (counts only while streak is active)
-  useEffect(() => {
-    if (combo <= 0) {
-      setStreakSeconds(0);
-      if (streakTimerRef.current) {
-        window.clearInterval(streakTimerRef.current);
-        streakTimerRef.current = null;
-      }
-      return;
-    }
-
-    if (!streakTimerRef.current) {
-      streakTimerRef.current = window.setInterval(() => {
-        setStreakSeconds((s) => s + 1);
-      }, 1000);
-    }
-
-    return () => {
-      if (streakTimerRef.current) {
-        window.clearInterval(streakTimerRef.current);
-        streakTimerRef.current = null;
-      }
-    };
-  }, [combo]);
-
-  // Game Loop
   useEffect(() => {
     const animate = () => {
-      stateRef.current.frames++;
+      if (gameOver) return;
       
-      // Physics
-      stateRef.current.y = Math.max(0, stateRef.current.y + stateRef.current.vy);
-      stateRef.current.vy -= 0.85; // Gravity
-      if (stateRef.current.y === 0) stateRef.current.vy = Math.min(stateRef.current.vy, 0);
-
-      // Update DOM
-      if (heroRef.current) {
-        heroRef.current.style.transform = `translateY(${-stateRef.current.y}px)`;
-        // Visual speed tilt and vibration
-        const tilt = Math.min(stateRef.current.speed * 10, 25);
-        const vibrate = stateRef.current.speed > 1.5 ? (Math.random() - 0.5) * 2 : 0;
-        heroRef.current.style.transform += ` rotate(${tilt}deg) translateX(${vibrate}px)`;
+      stateRef.current.frameCount++;
+      
+      stateRef.current.heroY += stateRef.current.heroVY;
+      stateRef.current.heroVY -= 1.2;
+      
+      if (stateRef.current.heroY <= 0) {
+        stateRef.current.heroY = 0;
+        stateRef.current.heroVY = 0;
+        stateRef.current.isJumping = false;
       }
 
-      // Parallax Background elements
-      const bgElements = document.querySelectorAll('.parallax-bg');
-      bgElements.forEach((el: any) => {
-        const speed = parseFloat(el.dataset.speed || "1");
-        const currentX = parseFloat(el.dataset.x || "0");
-        const newX = (currentX - (stateRef.current.speed * speed)) % 1000;
-        el.dataset.x = newX.toString();
-        el.style.transform = `translateX(${newX}px)`;
+      if (heroRef.current) {
+        heroRef.current.style.bottom = `${32 + stateRef.current.heroY}px`;
+      }
+
+      stateRef.current.groundOffset -= stateRef.current.speed;
+      if (stateRef.current.groundOffset <= -40) {
+        stateRef.current.groundOffset = 0;
+      }
+
+      stateRef.current.spawnTimer++;
+      const spawnInterval = difficulty === "beginner" ? 90 : difficulty === "intermediate" ? 70 : 55;
+      if (stateRef.current.spawnTimer >= spawnInterval && stateRef.current.obstacles.length < 3) {
+        stateRef.current.spawnTimer = 0;
+        spawnObstacle();
+      }
+
+      stateRef.current.obstacles = stateRef.current.obstacles.filter(obs => {
+        obs.x -= stateRef.current.speed * 0.5;
+        
+        if (obs.x < 15 && obs.x > 5 && !obs.passed && !obs.hit) {
+          if (stateRef.current.heroY < 50) {
+            obs.passed = true;
+            stateRef.current.miss++;
+            setMiss(stateRef.current.miss);
+            sounds.playWrong();
+            setWrongCode("miss");
+            setTimeout(() => setWrongCode(null), 200);
+          }
+        }
+        
+        return obs.x > -10;
       });
 
-      // Progress based on speed
-      if (stateRef.current.frames % Math.max(1, Math.floor(12 / stateRef.current.speed)) === 0) {
-        stateRef.current.dist++;
-        setDist(stateRef.current.dist);
-        
-        if (stateRef.current.dist >= distanceGoal) {
-          sounds.playLevelUp();
-          onComplete({ hits: stateRef.current.hits, miss: stateRef.current.miss });
-          return; // Stop loop
-        }
+      const frontObstacle = stateRef.current.obstacles.find(o => !o.passed && !o.hit);
+      if (frontObstacle) {
+        setCurrentTarget(frontObstacle.char);
+        const k = findKeyForTarget(frontObstacle.char);
+        setActiveCode(k?.code || null);
+      } else {
+        setCurrentTarget("");
+        setActiveCode(null);
+      }
+
+      stateRef.current.score++;
+      if (stateRef.current.score % 60 === 0) {
+        setScore(Math.floor(stateRef.current.score / 60));
+      }
+
+      if (Math.floor(stateRef.current.score / 60) >= distanceGoal) {
+        sounds.playLevelUp();
+        onComplete({ hits: stateRef.current.hits, miss: stateRef.current.miss });
+        return;
       }
 
       requestRef.current = requestAnimationFrame(animate);
@@ -144,45 +158,26 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
 
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
-  }, [distanceGoal, onComplete]);
+  }, [gameOver, distanceGoal, onComplete, spawnObstacle, difficulty]);
 
-  // Input Handler
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Shift" || e.key === "Alt" || e.key === "Control") return;
+      if (gameOver) return;
 
       const produced = nidaFromEvent(e);
       if (!produced) return;
 
-      if (produced === stateRef.current.target) {
-        // Hit
-        sounds.playCorrect();
+      const frontObstacle = stateRef.current.obstacles.find(o => !o.passed && !o.hit);
+      
+      if (frontObstacle && produced === frontObstacle.char) {
+        frontObstacle.hit = true;
         stateRef.current.hits++;
         setHits(stateRef.current.hits);
-        
-        // Combo & Speed logic
-        const newCombo = combo + 1;
-        setCombo(newCombo);
-
-        // Ramp speed based on combo AND sustained streak time.
-        // Every 5 seconds of streak adds a small bump (capped by maxSpeedBoost).
-        const timeBonus = Math.floor(streakSeconds / 5) * (baseSpeedBoost * 0.5);
-        const newSpeed = 1 + Math.min(newCombo * baseSpeedBoost + timeBonus, maxSpeedBoost);
-        stateRef.current.speed = newSpeed;
-        setSpeedMult(newSpeed);
-
+        sounds.playCorrect();
         jump();
-        
-        // New target
-        const next = pick();
-        setTarget(next);
-        stateRef.current.target = next;
       } else {
-        // Miss
         sounds.playWrong();
-        setCombo(0);
-        setSpeedMult(1);
-        stateRef.current.speed = 1;
         stateRef.current.miss++;
         setMiss(stateRef.current.miss);
         setWrongCode(e.code);
@@ -192,7 +187,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [pick, combo]);
+  }, [gameOver, jump]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
@@ -203,67 +198,72 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
             <span>Runner Mode</span>
           </div>
           <div className="flex gap-4 items-center">
-            <span className="text-foreground">Goal: {dist}/{distanceGoal}m</span>
-            <span className="text-primary font-bold">{speedMult.toFixed(1)}x Speed</span>
-            <span className="text-muted-foreground">Streak: {streakSeconds}s</span>
-            <span className="text-accent font-bold">Hits: {hits}</span>
+            <span className="text-foreground font-bold">HI {String(distanceGoal).padStart(5, '0')}</span>
+            <span className="text-primary font-bold">{String(score).padStart(5, '0')}</span>
+            <span className="text-accent">Hits: {hits}</span>
+            <span className="text-destructive">Miss: {miss}</span>
           </div>
         </div>
 
-        {/* Combo Popups */}
-        {combo > 5 && (
-          <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20 pointer-events-none animate-bounce">
-             <span className="text-3xl font-black italic text-primary drop-shadow-glow">HYPER SPEED!</span>
-          </div>
-        )}
-
-        {/* Game World */}
-        <div className="absolute inset-0 flex items-end pb-8 px-16 overflow-hidden">
-          {/* Background Mountains (Parallax) */}
-          <div 
-            className="parallax-bg absolute bottom-12 left-0 w-[2000px] h-32 opacity-10 pointer-events-none" 
-            data-speed="0.2"
-            data-x="0"
-            style={{ backgroundImage: 'radial-gradient(circle at 50% 100%, #1A237E 0%, transparent 70%)', backgroundSize: '400px 200px', backgroundRepeat: 'repeat-x' }}
-          />
-
-          {/* Ground with moving texture */}
-          <div className="absolute bottom-0 left-0 w-full h-8 bg-white/5 border-t border-white/10 overflow-hidden">
-             <div 
-               className="absolute inset-0 w-[200%] h-full opacity-20"
-               style={{ 
-                 backgroundImage: 'linear-gradient(90deg, transparent 50%, white 50%)',
-                 backgroundSize: '40px 100%',
-                 animation: `slide ${0.5 / speedMult}s linear infinite`
-               }}
-             />
-          </div>
+        <div className="absolute inset-0 flex items-end overflow-hidden" style={{ background: 'linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.1) 100%)' }}>
           
-          {/* Hero */}
+          <div 
+            ref={groundRef}
+            className="absolute bottom-0 left-0 w-full h-8 border-t-2 border-foreground/30"
+            style={{ 
+              backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 38px, rgba(0,0,0,0.1) 38px, rgba(0,0,0,0.1) 40px)',
+              backgroundSize: '40px 100%',
+              backgroundPosition: `${stateRef.current.groundOffset}px 0`
+            }}
+          />
+          
           <div 
             ref={heroRef}
             className={cn(
-              "w-20 h-20 bg-primary/20 border border-primary/50 rounded-2xl flex items-center justify-center text-4xl shadow-[0_0_30px_rgba(90,200,250,0.3)] z-10 transition-transform duration-75 ease-linear will-change-transform",
-              speedMult > 1.5 && "shadow-[0_0_50px_rgba(90,200,250,0.6)] border-white/50"
+              "absolute left-16 w-16 h-16 bg-primary/20 border-2 border-primary/50 rounded-xl flex items-center justify-center text-4xl z-20 transition-none",
+              stateRef.current.isJumping && "shadow-[0_0_30px_rgba(90,200,250,0.5)]"
             )}
+            style={{ bottom: '32px' }}
           >
-            <div className="relative">
-              {mascot}
-              {speedMult > 2 && (
-                <div className="absolute inset-0 animate-ping opacity-50 bg-primary rounded-full" />
-              )}
-            </div>
+            {mascot}
           </div>
 
-          {/* Obstacle / Target Display */}
-          <div className="absolute right-32 bottom-32 flex flex-col items-center">
-            <div className="text-[10px] text-slate-500 mb-2 font-bold uppercase tracking-[0.3em] opacity-80">Type to Jump</div>
-            <div className={cn(
-              "w-32 h-32 rounded-full border-4 border-dashed border-slate-400 flex items-center justify-center text-7xl font-khmer text-slate-900 bg-white/40 backdrop-blur-md shadow-lg relative transition-all",
-              speedMult > 2 && "border-primary scale-110 shadow-primary/20"
-            )}>
-              {target}
+          {stateRef.current.obstacles.map(obs => (
+            <div
+              key={obs.id}
+              className={cn(
+                "absolute bottom-8 flex flex-col items-center transition-none z-10",
+                obs.hit && "opacity-30 scale-75",
+                obs.passed && !obs.hit && "opacity-50"
+              )}
+              style={{ 
+                left: `${obs.x}%`,
+                transform: 'translateX(-50%)'
+              }}
+            >
+              <div className={cn(
+                "w-14 h-14 rounded-lg border-2 flex items-center justify-center text-3xl font-khmer font-bold transition-all",
+                obs.hit ? "border-accent/50 bg-accent/10 text-accent" : 
+                obs.passed ? "border-destructive/50 bg-destructive/10 text-destructive" :
+                "border-foreground/30 bg-background/80 text-foreground shadow-lg"
+              )}>
+                {obs.char}
+              </div>
+              {!obs.hit && !obs.passed && (
+                <div className="text-[8px] text-muted-foreground mt-1 uppercase tracking-wider">Type to jump</div>
+              )}
             </div>
+          ))}
+
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1">
+            {currentTarget && (
+              <>
+                <div className="text-[10px] text-muted-foreground uppercase tracking-widest">Next</div>
+                <div className="text-6xl font-khmer font-bold text-foreground drop-shadow-lg">
+                  {currentTarget}
+                </div>
+              </>
+            )}
           </div>
         </div>
 
@@ -272,7 +272,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
         </div>
       </div>
 
-      <Keyboard activeCode={activeCode} wrongCode={wrongCode} target={target} />
+      <Keyboard activeCode={activeCode} wrongCode={wrongCode} target={currentTarget} />
     </div>
   );
 };
