@@ -96,7 +96,6 @@ export const Home: React.FC = () => {
         <div className="absolute top-[60%] right-[30%] w-2 h-2 rounded-full animate-ping opacity-40" style={{ animationDelay: '1s', backgroundColor: currentTheme.colors.accent }} />
         <div className="absolute top-[80%] left-[60%] w-2 h-2 rounded-full animate-ping opacity-40" style={{ animationDelay: '2s', backgroundColor: currentTheme.colors.primary }} />
       </div>
-      
       <div className="relative z-10">
         <HUD />
         
@@ -224,7 +223,7 @@ export const Home: React.FC = () => {
                 <Link href="/teacher">
                   <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-rose-300 text-rose-700 hover:bg-white hover:text-rose-800 transition-all shadow-sm font-body" data-testid="link-teacher">
                     <School size={16} />
-                    <span className="font-bold">Teacher Mode</span>
+                    <span className="font-bold">សម្រាប់គ្រូ</span>
                   </Button>
                 </Link>
                 <Link href="/badges">
@@ -355,7 +354,6 @@ export const Home: React.FC = () => {
           <AdBanner format="horizontal" className="mt-8" />
         </div>
       </div>
-
       {/* Donation Popup - shows on first visit */}
       {showDonation && <DonationPopup onClose={handleCloseDonation} />}
     </div>
