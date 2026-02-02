@@ -207,9 +207,9 @@ export const HUD: React.FC = () => {
         </Dialog>
         
         <Link href="/">
-           <button className="px-4 py-1.5 rounded-full bg-primary hover:opacity-90 text-sm font-bold text-primary-foreground transition-all font-body">
-             {t.home}
-           </button>
+          <button className="px-4 py-1.5 rounded-full bg-primary hover:opacity-90 text-sm font-bold text-primary-foreground transition-all font-body">
+            {t.home}
+          </button>
         </Link>
       </div>
     </header>
