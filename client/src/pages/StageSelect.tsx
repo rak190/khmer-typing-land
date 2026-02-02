@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Star } from 'lucide-react';
 import { HUD } from '@/components/HUD';
 import { cn } from '@/lib/utils';
+import { AdBanner } from '@/components/AdBanner';
 
 import { STORY_CHAPTERS } from '@/lib/story';
 
@@ -43,6 +44,9 @@ export const StageSelect: React.FC = () => {
             <div className="text-sm font-bold text-foreground">{chapter?.monsterName}</div>
           </div>
         </div>
+
+        {/* Ad Banner */}
+        <AdBanner format="horizontal" className="mb-6" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {world.stages.map((stage) => {

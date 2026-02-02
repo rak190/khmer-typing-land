@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Lock, Play, GraduationCap, BarChart3, Trophy, Timer, Keyboard, ShieldCheck, Users, Landmark, Heart } from 'lucide-react';
 import { HUD } from '@/components/HUD';
 import { useTranslation } from '@/lib/useTranslation';
+import { AdBanner } from '@/components/AdBanner';
 
 import { STORY_CHAPTERS } from '@/lib/story';
 
@@ -175,6 +176,9 @@ export const Home: React.FC = () => {
           </div>
         </div>
 
+        {/* Ad Banner - Top */}
+        <AdBanner format="horizontal" className="mb-8" />
+
         {/* Worlds Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {WORLDS.map((world) => {
@@ -226,6 +230,9 @@ export const Home: React.FC = () => {
             );
           })}
         </div>
+
+        {/* Ad Banner - Bottom */}
+        <AdBanner format="horizontal" className="mt-8" />
       </div>
     </div>
   );
