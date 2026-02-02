@@ -22,7 +22,7 @@
                     <span class="decoration-item">🏆</span>
                     <span class="decoration-item">✨</span>
                 </div>
-                <h1 class="main-title">លិខិតបញ្ជាក់ការបញ្ចប់វគ្គ</h1>
+                <h1 class="main-title" id="certTitle">លិខិតបញ្ជាក់ការបញ្ចប់វគ្គ</h1>
                 <h2 class="sub-title">CERTIFICATE OF COMPLETION</h2>
                 <h3 class="game-title">Khmer Typing Land</h3>
             </header>
@@ -46,6 +46,14 @@
                         if (worldEnEl) worldEnEl.textContent = world;
 
                         if (date) document.getElementById('certDate').textContent = date;
+                        
+                        // Force a re-render/reflow of the problematic text
+                        const title = document.getElementById('certTitle');
+                        const originalText = title.textContent;
+                        title.textContent = '';
+                        setTimeout(() => {
+                            title.textContent = originalText;
+                        }, 50);
                     };
                 </script>
 

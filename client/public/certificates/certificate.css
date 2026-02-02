@@ -86,13 +86,16 @@ header {
 }
 
 .main-title {
-    font-family: 'Koulen', sans-serif;
+    font-family: 'Kantumruy Pro', sans-serif;
     color: var(--primary);
-    font-size: 44px;
+    font-size: 38px;
     margin-bottom: 5px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0px;
     text-shadow: none;
-    font-weight: normal;
+    font-weight: 900;
+    line-height: 1.4;
+    display: block;
+    width: 100%;
 }
 
 .sub-title {
