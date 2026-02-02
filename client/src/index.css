@@ -247,6 +247,20 @@
     animation: float 10s ease-in-out infinite;
   }
 
+  @keyframes cloud-move {
+    0% { transform: translateX(-10%) translateY(0); }
+    50% { transform: translateX(10%) translateY(10px); }
+    100% { transform: translateX(-10%) translateY(0); }
+  }
+
+  .animate-cloud-slow {
+    animation: cloud-move 20s ease-in-out infinite;
+  }
+
+  .animate-cloud-fast {
+    animation: cloud-move 15s ease-in-out infinite;
+  }
+
   @keyframes khmer-pattern-fade {
     0%, 100% { opacity: 0.03; }
     50% { opacity: 0.07; }

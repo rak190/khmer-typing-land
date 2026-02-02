@@ -23,8 +23,9 @@ export const Home: React.FC = () => {
       {/* Concept-inspired background elements */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {/* Soft clouds */}
-        <div className="absolute top-[5%] left-[10%] w-64 h-32 bg-white/60 blur-3xl rounded-full animate-pulse" />
-        <div className="absolute top-[15%] right-[15%] w-80 h-40 bg-white/40 blur-3xl rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[5%] left-[10%] w-64 h-32 bg-white/60 blur-3xl rounded-full animate-cloud-slow" />
+        <div className="absolute top-[15%] right-[15%] w-80 h-40 bg-white/40 blur-3xl rounded-full animate-cloud-fast" />
+        <div className="absolute top-[40%] left-[60%] w-48 h-24 bg-white/30 blur-2xl rounded-full animate-cloud-slow" style={{ animationDelay: '1s' }} />
         
         {/* Soft watercolor splashes */}
         <div className="absolute top-[40%] left-[-5%] w-[50%] h-[50%] bg-sky-200/30 blur-[120px] rounded-full" />
@@ -32,11 +33,18 @@ export const Home: React.FC = () => {
         <div className="absolute top-[20%] right-0 w-[30%] h-[30%] bg-amber-100/40 blur-[100px] rounded-full" />
 
         {/* Floating Icons from concept */}
-        <div className="absolute top-[10%] left-[5%] text-6xl opacity-20 rotate-12 animate-float">🏮</div>
-        <div className="absolute top-[25%] right-[8%] text-4xl opacity-15 -rotate-12 animate-float" style={{ animationDelay: '1s' }}>✨</div>
-        <div className="absolute bottom-[20%] left-[12%] text-5xl opacity-20 animate-float" style={{ animationDelay: '3s' }}>🐘</div>
-        <div className="absolute bottom-[15%] right-[20%] text-6xl opacity-25 animate-float" style={{ animationDelay: '2s' }}>🪷</div>
-        <div className="absolute top-[60%] left-[2%] text-4xl opacity-15 animate-float" style={{ animationDelay: '4s' }}>🏯</div>
+        <div className="absolute top-[10%] left-[5%] text-6xl opacity-30 rotate-12 animate-float">🏮</div>
+        <div className="absolute top-[25%] right-[8%] text-4xl opacity-20 -rotate-12 animate-float" style={{ animationDelay: '1s' }}>✨</div>
+        <div className="absolute bottom-[20%] left-[12%] text-5xl opacity-30 animate-float" style={{ animationDelay: '3s' }}>🐘</div>
+        <div className="absolute bottom-[15%] right-[20%] text-6xl opacity-35 animate-float" style={{ animationDelay: '2s' }}>🪷</div>
+        <div className="absolute top-[60%] left-[2%] text-4xl opacity-20 animate-float" style={{ animationDelay: '4s' }}>🏯</div>
+        <div className="absolute top-[45%] right-[5%] text-5xl opacity-25 animate-float" style={{ animationDelay: '1.5s' }}>🛶</div>
+        <div className="absolute bottom-[5%] left-[40%] text-4xl opacity-20 animate-float" style={{ animationDelay: '5s' }}>🏺</div>
+
+        {/* Animated Particles */}
+        <div className="absolute top-[20%] left-[30%] w-2 h-2 bg-white rounded-full animate-ping opacity-40" />
+        <div className="absolute top-[60%] right-[30%] w-2 h-2 bg-amber-200 rounded-full animate-ping opacity-40" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-[80%] left-[60%] w-2 h-2 bg-sky-200 rounded-full animate-ping opacity-40" style={{ animationDelay: '2s' }} />
       </div>
       
       <div className="relative z-10">
