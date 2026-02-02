@@ -7,16 +7,13 @@
     <link rel="stylesheet" href="certificate.css">
     <link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.4.5/gifshot.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
 </head>
 <body>
     <div class="certificate-container" id="certificate">
-        <!-- Background Image is now handled via CSS -->
         <div class="certificate-card">
-            <!-- Decorative Border -->
             <div class="border-overlay"></div>
             
-            <!-- Mascot Corner -->
             <img id="certMascotImg" src="https://api.dicebear.com/7.x/bottts/png?seed=Lucky&backgroundColor=b6e3f4" crossorigin="anonymous" alt="Mascot" class="mascot-sticker">
 
             <header>
@@ -33,13 +30,9 @@
             <main>
                 <p class="certifies-text">លិខិតនេះបញ្ជាក់ថា / This certifies that</p>
                 <h2 id="certName" class="user-name">ឈ្មោះអ្នកប្រើប្រាស់</h2>
-                
-                <!-- Stars removed as per request -->
-
 
                 <script>
                     window.onload = function() {
-                        // Extract parameters from URL
                         const urlParams = new URLSearchParams(window.location.search);
                         const name = urlParams.get('name') || 'ឈ្មោះអ្នកប្រើប្រាស់';
                         const world = urlParams.get('world') || 'Angkor Adventure';
@@ -47,7 +40,6 @@
 
                         document.getElementById('certName').textContent = name;
 
-                        // World name (Khmer + English line)
                         const worldEl = document.getElementById('certWorld');
                         if (worldEl) worldEl.textContent = world;
                         const worldEnEl = document.getElementById('certWorldEn');
@@ -61,11 +53,6 @@
                     បានបញ្ចប់ដោយជោគជ័យនូវ <span class="highlight" id="certWorld"></span><br>
                     Has successfully completed <span class="highlight" id="certWorldEn"></span>
                 </p>
-
-                <!-- Stats grid removed as per request -->
-
-
-                <!-- Badge removed as per request -->
 
                 <div class="signature-section">
                     <div class="signature-box">
@@ -99,93 +86,113 @@
     </div>
 
     <div class="actions">
-        <button onclick="downloadCertificate()" class="download-btn">Download as Image</button>
-        <button onclick="downloadAsGif()" class="download-btn gif-btn">Download as GIF</button>
+        <button onclick="downloadAsGif()" class="download-btn gif-btn" id="downloadBtn">
+            <span id="btnText">ទាញយកជា GIF / Download as GIF</span>
+        </button>
+        <div id="progressBar" style="display: none; width: 100%; max-width: 300px; margin-top: 10px;">
+            <div style="background: #333; border-radius: 10px; overflow: hidden; height: 20px;">
+                <div id="progressFill" style="background: linear-gradient(90deg, #4ade80, #22c55e); height: 100%; width: 0%; transition: width 0.3s ease;"></div>
+            </div>
+            <p id="progressText" style="color: white; text-align: center; margin-top: 5px; font-size: 14px;">កំពុងរៀបចំ... 0%</p>
+        </div>
     </div>
 
     <script>
-        function downloadCertificate() {
+        async function downloadAsGif() {
             const cert = document.getElementById('certificate');
-            const btns = document.querySelectorAll('.download-btn');
-            btns.forEach(b => b.style.display = 'none');
+            const btn = document.getElementById('downloadBtn');
+            const btnText = document.getElementById('btnText');
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const mascot = document.getElementById('certMascotImg');
 
-            html2canvas(cert, {
-                useCORS: true,
-                scale: 2,
-                backgroundColor: null
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Khmer-Typing-Certificate-${document.getElementById('certName').textContent}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                btns.forEach(b => b.style.display = 'block');
-            });
-        }
-
-        function downloadAsGif() {
-            const cert = document.getElementById('certificate');
-            const btns = document.querySelectorAll('.download-btn');
-            const statusText = document.createElement('span');
-            statusText.textContent = " Generating GIF...";
-            statusText.style.color = "white";
-            statusText.style.fontWeight = "bold";
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+            progressBar.style.display = 'block';
             
-            btns.forEach(b => b.style.display = 'none');
-            document.querySelector('.actions').appendChild(statusText);
-
+            const totalFrames = 8;
             const frames = [];
-            const captureFrames = 10;
-            let currentFrame = 0;
-
-            function capture() {
-                html2canvas(cert, {
-                    useCORS: true,
-                    scale: 1,
-                    backgroundColor: '#ffffff',
-                    logging: false
-                }).then(canvas => {
-                    frames.push(canvas.toDataURL('image/png'));
-                    currentFrame++;
-                    
-                    if (currentFrame < captureFrames) {
-                        const mascot = document.getElementById('certMascotImg');
-                        if (mascot) {
-                            mascot.style.transform = `scale(${1 + Math.sin(currentFrame) * 0.05})`;
-                        }
-                        setTimeout(capture, 150);
-                    } else {
-                        gifshot.createGIF({
-                            images: frames,
-                            gifWidth: cert.offsetWidth,
-                            gifHeight: cert.offsetHeight,
-                            interval: 0.15,
-                            numFrames: captureFrames
-                        }, function(obj) {
-                            if (!obj.error) {
-                                const link = document.createElement('a');
-                                link.download = `Khmer-Typing-Certificate-${document.getElementById('certName').textContent}.gif`;
-                                link.href = obj.image;
-                                document.body.appendChild(link);
-                                link.click();
-                                document.body.removeChild(link);
-                            } else {
-                                console.error("GIF generation error:", obj.error);
-                                alert("Failed to generate GIF. Please try again.");
-                            }
-                            statusText.remove();
-                            btns.forEach(b => b.style.display = 'block');
-                            const mascot = document.getElementById('certMascotImg');
-                            if (mascot) mascot.style.transform = '';
-                        });
-                    }
-                }).catch(err => {
-                    console.error("Canvas capture error:", err);
-                    statusText.remove();
-                    btns.forEach(b => b.style.display = 'block');
-                });
+            
+            function updateProgress(current, total, message) {
+                const percent = Math.round((current / total) * 100);
+                progressFill.style.width = percent + '%';
+                progressText.textContent = message + ' ' + percent + '%';
             }
 
-            capture();
+            try {
+                for (let i = 0; i < totalFrames; i++) {
+                    updateProgress(i, totalFrames + 2, 'កំពុងថតរូប...');
+                    
+                    if (mascot) {
+                        const scale = 1 + Math.sin((i / totalFrames) * Math.PI * 2) * 0.03;
+                        const rotate = Math.sin((i / totalFrames) * Math.PI * 2) * 3;
+                        mascot.style.transform = `scale(${scale}) rotate(${rotate}deg)`;
+                    }
+                    
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                    
+                    const canvas = await html2canvas(cert, {
+                        useCORS: true,
+                        scale: 1.5,
+                        backgroundColor: '#ffffff',
+                        logging: false,
+                        allowTaint: true
+                    });
+                    
+                    frames.push(canvas);
+                }
+
+                if (mascot) mascot.style.transform = '';
+
+                updateProgress(totalFrames, totalFrames + 2, 'កំពុងបង្កើត GIF...');
+
+                const gif = new GIF({
+                    workers: 2,
+                    quality: 10,
+                    width: frames[0].width,
+                    height: frames[0].height,
+                    workerScript: 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js'
+                });
+
+                frames.forEach((canvas, index) => {
+                    gif.addFrame(canvas, { delay: 120 });
+                });
+
+                gif.on('progress', function(p) {
+                    updateProgress(totalFrames + p * 2, totalFrames + 2, 'កំពុងបង្កើត GIF...');
+                });
+
+                gif.on('finished', function(blob) {
+                    updateProgress(totalFrames + 2, totalFrames + 2, 'រួចរាល់!');
+                    
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.download = `Khmer-Typing-Certificate-${document.getElementById('certName').textContent}.gif`;
+                    link.href = url;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                        progressBar.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 1000);
+                });
+
+                gif.render();
+
+            } catch (err) {
+                console.error("Error generating GIF:", err);
+                alert("មានបញ្ហាក្នុងការបង្កើត GIF។ សូមព្យាយាមម្ដងទៀត។");
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                progressBar.style.display = 'none';
+                if (mascot) mascot.style.transform = '';
+            }
         }
     </script>
 </body>
