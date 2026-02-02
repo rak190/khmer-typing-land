@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useGameStore } from '@/lib/store';
-import { Badge, Volume2, VolumeX, Sun, Moon, Palette, Info } from 'lucide-react';
+import { Badge, Volume2, VolumeX, Sun, Moon, Palette, Info, Heart } from 'lucide-react';
 import { makeBadges } from '@/lib/badges';
 import { Link } from 'wouter';
 import { sounds } from '@/lib/sounds';
@@ -162,6 +162,30 @@ export const HUD: React.FC = () => {
                   <div className="p-4 bg-secondary/50 rounded-2xl border border-border">
                     <h4 className="font-bold text-foreground mb-2 flex items-center gap-2 font-display">🏫 មុខងារសម្រាប់គ្រូបង្រៀន</h4>
                     <p className="text-sm text-muted-foreground font-body">ផ្តល់មុខងារដល់គ្រូបង្រៀនជាមួយនឹងការគ្រប់គ្រងបន្ទប់រៀន និងការតាមដានការរីកចម្រើនរបស់សិស្សក្នុងពេលជាក់ស្តែង។</p>
+                  </div>
+                </div>
+
+                <div className="p-6 bg-amber-50 rounded-2xl border border-amber-200">
+                  <div className="flex flex-col md:flex-row items-center gap-6">
+                    <div className="bg-white p-2 rounded-xl shadow-sm border border-amber-100 shrink-0">
+                      <img 
+                        src="/src/assets/images/donate-qr.jpg" 
+                        alt="Donate QR" 
+                        className="w-32 h-32 object-contain"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-amber-900 mb-1 font-display flex items-center gap-2">
+                        <Heart size={18} className="text-red-500 fill-red-500" />
+                        គាំទ្រការងាររបស់យើង
+                      </h3>
+                      <p className="text-sm text-amber-800/80 font-body mb-3">
+                        រាល់ការបរិច្ចាគរបស់លោកអ្នក នឹងជួយឱ្យយើងបន្តអភិវឌ្ឍកម្មវិធីនេះឱ្យកាន់តែប្រសើរ។
+                      </p>
+                      <p className="text-xs font-bold text-amber-700 uppercase tracking-wider font-body">
+                        Donate me a coffee ☕
+                      </p>
+                    </div>
                   </div>
                 </div>
 
