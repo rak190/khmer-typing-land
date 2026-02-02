@@ -21,12 +21,9 @@ export const Home: React.FC = () => {
   const totalStars = getTotalStars();
   const [showDonation, setShowDonation] = useState(false);
 
-  // Show donation popup on first visit
+  // Show donation popup on every visit
   useEffect(() => {
-    const hasSeenDonation = localStorage.getItem('hasSeenDonation');
-    if (!hasSeenDonation) {
-      setShowDonation(true);
-    }
+    setShowDonation(true);
   }, []);
 
   const handleCloseDonation = () => {
