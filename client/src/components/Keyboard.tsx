@@ -41,7 +41,8 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
 
   const isShiftKey = code === "ShiftLeft" || code === "ShiftRight";
   const isCapsLock = code === "CapsLock";
-  const isModifierActive = (isShiftKey && mod === "SHIFT") || (isCapsLock && mod === "SHIFT");
+  const isAltGrKey = code === "AltRight";
+  const isModifierActive = (isShiftKey && mod === "SHIFT") || (isCapsLock && mod === "SHIFT") || (isAltGrKey && mod === "ALTGR");
 
   return (
     <div 
@@ -57,7 +58,8 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
         wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-destructive/20",
         isTargetKey && "bg-primary/20 border-primary/50 text-primary shadow-[0_0_15px_rgba(59,130,246,0.2)]",
         isModifierNeeded && "bg-amber-400/20 border-amber-500/50 text-amber-600 shadow-[0_0_15px_rgba(251,191,36,0.2)]",
-        isModifierActive && "bg-primary/30 border-primary shadow-[0_0_20px_rgba(59,130,246,0.5)] scale-105 z-10",
+        isModifierActive && mod === "SHIFT" && "bg-purple-500/30 border-purple-500 shadow-[0_0_20px_rgba(168,85,247,0.5)] scale-105 z-10",
+        isModifierActive && mod === "ALTGR" && "bg-amber-500/30 border-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.5)] scale-105 z-10",
         !map && !fixed && "opacity-50",
         className
       )}
@@ -236,13 +238,43 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
   }, [activeFinger]);
 
   return (
-    <div className={cn("flex flex-col gap-4 p-4 rounded-3xl bg-card/50 border border-border w-full max-w-[1000px] mx-auto backdrop-blur-sm relative shadow-inner", className)}>
+    <div className={cn(
+      "flex flex-col gap-4 p-4 rounded-3xl bg-card/50 border-2 w-full max-w-[1000px] mx-auto backdrop-blur-sm relative shadow-inner transition-all duration-300",
+      mod === "BASE" && "border-border",
+      mod === "SHIFT" && "border-purple-500 shadow-[0_0_25px_rgba(168,85,247,0.3)] bg-purple-500/5",
+      mod === "ALTGR" && "border-amber-500 shadow-[0_0_25px_rgba(245,158,11,0.3)] bg-amber-500/5",
+      className
+    )}>
       <div className="flex justify-between items-center text-sm">
         <div className="flex gap-4">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary border border-border">
+          <div className={cn(
+            "flex items-center gap-2 px-3 py-1 rounded-full border transition-all duration-300",
+            mod === "BASE" && "bg-secondary border-border",
+            mod === "SHIFT" && "bg-purple-500/20 border-purple-500/50",
+            mod === "ALTGR" && "bg-amber-500/20 border-amber-500/50"
+          )}>
             <span className="text-muted-foreground">ស្ថានភាព:</span>
-            <span className="font-bold text-foreground w-12">{mod}</span>
+            <span className={cn(
+              "font-bold w-14 text-center transition-colors",
+              mod === "BASE" && "text-foreground",
+              mod === "SHIFT" && "text-purple-600",
+              mod === "ALTGR" && "text-amber-600"
+            )}>
+              {mod === "BASE" ? "មូលដ្ឋាន" : mod === "SHIFT" ? "⬆️ Shift" : "Alt"}
+            </span>
           </div>
+          
+          {mod !== "BASE" && (
+            <div className={cn(
+              "flex items-center gap-2 px-3 py-1 rounded-full animate-pulse",
+              mod === "SHIFT" && "bg-purple-500/20 text-purple-600",
+              mod === "ALTGR" && "bg-amber-500/20 text-amber-600"
+            )}>
+              <span className="text-xs font-bold">
+                {mod === "SHIFT" ? "កំពុងបង្ហាញអក្សរ Shift" : "កំពុងបង្ហាញអក្សរ Alt"}
+              </span>
+            </div>
+          )}
         </div>
         <div className="text-xs text-muted-foreground hidden sm:block italic">
            ធ្វើតាម <b>ពន្លឺ</b>: ពណ៌លឿងទុំសម្រាប់ប៊ូតុងបញ្ជា, ពណ៌ខៀវសម្រាប់តួអក្សរ។
