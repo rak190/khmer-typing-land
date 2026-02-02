@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="certificate.css">
     <link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.4.5/gifshot.min.js"></script>
 </head>
 <body>
     <div class="certificate-container" id="certificate">
@@ -99,13 +100,14 @@
 
     <div class="actions">
         <button onclick="downloadCertificate()" class="download-btn">Download as Image</button>
+        <button onclick="downloadAsGif()" class="download-btn gif-btn">Download as GIF</button>
     </div>
 
     <script>
         function downloadCertificate() {
             const cert = document.getElementById('certificate');
-            const btn = document.querySelector('.download-btn');
-            btn.style.display = 'none';
+            const btns = document.querySelectorAll('.download-btn');
+            btns.forEach(b => b.style.display = 'none');
 
             html2canvas(cert, {
                 useCORS: true,
@@ -116,8 +118,67 @@
                 link.download = `Khmer-Typing-Certificate-${document.getElementById('certName').textContent}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                btn.style.display = 'block';
+                btns.forEach(b => b.style.display = 'block');
             });
+        }
+
+        function downloadAsGif() {
+            const cert = document.getElementById('certificate');
+            const btns = document.querySelectorAll('.download-btn');
+            const statusText = document.createElement('span');
+            statusText.textContent = " Generating GIF...";
+            statusText.style.color = "white";
+            statusText.style.fontWeight = "bold";
+            
+            btns.forEach(b => b.style.display = 'none');
+            document.querySelector('.actions').appendChild(statusText);
+
+            const frames = [];
+            const captureFrames = 10;
+            let currentFrame = 0;
+
+            function capture() {
+                html2canvas(cert, {
+                    useCORS: true,
+                    scale: 1,
+                    backgroundColor: '#ffffff'
+                }).then(canvas => {
+                    frames.push(canvas.toDataURL('image/jpeg', 0.8));
+                    currentFrame++;
+                    
+                    if (currentFrame < captureFrames) {
+                        // Add some slight variation for the GIF feel (e.g. pulse the mascot)
+                        const mascot = document.getElementById('certMascotImg');
+                        if (mascot) {
+                            mascot.style.transform = `scale(${1 + Math.sin(currentFrame) * 0.05})`;
+                        }
+                        setTimeout(capture, 100);
+                    } else {
+                        gifshot.createGIF({
+                            images: frames,
+                            gifWidth: cert.offsetWidth,
+                            gifHeight: cert.offsetHeight,
+                            interval: 0.1,
+                            numFrames: captureFrames,
+                            frameDuration: 1
+                        }, function(obj) {
+                            if (!obj.error) {
+                                const link = document.createElement('a');
+                                link.download = `Khmer-Typing-Certificate-${document.getElementById('certName').textContent}.gif`;
+                                link.href = obj.image;
+                                link.click();
+                            }
+                            statusText.remove();
+                            btns.forEach(b => b.style.display = 'block');
+                            // Reset mascot
+                            const mascot = document.getElementById('certMascotImg');
+                            if (mascot) mascot.style.transform = '';
+                        });
+                    }
+                });
+            }
+
+            capture();
         }
     </script>
 </body>
