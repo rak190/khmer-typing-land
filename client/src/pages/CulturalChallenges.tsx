@@ -177,7 +177,7 @@ export const CulturalChallenges: React.FC = () => {
           </div>
 
           <div className="glass-panel rounded-3xl p-8 border-border bg-card">
-            <h2 className="text-xl font-black mb-4">រៀនវប្បធម៌ខ្មែរ / Learn Khmer Culture</h2>
+            <h2 className="text-xl font-black mb-4">រៀនវប្បធម៌ទូទៅ / Learn General Knowledge</h2>
             <p className="text-muted-foreground mb-4">
               These challenges feature authentic Khmer content including traditional proverbs, 
               historical facts about Angkor and Cambodia, everyday phrases, and nature vocabulary.
