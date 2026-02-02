@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { findKeyForTarget, nidaFromEvent } from '@/lib/nida-map';
+import { findKeyForTarget, nidaFromEvent, NIDA_MAP } from '@/lib/nida-map';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useGameStore } from '@/lib/store';
