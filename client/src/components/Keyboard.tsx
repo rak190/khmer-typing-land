@@ -250,10 +250,10 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
 
   return (
     <div className={cn(
-      "flex flex-col gap-3 p-6 rounded-3xl bg-card/50 border-4 w-full max-w-[1200px] mx-auto backdrop-blur-sm relative shadow-inner transition-all duration-300",
-      mod === "BASE" && "border-border",
-      mod === "SHIFT" && "border-purple-500 shadow-[0_0_35px_rgba(168,85,247,0.4)] bg-purple-500/10",
-      mod === "ALTGR" && "border-amber-500 shadow-[0_0_35px_rgba(245,158,11,0.4)] bg-amber-500/10",
+      "flex flex-col gap-3 p-8 rounded-[40px] bg-card/50 border-8 w-full max-w-[1300px] mx-auto backdrop-blur-sm relative shadow-2xl transition-all duration-300",
+      mod === "BASE" && "border-slate-200/50 shadow-slate-200/10",
+      mod === "SHIFT" && "border-purple-500 shadow-[0_0_50px_rgba(168,85,247,0.4)] bg-purple-500/10",
+      mod === "ALTGR" && "border-amber-500 shadow-[0_0_50px_rgba(245,158,11,0.4)] bg-amber-500/10",
       className
     )}>
       <div className="flex justify-between items-center text-sm px-1 mb-1">
