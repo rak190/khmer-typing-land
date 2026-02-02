@@ -86,11 +86,12 @@ header {
 }
 
 .main-title {
-    font-family: 'Moul', cursive;
+    font-family: 'Koulen', sans-serif;
     color: var(--primary);
-    font-size: 42px;
+    font-size: 48px;
     margin-bottom: 5px;
     letter-spacing: 2px;
+    text-shadow: 0 0 1px rgba(0,0,0,0.1);
 }
 
 .sub-title {
@@ -106,6 +107,7 @@ header {
     font-size: 24px;
     color: var(--primary);
     opacity: 0.8;
+    text-shadow: 0 0 1px rgba(0,0,0,0.1);
 }
 
 .certifies-text {
@@ -123,6 +125,7 @@ header {
     border-bottom: 5px double var(--gold);
     display: inline-block;
     min-width: 450px;
+    text-shadow: 0 0 1px rgba(0,0,0,0.1);
 }
 
 .divider {
