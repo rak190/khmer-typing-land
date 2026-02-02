@@ -124,13 +124,12 @@ export const WORLD_THEMES: Record<string, Theme> = {
     nameKh: "ប្រាសាទពេលយប់",
     icon: "🌙",
     colors: {
-      primary: "hsl(222, 47%, 50%)",
-      secondary: "hsl(222, 20%, 15%)",
-      accent: "hsl(210, 100%, 70%)",
-      background: "hsl(222, 47%, 6%)",
-      foreground: "hsl(210, 40%, 98%)",
+      primary: "hsl(280, 70%, 50%)",
+      secondary: "hsl(280, 20%, 95%)",
+      accent: "hsl(320, 80%, 60%)",
+      background: "hsl(280, 30%, 98%)",
     },
-    description: "Dark and mysterious night at the temple",
+    description: "Purple and lavender tones for the final challenge",
   },
 };
 
