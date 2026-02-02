@@ -209,6 +209,7 @@ export const Play: React.FC = () => {
           <GamePlatform 
             pool={stage.pool} 
             count={platformCount} 
+            mascot={mascot}
             onComplete={handlePhaseComplete}
             onQuit={handleQuit}
           />

@@ -5,6 +5,8 @@ import { cn } from '@/lib/utils';
 import { Keyboard } from '@/components/Keyboard';
 import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 import { sounds } from '@/lib/sounds';
+import { AttackEffect, SkillInfo } from './AttackEffect';
+import { getAvatarSkill } from '@/lib/avatar-skills';
 
 interface GameProps {
   pool: string[];
@@ -25,6 +27,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
   const [combo, setCombo] = useState(0);
   const [explosion, setExplosion] = useState<{x: number, y: number, color: string} | null>(null);
   const [shield, setShield] = useState(0); // 0 to 100
+  const [attackTrigger, setAttackTrigger] = useState(0);
 
   const requestRef = useRef<number>(0);
   const boxRef = useRef<HTMLDivElement>(null);
@@ -155,6 +158,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
             const newCombo = combo + 1;
             setCombo(newCombo);
             
+            setAttackTrigger(prev => prev + 1);
             triggerExplosion(stateRef.current.enemy.x, stateRef.current.enemy.isBoss ? "purple" : "orange");
             
             stateRef.current.hits++;
@@ -198,10 +202,20 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
     <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
       <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[350px] flex flex-col justify-between transition-transform duration-300" ref={boxRef}>
         
+        <AttackEffect
+          trigger={attackTrigger}
+          mascot={mascot}
+          startX={15}
+          startY={60}
+          targetX={85}
+          targetY={60}
+        />
+
         <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm z-10 relative">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
             <span>Defender Mode</span>
+            <SkillInfo mascot={mascot} className="ml-2 hidden sm:flex" />
           </div>
           <div className="flex gap-4 items-center">
              <div className="flex flex-col items-end">

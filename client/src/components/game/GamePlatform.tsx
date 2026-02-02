@@ -6,15 +6,17 @@ import { useGameStore } from '@/lib/store';
 import { Keyboard } from '@/components/Keyboard';
 import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 import { sounds } from '@/lib/sounds';
+import { AttackEffect, SkillInfo } from './AttackEffect';
 
 interface GameProps {
   pool: string[];
   count: number;
+  mascot?: string;
   onComplete: (stats: { hits: number, miss: number }) => void;
   onQuit: () => void;
 }
 
-export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQuit }) => {
+export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯", onComplete, onQuit }) => {
   const [target, setTarget] = useState<string>("");
   const [hits, setHits] = useState(0);
   const [miss, setMiss] = useState(0);
@@ -25,6 +27,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
   
   const [combo, setCombo] = useState(0);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [attackTrigger, setAttackTrigger] = useState(0);
   
   const pick = useCallback(() => {
     return pool[Math.floor(Math.random() * pool.length)];
@@ -64,6 +67,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
         setHits(h => h + 1);
         setDone(d => d + 1);
         setFlash("good");
+        setAttackTrigger(prev => prev + 1);
         
         if (newCombo % 5 === 0) {
           showFeedback(`${newCombo} COMBO!`);
@@ -106,7 +110,14 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-[1200px] mx-auto gap-4">
       <div className="glass-panel p-4 rounded-2xl w-full text-center relative overflow-hidden min-h-[350px] flex flex-col items-center justify-between">
-        {/* Progress bar and other HUD elements */}
+        <AttackEffect
+          trigger={attackTrigger}
+          mascot={mascot}
+          startX={20}
+          startY={80}
+          targetX={50}
+          targetY={50}
+        />
         
         {/* Shift Hint Sticky Note */}
         {needsShift && (
@@ -128,10 +139,11 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
           />
         </div>
 
-        <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm">
+        <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm z-10">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span>Platform Mode</span>
+            <SkillInfo mascot={mascot} className="ml-2 hidden sm:flex" />
           </div>
           <div className="flex gap-4">
             <span className="text-accent font-bold">Hits: {hits}</span>

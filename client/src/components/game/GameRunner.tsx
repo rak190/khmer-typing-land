@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Keyboard } from '@/components/Keyboard';
 import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 import { sounds } from '@/lib/sounds';
+import { AttackEffect, SkillInfo } from './AttackEffect';
 
 interface GameProps {
   pool: string[];
@@ -25,6 +26,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
 
   const [combo, setCombo] = useState(0);
   const [speedMult, setSpeedMult] = useState(1);
+  const [attackTrigger, setAttackTrigger] = useState(0);
 
   // Progressive speed challenge: speed ramps up while the player maintains accuracy.
   // We treat combo as an "accuracy streak" (resets on any miss).
@@ -160,6 +162,8 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
         stateRef.current.hits++;
         setHits(stateRef.current.hits);
         
+        setAttackTrigger(prev => prev + 1);
+        
         // Combo & Speed logic
         const newCombo = combo + 1;
         setCombo(newCombo);
@@ -198,10 +202,20 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
     <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
       <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[350px] flex flex-col justify-between">
         
+        <AttackEffect
+          trigger={attackTrigger}
+          mascot={mascot}
+          startX={10}
+          startY={75}
+          targetX={75}
+          targetY={50}
+        />
+
         <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm z-10 relative">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span>Runner Mode</span>
+            <SkillInfo mascot={mascot} className="ml-2 hidden sm:flex" />
           </div>
           <div className="flex gap-4 items-center">
             <span className="text-foreground">Goal: {dist}/{distanceGoal}m</span>
