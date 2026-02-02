@@ -8,6 +8,7 @@ export interface Theme {
     secondary: string;
     accent: string;
     background: string;
+    foreground?: string;
   };
   description: string;
 }
@@ -36,6 +37,7 @@ export const THEMES: Theme[] = [
       secondary: "hsl(240, 25%, 12%)",
       accent: "hsl(280, 100%, 70%)",
       background: "hsl(240, 35%, 7%)",
+      foreground: "hsl(0, 0%, 100%)",
     },
     description: "Deep purple night theme with mystical accents",
   },
@@ -105,4 +107,11 @@ export function applyTheme(theme: Theme) {
   root.style.setProperty("--secondary", theme.colors.secondary);
   root.style.setProperty("--accent", theme.colors.accent);
   root.style.setProperty("--bg", theme.colors.background);
+  
+  if (theme.colors.foreground) {
+    root.style.setProperty("--fg", theme.colors.foreground);
+  } else {
+    // Reset to default if not specified
+    root.style.removeProperty("--fg");
+  }
 }
