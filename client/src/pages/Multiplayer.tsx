@@ -93,12 +93,30 @@ export const Multiplayer: React.FC = () => {
     const textContent = "ភាសាខ្មែរជាភាសាមួយដែលមានប្រវត្តិសាស្ត្រយូរលង់ និងមានតួអក្សរប្លែក។ វាត្រូវបានប្រើប្រាស់ក្នុងព្រះរាជាណាចក្រកម្ពុជា និងក្នុងតំបន់ជិតខាងនានា។";
 
     try {
+      // Find or create player in DB first
+      let playerId = profile.name;
+      const playerResp = await fetch("/api/players/name/" + encodeURIComponent(profile.name));
+      if (playerResp.ok) {
+        const p = await playerResp.json();
+        playerId = p.id;
+      } else {
+        const createResp = await fetch("/api/players", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: profile.name }),
+        });
+        if (createResp.ok) {
+          const p = await createResp.json();
+          playerId = p.id;
+        }
+      }
+
       const response = await fetch("/api/rooms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           roomCode: code,
-          hostPlayerId: profile.name, // Using name as temp ID
+          hostPlayerId: playerId,
           mode: "race",
           difficulty: difficulty || "beginner",
           maxPlayers: 4,
@@ -114,7 +132,7 @@ export const Multiplayer: React.FC = () => {
         if (socket) {
           socket.emit("join_room", {
             roomCode: code,
-            playerId: profile.name,
+            playerId: playerId,
             playerName: profile.name,
           });
         }
@@ -125,16 +143,39 @@ export const Multiplayer: React.FC = () => {
     }
   };
 
-  const joinRoom = () => {
+  const joinRoom = async () => {
     if (!inputCode.trim()) return;
     
     setRoomCode(inputCode.toUpperCase());
-    if (socket) {
-      socket.emit("join_room", {
-        roomCode: inputCode.toUpperCase(),
-        playerId: profile.name,
-        playerName: profile.name,
-      });
+    
+    // Find or create player in DB first
+    let playerId = profile.name;
+    try {
+      const playerResp = await fetch("/api/players/name/" + encodeURIComponent(profile.name));
+      if (playerResp.ok) {
+        const p = await playerResp.json();
+        playerId = p.id;
+      } else {
+        const createResp = await fetch("/api/players", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: profile.name }),
+        });
+        if (createResp.ok) {
+          const p = await createResp.json();
+          playerId = p.id;
+        }
+      }
+
+      if (socket) {
+        socket.emit("join_room", {
+          roomCode: inputCode.toUpperCase(),
+          playerId: playerId,
+          playerName: profile.name,
+        });
+      }
+    } catch (error) {
+      console.error("Error joining room:", error);
     }
   };
 

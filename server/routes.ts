@@ -358,6 +358,15 @@ export async function registerRoutes(
     res.json(player);
   });
 
+  app.get("/api/players/name/:name", async (req, res) => {
+    const player = await storage.getPlayerByName(req.params.name);
+    if (!player) {
+      res.status(404).json({ error: "Player not found" });
+      return;
+    }
+    res.json(player);
+  });
+
   // Typing Sessions
   app.post("/api/sessions", async (req, res) => {
     try {
