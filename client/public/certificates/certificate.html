@@ -37,25 +37,23 @@
 
 
                 <script>
-                    // Extract parameters from URL
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const name = urlParams.get('name') || 'ឈ្មោះអ្នកប្រើប្រាស់';
-                    const world = urlParams.get('world') || 'Angkor Adventure';
-                    const worldNum = urlParams.get('worldNum') || '1';
-                    const wpm = urlParams.get('wpm') || '0';
-                    const acc = urlParams.get('acc') || '0%';
-                    const score = urlParams.get('score') || '0';
-                    const date = urlParams.get('date') || new Date().toLocaleDateString('km-KH');
+                    window.onload = function() {
+                        // Extract parameters from URL
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const name = urlParams.get('name') || 'ឈ្មោះអ្នកប្រើប្រាស់';
+                        const world = urlParams.get('world') || 'Angkor Adventure';
+                        const date = urlParams.get('date') || new Date().toLocaleDateString('km-KH');
 
-                    document.getElementById('certName').textContent = name;
+                        document.getElementById('certName').textContent = name;
 
-                    // World name (Khmer + English line)
-                    const worldEl = document.getElementById('certWorld');
-                    if (worldEl) worldEl.textContent = world;
-                    const worldEnEl = document.getElementById('certWorldEn');
-                    if (worldEnEl) worldEnEl.textContent = world;
+                        // World name (Khmer + English line)
+                        const worldEl = document.getElementById('certWorld');
+                        if (worldEl) worldEl.textContent = world;
+                        const worldEnEl = document.getElementById('certWorldEn');
+                        if (worldEnEl) worldEnEl.textContent = world;
 
-                    if (date) document.getElementById('certDate').textContent = date;
+                        if (date) document.getElementById('certDate').textContent = date;
+                    };
                 </script>
 
                 <p class="achievement-text">
