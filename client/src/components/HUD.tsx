@@ -18,7 +18,10 @@ const ALL_BADGES = makeBadges();
 export const HUD: React.FC = () => {
   const { profile, selectedBadgeId, getTotalStars } = useGameStore();
   const { t, lang } = useTranslation();
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(() => {
+    const saved = localStorage.getItem('musicMuted');
+    return saved === 'true';
+  });
   const [theme, setTheme] = useState<'light' | 'dark'>(
     typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'
   );
@@ -31,6 +34,23 @@ export const HUD: React.FC = () => {
     }
   }, [theme]);
 
+  useEffect(() => {
+    if (!isMuted) {
+      const startMusic = () => {
+        sounds.startBackgroundMusic();
+        document.removeEventListener('click', startMusic);
+        document.removeEventListener('keydown', startMusic);
+      };
+      document.addEventListener('click', startMusic);
+      document.addEventListener('keydown', startMusic);
+      sounds.startBackgroundMusic();
+      return () => {
+        document.removeEventListener('click', startMusic);
+        document.removeEventListener('keydown', startMusic);
+      };
+    }
+  }, []);
+
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
@@ -42,14 +62,15 @@ export const HUD: React.FC = () => {
     if (isMuted) {
       sounds.startBackgroundMusic();
       setIsMuted(false);
+      localStorage.setItem('musicMuted', 'false');
     } else {
       sounds.stopBackgroundMusic();
       setIsMuted(true);
+      localStorage.setItem('musicMuted', 'true');
     }
   };
 
   useEffect(() => {
-    // Cleanup sounds when unmounting
     return () => {
       sounds.stopBackgroundMusic();
     };
