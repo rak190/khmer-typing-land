@@ -249,7 +249,13 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
   }, [activeFinger]);
 
   return (
-    <div className="flex flex-col gap-4 py-4 px-10 rounded-[32px] border-[1px] border-slate-200 w-full max-w-[1400px] mx-auto backdrop-blur-sm relative shadow-sm transition-all duration-300 bg-slate-50/50 pt-[9px] pb-[9px]">
+    <div className={cn(
+      "flex flex-col gap-4 py-4 px-10 rounded-[32px] border-[1px] border-slate-200 w-full max-w-[1400px] mx-auto backdrop-blur-sm relative shadow-sm transition-all duration-300",
+      mod === "BASE" && "bg-slate-50/50",
+      mod === "SHIFT" && "border-purple-500 shadow-[0_0_50px_rgba(168,85,247,0.4)] bg-purple-500/10",
+      mod === "ALTGR" && "border-amber-500 shadow-[0_0_50px_rgba(245,158,11,0.4)] bg-amber-500/10",
+      className
+    )}>
       <div className="flex justify-between items-center text-sm px-1 mb-1">
         <div className="flex gap-2">
           <div className={cn(
