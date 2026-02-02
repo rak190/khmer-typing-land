@@ -80,7 +80,7 @@ export const Play: React.FC = () => {
   const diffFactor = diff === "beginner" ? 1 : diff === "intermediate" ? 1.25 : 1.55;
 
   const platformCount = Math.round((10 + stageNo * 2) * diffFactor);
-  const runGoal = Math.round((50 + stageNo * 5) * diffFactor);
+  const runGoal = Math.round((15 + stageNo * 2) * diffFactor);
   const killsGoal = Math.round((10 + stageNo * 2) * diffFactor);
 
   const handlePhaseComplete = (phaseStats: { hits: number, miss: number }) => {

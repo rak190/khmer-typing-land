@@ -37,8 +37,8 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
   const requestRef = useRef<number>(0);
   const lastTimeRef = useRef<number>(0);
   
-  const baseSpeed = difficulty === "beginner" ? 0.8 : difficulty === "intermediate" ? 1.2 : 1.6;
-  const spawnInterval = difficulty === "beginner" ? 3500 : difficulty === "intermediate" ? 2800 : 2200;
+  const baseSpeed = difficulty === "beginner" ? 1.2 : difficulty === "intermediate" ? 1.6 : 2.0;
+  const spawnInterval = difficulty === "beginner" ? 2500 : difficulty === "intermediate" ? 2000 : 1600;
   
   const stateRef = useRef({
     heroY: 0,
