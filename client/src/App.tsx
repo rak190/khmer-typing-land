@@ -38,7 +38,21 @@ function Router() {
 }
 
 function App() {
-  return <Router />;
+  return (
+    <div className="min-h-screen bg-background relative overflow-x-hidden">
+      <div className="khmer-pattern-overlay" />
+      
+      {/* Subtle Floating Elements */}
+      <div className="fixed inset-0 pointer-events-none z-[-1] opacity-20">
+        <div className="absolute top-[10%] left-[5%] text-6xl animate-float" style={{ animationDelay: '0s' }}>🇰🇭</div>
+        <div className="absolute top-[60%] left-[85%] text-4xl animate-float" style={{ animationDelay: '2s' }}>🏺</div>
+        <div className="absolute top-[20%] left-[80%] text-5xl animate-float" style={{ animationDelay: '4s' }}>🌸</div>
+        <div className="absolute top-[80%] left-[15%] text-4xl animate-float" style={{ animationDelay: '6s' }}>🐘</div>
+      </div>
+
+      <Router />
+    </div>
+  );
 }
 
 export default App;
