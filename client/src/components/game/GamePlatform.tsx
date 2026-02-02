@@ -169,7 +169,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
            </div>
         </div>
 
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center mt-[16px] mb-[16px]">
           <Button variant="secondary" onClick={onQuit}>Quit</Button>
         </div>
       </div>
