@@ -6,6 +6,8 @@ import {
   multiplayerRooms,
   roomParticipants,
   playerPreferences,
+  teacherRooms,
+  studentResults,
   type Player,
   type InsertPlayer,
   type TypingSession,
@@ -16,6 +18,10 @@ import {
   type InsertRoomParticipant,
   type PlayerPreferences,
   type InsertPlayerPreferences,
+  type TeacherRoom,
+  type InsertTeacherRoom,
+  type StudentResult,
+  type InsertStudentResult,
 } from "@shared/schema";
 
 export interface IStorage {
@@ -44,6 +50,18 @@ export interface IStorage {
   // Player Preferences
   getPlayerPreferences(playerId: string): Promise<PlayerPreferences | undefined>;
   upsertPlayerPreferences(prefs: InsertPlayerPreferences): Promise<PlayerPreferences>;
+
+  // Teacher Rooms
+  createTeacherRoom(room: InsertTeacherRoom): Promise<TeacherRoom>;
+  getTeacherRoomByCode(roomCode: string): Promise<TeacherRoom | undefined>;
+  getTeacherRoom(id: string): Promise<TeacherRoom | undefined>;
+  updateTeacherRoomStatus(id: string, status: string, startedAt?: Date, completedAt?: Date): Promise<void>;
+
+  // Student Results
+  addStudentResult(result: InsertStudentResult): Promise<StudentResult>;
+  getStudentResults(roomId: string): Promise<StudentResult[]>;
+  updateStudentProgress(id: string, progress: number, wpm: number, accuracy: number, timeSeconds: number): Promise<void>;
+  finishStudent(id: string, wpm: number, accuracy: number, timeSeconds: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -155,6 +173,54 @@ export class DatabaseStorage implements IStorage {
       const result = await db.insert(playerPreferences).values(prefs).returning();
       return result[0];
     }
+  }
+
+  // Teacher Rooms
+  async createTeacherRoom(room: InsertTeacherRoom): Promise<TeacherRoom> {
+    const result = await db.insert(teacherRooms).values(room).returning();
+    return result[0];
+  }
+
+  async getTeacherRoomByCode(roomCode: string): Promise<TeacherRoom | undefined> {
+    const result = await db.select().from(teacherRooms).where(eq(teacherRooms.roomCode, roomCode)).limit(1);
+    return result[0];
+  }
+
+  async getTeacherRoom(id: string): Promise<TeacherRoom | undefined> {
+    const result = await db.select().from(teacherRooms).where(eq(teacherRooms.id, id)).limit(1);
+    return result[0];
+  }
+
+  async updateTeacherRoomStatus(id: string, status: string, startedAt?: Date, completedAt?: Date): Promise<void> {
+    const updates: any = { status };
+    if (startedAt) updates.startedAt = startedAt;
+    if (completedAt) updates.completedAt = completedAt;
+    
+    await db.update(teacherRooms).set(updates).where(eq(teacherRooms.id, id));
+  }
+
+  // Student Results
+  async addStudentResult(result: InsertStudentResult): Promise<StudentResult> {
+    const res = await db.insert(studentResults).values(result).returning();
+    return res[0];
+  }
+
+  async getStudentResults(roomId: string): Promise<StudentResult[]> {
+    return db.select().from(studentResults).where(eq(studentResults.roomId, roomId)).orderBy(desc(studentResults.wpm));
+  }
+
+  async updateStudentProgress(id: string, progress: number, wpm: number, accuracy: number, timeSeconds: number): Promise<void> {
+    await db
+      .update(studentResults)
+      .set({ progress, wpm, accuracy, timeSeconds })
+      .where(eq(studentResults.id, id));
+  }
+
+  async finishStudent(id: string, wpm: number, accuracy: number, timeSeconds: number): Promise<void> {
+    await db
+      .update(studentResults)
+      .set({ finished: true, finishedAt: new Date(), wpm, accuracy, timeSeconds })
+      .where(eq(studentResults.id, id));
   }
 }
 

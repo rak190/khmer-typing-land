@@ -94,3 +94,46 @@ export const insertPlayerPreferencesSchema = createInsertSchema(playerPreference
 });
 export type InsertPlayerPreferences = z.infer<typeof insertPlayerPreferencesSchema>;
 export type PlayerPreferences = typeof playerPreferences.$inferSelect;
+
+// Teacher Rooms
+export const teacherRooms = pgTable("teacher_rooms", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  roomCode: text("room_code").notNull().unique(),
+  teacherName: text("teacher_name").notNull(),
+  assignedText: text("assigned_text").notNull(),
+  status: text("status").notNull().default("waiting"), // "waiting", "active", "completed"
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  startedAt: timestamp("started_at"),
+  completedAt: timestamp("completed_at"),
+});
+
+export const insertTeacherRoomSchema = createInsertSchema(teacherRooms).omit({
+  id: true,
+  createdAt: true,
+  startedAt: true,
+  completedAt: true,
+});
+export type InsertTeacherRoom = z.infer<typeof insertTeacherRoomSchema>;
+export type TeacherRoom = typeof teacherRooms.$inferSelect;
+
+// Student Results in Teacher Rooms
+export const studentResults = pgTable("student_results", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  roomId: varchar("room_id").references(() => teacherRooms.id).notNull(),
+  studentName: text("student_name").notNull(),
+  wpm: integer("wpm").notNull().default(0),
+  accuracy: integer("accuracy").notNull().default(0),
+  timeSeconds: integer("time_seconds").notNull().default(0),
+  finished: boolean("finished").notNull().default(false),
+  progress: integer("progress").notNull().default(0),
+  joinedAt: timestamp("joined_at").defaultNow().notNull(),
+  finishedAt: timestamp("finished_at"),
+});
+
+export const insertStudentResultSchema = createInsertSchema(studentResults).omit({
+  id: true,
+  joinedAt: true,
+  finishedAt: true,
+});
+export type InsertStudentResult = z.infer<typeof insertStudentResultSchema>;
+export type StudentResult = typeof studentResults.$inferSelect;

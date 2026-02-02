@@ -8,6 +8,8 @@ import {
   insertMultiplayerRoomSchema,
   insertRoomParticipantSchema,
   insertPlayerPreferencesSchema,
+  insertTeacherRoomSchema,
+  insertStudentResultSchema,
 } from "@shared/schema";
 import { z } from "zod";
 
@@ -17,7 +19,13 @@ interface RoomState {
   participants: Map<string, { participantId: string; playerId: string; name: string; socketId: string }>;
 }
 
+interface TeacherRoomState {
+  roomId: string;
+  students: Map<string, { studentId: string; name: string; socketId: string }>;
+}
+
 const activeRooms = new Map<string, RoomState>();
+const activeTeacherRooms = new Map<string, TeacherRoomState>();
 
 export async function registerRoutes(
   httpServer: Server,
@@ -170,6 +178,123 @@ export async function registerRoutes(
       }
     });
 
+    // Teacher Mode Socket Events
+    socket.on("teacher_join_room", async ({ roomCode }) => {
+      try {
+        const room = await storage.getTeacherRoomByCode(roomCode);
+        if (!room) {
+          socket.emit("error", { message: "Room not found" });
+          return;
+        }
+
+        socket.join(`teacher_${roomCode}`);
+        
+        const students = await storage.getStudentResults(room.id);
+        socket.emit("teacher_room_joined", { room, students });
+      } catch (error) {
+        console.error("Error teacher joining room:", error);
+        socket.emit("error", { message: "Failed to join room" });
+      }
+    });
+
+    socket.on("student_join_room", async ({ roomCode, studentName }) => {
+      try {
+        const room = await storage.getTeacherRoomByCode(roomCode);
+        if (!room) {
+          socket.emit("error", { message: "Room not found" });
+          return;
+        }
+
+        // Add student to database
+        const student = await storage.addStudentResult({
+          roomId: room.id,
+          studentName,
+          wpm: 0,
+          accuracy: 0,
+          timeSeconds: 0,
+          finished: false,
+          progress: 0,
+        });
+
+        socket.join(`teacher_${roomCode}`);
+
+        if (!activeTeacherRooms.has(roomCode)) {
+          activeTeacherRooms.set(roomCode, {
+            roomId: room.id,
+            students: new Map(),
+          });
+        }
+
+        const roomState = activeTeacherRooms.get(roomCode)!;
+        roomState.students.set(socket.id, {
+          studentId: student.id,
+          name: studentName,
+          socketId: socket.id,
+        });
+
+        const allStudents = await storage.getStudentResults(room.id);
+        
+        io.to(`teacher_${roomCode}`).emit("teacher_room_updated", {
+          room,
+          students: allStudents,
+        });
+
+        socket.emit("student_joined", { student, room });
+      } catch (error) {
+        console.error("Error student joining room:", error);
+        socket.emit("error", { message: "Failed to join room" });
+      }
+    });
+
+    socket.on("teacher_start_session", async ({ roomCode }) => {
+      try {
+        const room = await storage.getTeacherRoomByCode(roomCode);
+        if (!room) return;
+
+        await storage.updateTeacherRoomStatus(room.id, "active", new Date());
+        const updatedRoom = await storage.getTeacherRoom(room.id);
+        const students = await storage.getStudentResults(room.id);
+
+        io.to(`teacher_${roomCode}`).emit("session_started", { room: updatedRoom, students });
+      } catch (error) {
+        console.error("Error starting session:", error);
+      }
+    });
+
+    socket.on("student_update_progress", async ({ studentId, roomCode, progress, wpm, accuracy, timeSeconds }) => {
+      try {
+        await storage.updateStudentProgress(studentId, progress, wpm, accuracy, timeSeconds);
+
+        const room = await storage.getTeacherRoomByCode(roomCode);
+        if (!room) return;
+
+        const allStudents = await storage.getStudentResults(room.id);
+        io.to(`teacher_${roomCode}`).emit("teacher_room_updated", {
+          room,
+          students: allStudents,
+        });
+      } catch (error) {
+        console.error("Error updating student progress:", error);
+      }
+    });
+
+    socket.on("student_finish", async ({ studentId, roomCode, wpm, accuracy, timeSeconds }) => {
+      try {
+        await storage.finishStudent(studentId, wpm, accuracy, timeSeconds);
+
+        const room = await storage.getTeacherRoomByCode(roomCode);
+        if (!room) return;
+
+        const allStudents = await storage.getStudentResults(room.id);
+        io.to(`teacher_${roomCode}`).emit("teacher_room_updated", {
+          room,
+          students: allStudents,
+        });
+      } catch (error) {
+        console.error("Error finishing student:", error);
+      }
+    });
+
     socket.on("disconnect", () => {
       console.log("Client disconnected:", socket.id);
       
@@ -179,6 +304,16 @@ export async function registerRoutes(
           roomState.participants.delete(socket.id);
           if (roomState.participants.size === 0) {
             activeRooms.delete(roomCode);
+          }
+        }
+      }
+
+      // Clean up teacher room state
+      for (const [roomCode, roomState] of Array.from(activeTeacherRooms.entries())) {
+        if (roomState.students.has(socket.id)) {
+          roomState.students.delete(socket.id);
+          if (roomState.students.size === 0) {
+            activeTeacherRooms.delete(roomCode);
           }
         }
       }
@@ -272,6 +407,31 @@ export async function registerRoutes(
     } catch (error) {
       res.status(400).json({ error: "Invalid request" });
     }
+  });
+
+  // Teacher Rooms
+  app.post("/api/teacher-rooms", async (req, res) => {
+    try {
+      const data = insertTeacherRoomSchema.parse(req.body);
+      const room = await storage.createTeacherRoom(data);
+      res.json(room);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid request" });
+    }
+  });
+
+  app.get("/api/teacher-rooms/code/:roomCode", async (req, res) => {
+    const room = await storage.getTeacherRoomByCode(req.params.roomCode);
+    if (!room) {
+      res.status(404).json({ error: "Room not found" });
+      return;
+    }
+    res.json(room);
+  });
+
+  app.get("/api/teacher-rooms/:id/students", async (req, res) => {
+    const students = await storage.getStudentResults(req.params.id);
+    res.json(students);
   });
 
   return httpServer;
