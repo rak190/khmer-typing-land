@@ -101,9 +101,26 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [target, done, count, hits, miss, combo, onComplete, pick]);
 
+  const needsShift = target && Object.values(NIDA_MAP).some(m => m.shift === target);
+
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
       <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden min-h-[350px] flex flex-col items-center justify-between">
+        {/* Progress bar and other HUD elements */}
+        
+        {/* Shift Hint Sticky Note */}
+        {needsShift && (
+          <div className="absolute top-12 left-6 animate-bounce-in z-20">
+            <div className="bg-purple-600 text-white px-4 py-2 rounded-xl shadow-lg border-b-4 border-purple-800 flex items-center gap-2">
+              <span className="text-xl">⬆️</span>
+              <div className="flex flex-col items-start">
+                <span className="text-[10px] font-black uppercase tracking-widest leading-none mb-1">Shift Required</span>
+                <span className="text-sm font-bold font-khmer">ចុច Shift + {findKeyForTarget(target)?.code.replace('Key', '')}</span>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="absolute top-0 left-0 w-full h-1 bg-white/10">
           <div 
             className="h-full bg-primary transition-all duration-300 shadow-[0_0_15px_rgba(90,200,250,0.8)]" 

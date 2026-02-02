@@ -70,7 +70,10 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
           {label}
         </span>
         {subLabel && !fixed && (
-          <span className="text-[10px] opacity-40 font-khmer font-bold">
+          <span className={cn(
+            "text-[10px] font-khmer font-bold transition-colors",
+            mod === "BASE" ? "text-purple-500/60" : "text-slate-400/40"
+          )}>
             {subLabel}
           </span>
         )}
