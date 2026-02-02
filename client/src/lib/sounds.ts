@@ -135,7 +135,7 @@ class SoundManager {
     this.init();
 
     if (!this.bgAudio) {
-      this.bgAudio = new Audio("/game-bg.mp3");
+      this.bgAudio = new Audio("/main-bg.mp3");
       this.bgAudio.loop = true;
       this.bgAudio.volume = 0.25;
     }
