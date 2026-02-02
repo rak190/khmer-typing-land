@@ -130,17 +130,6 @@ export const Home: React.FC = () => {
                   <span className="font-bold">{t.culturalChallenges}</span>
                 </Button>
               </Link>
-              <Link href="/survival">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 bg-white/50 border-red-300 text-red-700 hover:bg-white hover:text-red-800 transition-all shadow-sm font-body"
-                  data-testid="link-survival"
-                >
-                  <Heart size={16} />
-                  <span className="font-bold">{t.survivalMode}</span>
-                </Button>
-              </Link>
               <Link href="/library">
                 <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-blue-300 text-blue-700 hover:bg-white hover:text-blue-800 transition-all shadow-sm font-body" data-testid="link-library">
                   <GraduationCap size={16} />
