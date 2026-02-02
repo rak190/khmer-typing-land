@@ -112,7 +112,6 @@ export const Play: React.FC = () => {
   return (
     <div className="min-h-screen p-4 sm:p-8 flex flex-col items-center" data-world={worldId} data-stage={stageId}>
       <HUD />
-
       {phase !== "result" && (
         <div className="w-full max-w-4xl flex justify-between items-center mb-8 relative z-10">
            <Button variant="ghost" onClick={handleQuit} className="gap-2 text-slate-400 hover:text-white">
@@ -120,8 +119,7 @@ export const Play: React.FC = () => {
            </Button>
         </div>
       )}
-
-      <div className="container mx-auto px-4 flex flex-col items-center justify-start pt-8 min-h-[60vh]">
+      <div className="container mx-auto px-4 flex flex-col items-center justify-start min-h-[60vh] pt-[0px] pb-[0px]">
         {phase === "intro" && (
           <div className="glass-panel p-10 rounded-3xl text-center max-w-2xl w-full animate-in fade-in zoom-in duration-500 border-primary/40 shadow-[0_0_50px_rgba(59,130,246,0.15)]">
             <div className="text-sm font-bold text-primary uppercase tracking-[0.3em] mb-4">Quest Objective</div>
