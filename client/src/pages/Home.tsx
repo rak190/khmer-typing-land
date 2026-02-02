@@ -250,8 +250,8 @@ export const Home: React.FC = () => {
                 ) : (
                   <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-amber-300 text-amber-500 font-bold hover:bg-white hover:text-amber-600 transition-all shadow-sm font-body text-xs" data-testid="button-easy-mode" onClick={() => {
                     if(confirm("បើកគ្រប់វគ្គទាំងអស់? (Easy Mode)")) {
-                      const { recordStageResult, setProfile } = useGameStore.getState();
-                      setProfile({ name: "ប្រព័ន្ធ" });
+                      const { recordStageResult, setProfileName } = useGameStore.getState();
+                      setProfileName("ប្រព័ន្ធ");
                       WORLDS.forEach(w => {
                         w.stages.forEach(s => {
                           recordStageResult(w.id, s.id, 3);
