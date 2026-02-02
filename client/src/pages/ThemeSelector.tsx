@@ -38,7 +38,11 @@ export const ThemeSelector: React.FC = () => {
       const theme = getThemeById(selectedTheme);
       applyTheme(theme);
       useGameStore.getState().updateProfile({ theme: selectedTheme });
-      
+
+      // Persist selected music track
+      localStorage.setItem('selectedMusicTrack', selectedMusic);
+      sounds.setCurrentTrack(selectedMusic);
+
       await fetch("/api/preferences", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
