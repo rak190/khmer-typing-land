@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, Check, Palette, Languages, Volume2 } from "lucide-react";
+import { ArrowLeft, Check, Palette, Languages, Volume2, Music, Play, Pause } from "lucide-react";
 import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/lib/store";
 import { THEMES, getThemeById, applyTheme } from "@/lib/themes";
 import { cn } from "@/lib/utils";
+import { sounds, MUSIC_TRACKS } from "@/lib/sounds";
 
 export const ThemeSelector: React.FC = () => {
   const { profile, immersionMode, setImmersionMode } = useGameStore();
   const [selectedTheme, setSelectedTheme] = useState("angkor-classic");
   const [soundEffects, setSoundEffects] = useState(true);
+  const [selectedMusic, setSelectedMusic] = useState(() => {
+    return localStorage.getItem('selectedMusicTrack') || 'main';
+  });
+  const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
 
   const handleSelectTheme = (themeId: string) => {
     setSelectedTheme(themeId);
@@ -125,6 +130,54 @@ export const ThemeSelector: React.FC = () => {
                   )}
                 />
               </button>
+            </div>
+          </div>
+
+          <div className="border-t border-border pt-6 mt-6">
+            <div className="mb-4">
+              <h3 className="text-lg font-black text-foreground flex items-center gap-2">
+                <Music size={20} className="text-primary" />
+                ចម្រៀងផ្ទៃខាងក្រោយ / Background Music
+              </h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                Choose your favorite background music while playing
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {MUSIC_TRACKS.map((track) => (
+                <button
+                  key={track.id}
+                  onClick={() => {
+                    setSelectedMusic(track.id);
+                    sounds.changeTrack(track.id);
+                  }}
+                  className={cn(
+                    "relative p-4 rounded-xl border-2 transition-all duration-300 text-left flex items-center gap-4 group",
+                    selectedMusic === track.id
+                      ? "border-primary bg-primary/10 shadow-md"
+                      : "border-border hover:border-primary/50 bg-card hover:shadow-sm"
+                  )}
+                  data-testid={`button-music-${track.id}`}
+                >
+                  {selectedMusic === track.id && (
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-md">
+                      <Check className="text-primary-foreground" size={14} />
+                    </div>
+                  )}
+                  <div className="text-3xl">{track.icon}</div>
+                  <div className="flex-1">
+                    <p className="font-bold text-foreground">{track.name}</p>
+                    <p className="text-sm text-muted-foreground">{track.nameKh}</p>
+                  </div>
+                  {selectedMusic === track.id && (
+                    <div className="flex items-center gap-1 text-primary">
+                      <div className="w-1 h-3 bg-primary rounded animate-pulse" />
+                      <div className="w-1 h-4 bg-primary rounded animate-pulse" style={{ animationDelay: '0.1s' }} />
+                      <div className="w-1 h-2 bg-primary rounded animate-pulse" style={{ animationDelay: '0.2s' }} />
+                    </div>
+                  )}
+                </button>
+              ))}
             </div>
           </div>
 

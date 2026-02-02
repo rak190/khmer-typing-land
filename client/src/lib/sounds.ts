@@ -1,6 +1,22 @@
+export interface MusicTrack {
+  id: string;
+  name: string;
+  nameKh: string;
+  file: string;
+  icon: string;
+}
+
+export const MUSIC_TRACKS: MusicTrack[] = [
+  { id: "main", name: "Khmer Spirit", nameKh: "ចិត្តខ្មែរ", file: "/main-bg.mp3", icon: "🎵" },
+  { id: "game", name: "Game Adventure", nameKh: "ដំណើរផ្សងព្រេង", file: "/game-bg.mp3", icon: "🎮" },
+  { id: "happy", name: "Happy Day", nameKh: "ថ្ងៃសប្បាយ", file: "/happy-bg.mp3", icon: "☀️" },
+  { id: "calm", name: "Calm & Relaxing", nameKh: "ស្ងប់ស្ងាត់", file: "/calm-bg.mp3", icon: "🌿" },
+];
+
 class SoundManager {
   private ctx: AudioContext | null = null;
   private isMuted = false;
+  private currentTrackId = "main";
 
   private init() {
     if (!this.ctx) {
@@ -18,6 +34,15 @@ class SoundManager {
 
   getMuted() {
     return this.isMuted;
+  }
+
+  getCurrentTrackId() {
+    return this.currentTrackId;
+  }
+
+  setCurrentTrack(trackId: string) {
+    this.currentTrackId = trackId;
+    localStorage.setItem('selectedMusicTrack', trackId);
   }
 
   private playTone(
@@ -134,8 +159,18 @@ class SoundManager {
     if (this.isMuted || this.isBgPlaying) return;
     this.init();
 
-    if (!this.bgAudio) {
-      this.bgAudio = new Audio("/main-bg.mp3");
+    const savedTrack = localStorage.getItem('selectedMusicTrack');
+    if (savedTrack) {
+      this.currentTrackId = savedTrack;
+    }
+
+    const track = MUSIC_TRACKS.find(t => t.id === this.currentTrackId) || MUSIC_TRACKS[0];
+
+    if (!this.bgAudio || this.bgAudio.src !== window.location.origin + track.file) {
+      if (this.bgAudio) {
+        this.bgAudio.pause();
+      }
+      this.bgAudio = new Audio(track.file);
       this.bgAudio.loop = true;
       this.bgAudio.volume = 0.25;
     }
@@ -149,6 +184,15 @@ class SoundManager {
         .catch((error) => {
           console.warn("Autoplay blocked, wait for user interaction:", error);
         });
+    }
+  }
+
+  changeTrack(trackId: string) {
+    const wasPlaying = this.isBgPlaying;
+    this.stopBackgroundMusic();
+    this.setCurrentTrack(trackId);
+    if (wasPlaying || !this.isMuted) {
+      this.startBackgroundMusic();
     }
   }
 
