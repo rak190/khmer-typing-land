@@ -121,7 +121,7 @@ export const Play: React.FC = () => {
         </div>
       )}
 
-      <div className="container mx-auto px-4 flex flex-col items-center justify-center min-h-[60vh]">
+      <div className="container mx-auto px-4 flex flex-col items-center justify-start pt-8 min-h-[60vh]">
         {phase === "intro" && (
           <div className="glass-panel p-10 rounded-3xl text-center max-w-2xl w-full animate-in fade-in zoom-in duration-500 border-primary/40 shadow-[0_0_50px_rgba(59,130,246,0.15)]">
             <div className="text-sm font-bold text-primary uppercase tracking-[0.3em] mb-4">Quest Objective</div>
