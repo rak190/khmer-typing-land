@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useGameStore } from '@/lib/store';
 import { buildWorlds } from '@/lib/curriculum';
 import { Link, useRoute } from 'wouter';
@@ -7,6 +7,7 @@ import { ArrowLeft, Star } from 'lucide-react';
 import { HUD } from '@/components/HUD';
 import { cn } from '@/lib/utils';
 import { AdBanner } from '@/components/AdBanner';
+import { WORLD_THEMES, applyTheme, getThemeById } from '@/lib/themes';
 
 import { STORY_CHAPTERS } from '@/lib/story';
 
@@ -14,10 +15,21 @@ const WORLDS = buildWorlds();
 
 export const StageSelect: React.FC = () => {
   const [, params] = useRoute("/world/:id");
-  const { progress, getTotalStars } = useGameStore();
+  const { progress, getTotalStars, profile } = useGameStore();
   
   const world = WORLDS.find(w => w.id === params?.id);
   const chapter = STORY_CHAPTERS.find(c => c.worldId === world?.id);
+  
+  // Set theme based on world
+  useEffect(() => {
+    if (params?.id && WORLD_THEMES[params.id]) {
+      applyTheme(WORLD_THEMES[params.id]);
+    } else {
+      // Fallback to selected theme or classic
+      const currentTheme = getThemeById(profile?.theme || "angkor-classic");
+      applyTheme(currentTheme);
+    }
+  }, [params?.id, profile?.theme]);
   
   if (!world) return <div className="text-white p-20">World not found</div>;
 

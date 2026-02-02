@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useGameStore } from '@/lib/store';
 import { buildWorlds } from '@/lib/curriculum';
 import { cn } from '@/lib/utils';
@@ -8,6 +8,7 @@ import { Lock, Play, GraduationCap, BarChart3, Trophy, Timer, Keyboard, ShieldCh
 import { HUD } from '@/components/HUD';
 import { useTranslation } from '@/lib/useTranslation';
 import { AdBanner } from '@/components/AdBanner';
+import { applyTheme, getThemeById } from "@/lib/themes";
 
 import { STORY_CHAPTERS } from '@/lib/story';
 
@@ -17,6 +18,12 @@ export const Home: React.FC = () => {
   const { getTotalStars, profile, setProfileName, badgesOwned, resetProgress, difficulty, setDifficulty } = useGameStore();
   const { t, lang } = useTranslation();
   const totalStars = getTotalStars();
+
+  // Ensure default theme is applied on Home
+  useEffect(() => {
+    const currentTheme = getThemeById(profile.theme);
+    applyTheme(currentTheme);
+  }, [profile.theme]);
 
   return (
     <div className="min-h-screen bg-[linear-gradient(to_bottom,_#bae6fd,_#e0f2fe,_#fefce8)] pb-20 pt-20 relative overflow-hidden font-body">

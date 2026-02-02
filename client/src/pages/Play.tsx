@@ -14,6 +14,7 @@ import { Celebration } from '@/components/Celebration';
 
 import { sounds } from '@/lib/sounds';
 import { STORY_CHAPTERS, RANDOM_EVENTS, EASTER_EGGS } from '@/lib/story';
+import { WORLD_THEMES, applyTheme } from '@/lib/themes';
 
 const WORLDS = buildWorlds();
 const ALL_BADGES = makeBadges();
@@ -39,6 +40,13 @@ export const Play: React.FC = () => {
   const world = WORLDS.find(w => w.id === worldId);
   const stage = world?.stages.find(s => s.id === stageId);
   const chapter = STORY_CHAPTERS.find(c => c.worldId === worldId);
+  
+  // Apply world theme
+  useEffect(() => {
+    if (worldId && WORLD_THEMES[worldId]) {
+      applyTheme(WORLD_THEMES[worldId]);
+    }
+  }, [worldId]);
   
   // Find mascot icon
   const badge = ALL_BADGES.find(b => b.id === selectedBadgeId) || ALL_BADGES[0];

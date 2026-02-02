@@ -308,8 +308,12 @@
 }
 
 /* Background Variations */
-[data-world="w2"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(142 76% 50%) 10%) 0%, transparent 70%); }
-[data-world="w3"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(30 100% 50%) 10%) 0%, transparent 70%); }
-[data-world="w4"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(340 100% 50%) 10%) 0%, transparent 70%); }
-[data-world="w5"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(280 100% 50%) 10%) 0%, transparent 70%); }
-[data-world="w9"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(0 0% 50%) 10%) 0%, transparent 70%), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E"); }
+[data-world="w1"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(199 92% 50%) 15%) 0%, transparent 70%); }
+[data-world="w2"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(142 76% 50%) 15%) 0%, transparent 70%); }
+[data-world="w3"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(45 100% 50%) 15%) 0%, transparent 70%); }
+[data-world="w4"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(330 80% 60%) 15%) 0%, transparent 70%); }
+[data-world="w5"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(0 80% 50%) 15%) 0%, transparent 70%); }
+[data-world="w6"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(200 90% 45%) 15%) 0%, transparent 70%); }
+[data-world="w7"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(25 100% 50%) 15%) 0%, transparent 70%); }
+[data-world="w8"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(280 70% 50%) 15%) 0%, transparent 70%); }
+[data-world="w9"] body { background-image: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg), hsl(222 47% 50%) 20%) 0%, transparent 70%), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); }
