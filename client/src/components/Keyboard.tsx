@@ -250,8 +250,8 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
 
   return (
     <div className={cn(
-      "flex flex-col gap-3 p-8 rounded-[40px] bg-card/50 border-[1.5px] border-slate-300 w-full max-w-[1300px] mx-auto backdrop-blur-sm relative shadow-sm transition-all duration-300",
-      mod === "BASE" && "bg-slate-50/50",
+      "flex flex-col gap-3 p-10 rounded-[48px] bg-card/50 border-[2px] border-slate-300/80 w-full max-w-[1400px] mx-auto backdrop-blur-sm relative shadow-md transition-all duration-300",
+      mod === "BASE" && "bg-slate-50/40",
       mod === "SHIFT" && "border-purple-500 shadow-[0_0_50px_rgba(168,85,247,0.4)] bg-purple-500/10",
       mod === "ALTGR" && "border-amber-500 shadow-[0_0_50px_rgba(245,158,11,0.4)] bg-amber-500/10",
       className
