@@ -137,7 +137,7 @@ export const CulturalChallenges: React.FC = () => {
               </Button>
             </Link>
             <div>
-              <h1 className="text-4xl font-black font-display text-foreground" data-testid="text-cultural-title">ប្រកួតប្រជែងវប្បធម៌ / Cultural Challenges</h1>
+              <h1 className="text-4xl font-black font-display text-foreground" data-testid="text-cultural-title">វប្បធម៌ទូទៅ / General Knowledge</h1>
               <p className="text-muted-foreground">Learn Khmer through proverbs, history, and daily phrases</p>
             </div>
           </div>
