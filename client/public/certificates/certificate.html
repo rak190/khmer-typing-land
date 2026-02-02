@@ -141,40 +141,47 @@
                 html2canvas(cert, {
                     useCORS: true,
                     scale: 1,
-                    backgroundColor: '#ffffff'
+                    backgroundColor: '#ffffff',
+                    logging: false
                 }).then(canvas => {
-                    frames.push(canvas.toDataURL('image/jpeg', 0.8));
+                    frames.push(canvas.toDataURL('image/png'));
                     currentFrame++;
                     
                     if (currentFrame < captureFrames) {
-                        // Add some slight variation for the GIF feel (e.g. pulse the mascot)
                         const mascot = document.getElementById('certMascotImg');
                         if (mascot) {
                             mascot.style.transform = `scale(${1 + Math.sin(currentFrame) * 0.05})`;
                         }
-                        setTimeout(capture, 100);
+                        setTimeout(capture, 150);
                     } else {
                         gifshot.createGIF({
                             images: frames,
                             gifWidth: cert.offsetWidth,
                             gifHeight: cert.offsetHeight,
-                            interval: 0.1,
-                            numFrames: captureFrames,
-                            frameDuration: 1
+                            interval: 0.15,
+                            numFrames: captureFrames
                         }, function(obj) {
                             if (!obj.error) {
                                 const link = document.createElement('a');
                                 link.download = `Khmer-Typing-Certificate-${document.getElementById('certName').textContent}.gif`;
                                 link.href = obj.image;
+                                document.body.appendChild(link);
                                 link.click();
+                                document.body.removeChild(link);
+                            } else {
+                                console.error("GIF generation error:", obj.error);
+                                alert("Failed to generate GIF. Please try again.");
                             }
                             statusText.remove();
                             btns.forEach(b => b.style.display = 'block');
-                            // Reset mascot
                             const mascot = document.getElementById('certMascotImg');
                             if (mascot) mascot.style.transform = '';
                         });
                     }
+                }).catch(err => {
+                    console.error("Canvas capture error:", err);
+                    statusText.remove();
+                    btns.forEach(b => b.style.display = 'block');
                 });
             }
 
