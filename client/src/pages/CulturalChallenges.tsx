@@ -184,7 +184,7 @@ export const CulturalChallenges: React.FC = () => {
             </p>
             <div className="flex gap-2 flex-wrap">
               <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-bold">សុភាសិត</span>
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-bold">អង្គរវត្ត</span>
+              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-bold">ប្រវត្តិសាស្ត្រ</span>
               <span className="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-sm font-bold">ជីវិតប្រចាំថ្ងៃ</span>
               <span className="px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm font-bold">ការស្វាគមន៍</span>
               <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-bold">ធម្មជាតិ</span>
