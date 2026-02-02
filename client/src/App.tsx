@@ -43,11 +43,13 @@ function App() {
       <div className="khmer-pattern-overlay" />
       
       {/* Subtle Floating Elements */}
-      <div className="fixed inset-0 pointer-events-none z-[-1] opacity-20">
-        <div className="absolute top-[10%] left-[5%] text-6xl animate-float" style={{ animationDelay: '0s' }}>🇰🇭</div>
-        <div className="absolute top-[60%] left-[85%] text-4xl animate-float" style={{ animationDelay: '2s' }}>🏺</div>
-        <div className="absolute top-[20%] left-[80%] text-5xl animate-float" style={{ animationDelay: '4s' }}>🌸</div>
-        <div className="absolute top-[80%] left-[15%] text-4xl animate-float" style={{ animationDelay: '6s' }}>🐘</div>
+      <div className="fixed inset-0 pointer-events-none z-[-1] opacity-15">
+        <div className="absolute top-[15%] left-[10%] text-7xl animate-float blur-[1px]" style={{ animationDelay: '0s' }}>🇰🇭</div>
+        <div className="absolute top-[70%] left-[80%] text-5xl animate-float blur-[2px]" style={{ animationDelay: '2s' }}>🏺</div>
+        <div className="absolute top-[25%] left-[75%] text-6xl animate-float blur-[1px]" style={{ animationDelay: '4s' }}>🌸</div>
+        <div className="absolute top-[85%] left-[20%] text-5xl animate-float blur-[2px]" style={{ animationDelay: '6s' }}>🐘</div>
+        <div className="absolute top-[45%] left-[5%] text-4xl animate-float blur-[3px]" style={{ animationDelay: '8s' }}>⛩️</div>
+        <div className="absolute top-[10%] left-[50%] text-3xl animate-float blur-[4px]" style={{ animationDelay: '10s' }}>📜</div>
       </div>
 
       <Router />
