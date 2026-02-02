@@ -4,7 +4,7 @@ import { buildWorlds } from '@/lib/curriculum';
 import { cn } from '@/lib/utils';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { Lock, Play, GraduationCap, BarChart3, Trophy, Timer, Keyboard, ShieldCheck, Users, Landmark, Heart } from 'lucide-react';
+import { Lock, Play, GraduationCap, BarChart3, Trophy, Timer, Keyboard, ShieldCheck, Users, Landmark, Heart, School } from 'lucide-react';
 import { HUD } from '@/components/HUD';
 import { useTranslation } from '@/lib/useTranslation';
 import { AdBanner } from '@/components/AdBanner';
@@ -135,6 +135,12 @@ export const Home: React.FC = () => {
                 <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-blue-300 text-blue-700 hover:bg-white hover:text-blue-800 transition-all shadow-sm font-body" data-testid="link-library">
                   <GraduationCap size={16} />
                   <span className="font-bold">{t.library}</span>
+                </Button>
+              </Link>
+              <Link href="/teacher">
+                <Button variant="outline" size="sm" className="gap-2 bg-white/50 border-rose-300 text-rose-700 hover:bg-white hover:text-rose-800 transition-all shadow-sm font-body" data-testid="link-teacher">
+                  <School size={16} />
+                  <span className="font-bold">Teacher Mode</span>
                 </Button>
               </Link>
               <Link href="/badges">
