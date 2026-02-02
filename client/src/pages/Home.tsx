@@ -8,7 +8,7 @@ import { Lock, Play, GraduationCap, BarChart3, Trophy, Timer, Keyboard, ShieldCh
 import { HUD } from '@/components/HUD';
 import { useTranslation } from '@/lib/useTranslation';
 import { AdBanner } from '@/components/AdBanner';
-import { applyTheme, getThemeById } from "@/lib/themes";
+import { WORLD_THEMES, applyTheme, getThemeById } from "@/lib/themes";
 
 import { STORY_CHAPTERS } from '@/lib/story';
 
@@ -225,19 +225,40 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {WORLDS.map((world) => {
               const isUnlocked = totalStars >= world.unlockStars;
+              const worldTheme = WORLD_THEMES[world.id];
+              const accentColor = worldTheme?.colors.primary || "var(--primary)";
+              const bgColor = worldTheme?.colors.background || "var(--card)";
               
               return (
                 <div 
                   key={world.id}
                   className={cn(
-                    "group relative p-6 rounded-2xl border transition-all duration-300 shadow-sm",
+                    "group relative p-6 rounded-2xl border transition-all duration-300 shadow-sm overflow-hidden",
                     isUnlocked 
-                      ? "bg-card border-border hover:border-primary/50 hover:-translate-y-1 hover:shadow-xl" 
+                      ? "border-border hover:-translate-y-1 hover:shadow-xl" 
                       : "bg-muted border-border opacity-70 grayscale"
                   )}
+                  style={isUnlocked ? { 
+                    backgroundColor: bgColor,
+                    borderColor: `${accentColor}40`
+                  } : {}}
                 >
+                  {/* Decorative background logo */}
+                  {isUnlocked && (
+                    <div className="absolute -right-4 -bottom-4 text-8xl opacity-5 pointer-events-none group-hover:scale-110 transition-transform duration-500">
+                      {world.logo}
+                    </div>
+                  )}
+
                   <div className="flex justify-between items-start mb-4">
-                    <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-2xl border border-border group-hover:bg-primary/10 group-hover:border-primary/30 transition-colors">
+                    <div 
+                      className="w-12 h-12 rounded-full flex items-center justify-center text-2xl border transition-colors"
+                      style={isUnlocked ? { 
+                        backgroundColor: `${accentColor}15`,
+                        borderColor: `${accentColor}30`,
+                        color: accentColor
+                      } : {}}
+                    >
                       {isUnlocked ? world.logo : "🔒"}
                     </div>
                     {!isUnlocked && (
@@ -247,7 +268,11 @@ export const Home: React.FC = () => {
                     )}
                   </div>
                   
-                  <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors font-display" data-testid={`text-world-name-${world.id}`}>
+                  <h3 
+                    className="text-xl font-bold mb-1 transition-colors font-display" 
+                    data-testid={`text-world-name-${world.id}`}
+                    style={isUnlocked ? { color: accentColor } : {}}
+                  >
                     {world.name}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-6 font-body" data-testid={`text-world-meta-${world.id}`}>
@@ -260,6 +285,11 @@ export const Home: React.FC = () => {
                       variant={isUnlocked ? "secondary" : "ghost"}
                       disabled={!isUnlocked}
                       data-testid={`button-enter-world-${world.id}`}
+                      style={isUnlocked ? { 
+                        backgroundColor: `${accentColor}20`,
+                        color: accentColor,
+                        border: `1px solid ${accentColor}40`
+                      } : {}}
                     >
                       {isUnlocked ? (
                         <>ចូលទៅកាន់ពិភព <Play size={14} /></>
