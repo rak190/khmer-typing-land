@@ -14,9 +14,10 @@ interface KeyProps {
   className?: string;
   isModifierNeeded?: boolean;
   isTargetKey?: boolean;
+  needsShift?: boolean;
 }
 
-const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, className, isModifierNeeded, isTargetKey }) => {
+const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, className, isModifierNeeded, isTargetKey, needsShift }) => {
   const map = NIDA_MAP[code];
   
   // Decide what to show
@@ -51,6 +52,8 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
   const isAltGrKey = code === "AltRight";
   const isModifierActive = (isShiftKey && mod === "SHIFT") || (isCapsLock && mod === "SHIFT") || (isAltGrKey && mod === "ALTGR");
 
+  const showShiftHint = isModifierNeeded && needsShift && mod === "BASE";
+
   return (
     <div 
       className={cn(
@@ -71,10 +74,19 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
         className
       )}
     >
+      {showShiftHint && (
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-50 animate-bounce">
+          <div className="bg-purple-600 text-white text-[10px] px-2 py-1 rounded shadow-lg whitespace-nowrap font-bold flex flex-col items-center">
+            <span>ចុច Shift</span>
+            <div className="w-2 h-2 bg-purple-600 rotate-45 -mb-1 mt-0.5" />
+          </div>
+        </div>
+      )}
       <div className="flex flex-col items-center justify-center leading-tight">
         <span className={cn(
           "text-lg font-black transition-all font-khmer", 
-          (isTargetKey || active || isModifierActive) ? "text-primary scale-110" : isModifierNeeded ? "text-amber-600" : "text-slate-600"
+          (isTargetKey || active || isModifierActive) ? "text-primary scale-110" : isModifierNeeded ? "text-amber-600" : "text-slate-600",
+          (needsShift && mod === "BASE") && "text-purple-500"
         )}>
           {khmerUnicode || label}
         </span>
@@ -289,6 +301,7 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
                   wrong={wrongCode === k.code}
                   isTargetKey={isTargetKey}
                   isModifierNeeded={isModifierNeeded}
+                  needsShift={needsShift && isTargetKey}
                   className={cn(
                     isTargetKey && "ring-primary/30",
                     isModifierNeeded && "ring-amber-500/30 animate-pulse"
