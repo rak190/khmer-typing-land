@@ -203,7 +203,7 @@ export const Home: React.FC = () => {
               >
                 <div className="flex justify-between items-start mb-4">
                   <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-2xl border border-border group-hover:bg-primary/10 group-hover:border-primary/30 transition-colors">
-                    {isUnlocked ? "🌍" : "🔒"}
+                    {isUnlocked ? world.logo : "🔒"}
                   </div>
                   {!isUnlocked && (
                     <div className="px-3 py-1 rounded-full bg-secondary border border-border text-xs font-mono text-muted-foreground" data-testid={`text-world-lock-${world.id}`}>

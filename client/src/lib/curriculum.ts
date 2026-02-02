@@ -25,6 +25,7 @@ export interface Stage {
 export interface World {
   id: string;
   name: string;
+  logo: string;
   unlockStars: number;
   stages: Stage[];
 }
@@ -123,15 +124,15 @@ export function buildWorlds(): World[] {
   );
 
   const worlds: World[] = [
-    { id:"w1", name:"ពិភពទី ១: មូលដ្ឋាន",    unlockStars: unlock[0], stages: w1Stages },
-    { id:"w2", name:"ពិភពទី ២: ព្យញ្ជនៈ",unlockStars: unlock[1], stages: w2Stages },
-    { id:"w3", name:"ពិភពទី ៣: ស្រៈ",    unlockStars: unlock[2], stages: w3Stages },
-    { id:"w4", name:"ពិភពទី ៤: សញ្ញា",     unlockStars: unlock[3], stages: w4Stages },
-    { id:"w5", name:"ពិភពទី ៥: ការផ្សំ",    unlockStars: unlock[4], stages: w5Stages },
-    { id:"w6", name:"ពិភពទី ៦: ចម្រុះ",     unlockStars: unlock[5], stages: w6Stages },
-    { id:"w7", name:"ពិភពទី ៧: ចង្វាក់",    unlockStars: unlock[6], stages: w7Stages },
-    { id:"w8", name:"ពិភពទី ៨: លេខ",   unlockStars: unlock[7], stages: w8Stages },
-    { id:"w9", name:"ពិភពទី ៩: ជំនាញខ្ពស់",   unlockStars: unlock[8], stages: w9Stages },
+    { id:"w1", name:"ពិភពទី ១: មូលដ្ឋាន", logo: "🌱", unlockStars: unlock[0], stages: w1Stages },
+    { id:"w2", name:"ពិភពទី ២: ព្យញ្ជនៈ", logo: "⚔️", unlockStars: unlock[1], stages: w2Stages },
+    { id:"w3", name:"ពិភពទី ៣: ស្រៈ", logo: "✨", unlockStars: unlock[2], stages: w3Stages },
+    { id:"w4", name:"ពិភពទី ៤: សញ្ញា", logo: "🔮", unlockStars: unlock[3], stages: w4Stages },
+    { id:"w5", name:"ពិភពទី ៥: ការផ្សំ", logo: "🧩", unlockStars: unlock[4], stages: w5Stages },
+    { id:"w6", name:"ពិភពទី ៦: ចម្រុះ", logo: "🌪️", unlockStars: unlock[5], stages: w6Stages },
+    { id:"w7", name:"ពិភពទី ៧: ចង្វាក់", logo: "🎵", unlockStars: unlock[6], stages: w7Stages },
+    { id:"w8", name:"ពិភពទី ៨: លេខ", logo: "💎", unlockStars: unlock[7], stages: w8Stages },
+    { id:"w9", name:"ពិភពទី ៩: ជំនាញខ្ពស់", logo: "👑", unlockStars: unlock[8], stages: w9Stages },
   ];
 
   return worlds;

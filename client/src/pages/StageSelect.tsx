@@ -40,7 +40,7 @@ export const StageSelect: React.FC = () => {
             <p className="text-muted-foreground italic text-lg leading-relaxed">"{chapter?.intro}"</p>
           </div>
           <div className="flex flex-col items-center justify-center p-6 bg-secondary rounded-2xl border border-border min-w-[150px]">
-            <div className="text-5xl mb-2 animate-pulse">{chapter?.monsterEmoji}</div>
+            <div className="text-5xl mb-2 animate-pulse">{world.logo}</div>
             <div className="text-[10px] font-black uppercase text-red-600 tracking-tighter">Bounty Target</div>
             <div className="text-sm font-bold text-foreground">{chapter?.monsterName}</div>
           </div>
