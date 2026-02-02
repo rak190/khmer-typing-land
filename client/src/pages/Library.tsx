@@ -35,7 +35,7 @@ export const Library: React.FC = () => {
     const worldScores = worldStages.map((sid: string) => (progress?.scoresByStage && progress.scoresByStage[sid]) || 0);
     const totalScore = worldScores.reduce((a: number, b: number) => a + b, 0);
     
-    const url = `/certificates/certificate.html?name=${encodeURIComponent(profile.name)}&world=${encodeURIComponent(world.name)}&worldNum=${world.id.replace('w','')}&score=${totalScore}&wpm=${25 + Math.floor(Math.random() * 10)}&acc=98%`;
+    const url = `/certificates/certificate.html?name=${encodeURIComponent(profile.name)}&world=${encodeURIComponent(world.name)}&worldNum=${world.id.replace('w','')}&score=${totalScore}&wpm=${25 + Math.floor(Math.random() * 10)}&acc=98%&date=${encodeURIComponent(new Date().toLocaleDateString('km-KH'))}`;
     window.open(url, '_blank');
   };
 

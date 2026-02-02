@@ -56,31 +56,6 @@
                     if (worldEnEl) worldEnEl.textContent = world;
 
                     if (date) document.getElementById('certDate').textContent = date;
-                    if (wpm) {
-                        const val = parseInt(wpm);
-                        document.getElementById('certStatsWpm').textContent = wpm;
-                        const box = document.getElementById('boxWpm');
-                        if (val > 40) box.classList.add('high');
-                        else if (val > 20) box.classList.add('medium');
-                        else box.classList.add('low');
-                    }
-                    if (acc) {
-                        const val = parseInt(acc);
-                        document.getElementById('certStatsAcc').textContent = acc;
-                        const box = document.getElementById('boxAcc');
-                        if (val > 95) box.classList.add('high');
-                        else if (val > 85) box.classList.add('medium');
-                        else box.classList.add('low');
-                    }
-                    if (score) {
-                        const val = parseInt(score);
-                        document.getElementById('certStatsScore').textContent = score;
-                        const box = document.getElementById('boxScore');
-                        if (val > 5000) box.classList.add('high');
-                        else if (val > 2000) box.classList.add('medium');
-                        else box.classList.add('low');
-                    }
-                    if (date) document.getElementById('certDate').textContent = date;
                 </script>
 
                 <p class="achievement-text">
