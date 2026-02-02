@@ -57,12 +57,12 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
   return (
     <div 
       className={cn(
-        "key-cap h-11 rounded-lg border border-border text-foreground relative flex items-center justify-center transition-all duration-200",
-        w === "w2" && "w-[68px]",
-        w === "w3" && "w-[90px]",
-        w === "w4" && "w-[112px]",
-        w === "w5" && "w-[158px]",
-        !w && "w-[46px]",
+        "key-cap h-14 rounded-xl border border-border text-foreground relative flex items-center justify-center transition-all duration-200",
+        w === "w2" && "w-[80px]",
+        w === "w3" && "w-[110px]",
+        w === "w4" && "w-[140px]",
+        w === "w5" && "w-[400px]",
+        !w && "w-[60px]",
         active && "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg",
         correct && "ring-2 ring-accent ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-accent/20",
         wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-destructive/20",
@@ -250,7 +250,7 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
 
   return (
     <div className={cn(
-      "flex flex-col gap-3 p-3 rounded-2xl bg-card/50 border-4 w-fit mx-auto backdrop-blur-sm relative shadow-inner transition-all duration-300",
+      "flex flex-col gap-3 p-4 rounded-2xl bg-card/50 border-4 w-full max-w-5xl mx-auto backdrop-blur-sm relative shadow-inner transition-all duration-300",
       mod === "BASE" && "border-border",
       mod === "SHIFT" && "border-purple-500 shadow-[0_0_35px_rgba(168,85,247,0.4)] bg-purple-500/10",
       mod === "ALTGR" && "border-amber-500 shadow-[0_0_35px_rgba(245,158,11,0.4)] bg-amber-500/10",
