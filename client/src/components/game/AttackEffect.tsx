@@ -100,12 +100,12 @@ export const AttackEffect: React.FC<AttackEffectProps> = ({
           {proj.phase === 'flying' && (
             <>
               <div
-                className="absolute text-5xl transition-none will-change-transform"
+                className="absolute text-4xl transition-none will-change-transform"
                 style={{
                   left: `${proj.currentX}%`,
                   top: `${proj.currentY}%`,
-                  transform: `translate(-50%, -50%) rotate(${proj.rotation}deg) scale(1.3)`,
-                  filter: `drop-shadow(0 0 20px ${proj.skill.color}) drop-shadow(0 0 35px ${proj.skill.color})`,
+                  transform: `translate(-50%, -50%) rotate(${proj.rotation}deg) scale(1.1)`,
+                  filter: `drop-shadow(0 0 15px ${proj.skill.color}) drop-shadow(0 0 25px ${proj.skill.color})`,
                   zIndex: 50
                 }}
               >
@@ -113,13 +113,13 @@ export const AttackEffect: React.FC<AttackEffectProps> = ({
               </div>
               
               <div
-                className="absolute w-8 h-8 rounded-full animate-pulse"
+                className="absolute w-6 h-6 rounded-full animate-pulse"
                 style={{
                   left: `${proj.currentX}%`,
                   top: `${proj.currentY}%`,
                   transform: 'translate(-50%, -50%)',
                   background: `radial-gradient(circle, ${proj.skill.color} 0%, transparent 70%)`,
-                  boxShadow: `0 0 25px ${proj.skill.color}, 0 0 50px ${proj.skill.color}`,
+                  boxShadow: `0 0 15px ${proj.skill.color}, 0 0 30px ${proj.skill.color}`,
                   zIndex: 45
                 }}
               />
@@ -137,9 +137,9 @@ export const AttackEffect: React.FC<AttackEffectProps> = ({
               }}
             >
               <div 
-                className="text-6xl animate-ping"
+                className="text-5xl animate-ping"
                 style={{
-                  filter: `drop-shadow(0 0 30px ${proj.skill.color})`,
+                  filter: `drop-shadow(0 0 20px ${proj.skill.color})`,
                 }}
               >
                 {proj.skill.impact}
@@ -147,7 +147,7 @@ export const AttackEffect: React.FC<AttackEffectProps> = ({
               
               <div className="absolute inset-0 flex items-center justify-center">
                 <div 
-                  className="w-28 h-28 rounded-full animate-ping opacity-60"
+                  className="w-20 h-20 rounded-full animate-ping opacity-60"
                   style={{
                     background: `radial-gradient(circle, ${proj.skill.color} 0%, transparent 70%)`
                   }}
@@ -159,13 +159,13 @@ export const AttackEffect: React.FC<AttackEffectProps> = ({
                 return (
                   <div
                     key={`burst-${proj.id}-${i}`}
-                    className="absolute w-4 h-4 rounded-full animate-ping"
+                    className="absolute w-3 h-3 rounded-full animate-ping"
                     style={{
-                      left: `${50 + Math.cos(angle) * 50}%`,
-                      top: `${50 + Math.sin(angle) * 50}%`,
+                      left: `${50 + Math.cos(angle) * 40}%`,
+                      top: `${50 + Math.sin(angle) * 40}%`,
                       background: proj.skill.color,
                       animationDelay: `${i * 40}ms`,
-                      boxShadow: `0 0 15px ${proj.skill.color}`
+                      boxShadow: `0 0 10px ${proj.skill.color}`
                     }}
                   />
                 );
