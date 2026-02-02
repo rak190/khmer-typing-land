@@ -3,38 +3,6 @@ import { NIDA_MAP } from '@/lib/nida-map';
 import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 import { cn } from '@/lib/utils';
 
-// Character type classification for visual grouping based on Khmer script categories
-// Vowels (ស្រៈ): dependent vowels that modify consonants
-const VOWEL_KEYS = ['KeyW', 'KeyE', 'KeyI', 'KeyU', 'KeyO', 'KeyA', 'KeyY', 'BracketLeft', 'BracketRight', 'Semicolon'];
-// Consonants (ព្យញ្ជនៈ): base consonant letters
-const CONSONANT_KEYS = ['KeyQ', 'KeyR', 'KeyT', 'KeyP', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyK', 'KeyL', 'KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM'];
-// Diacritics/Marks (វណ្ណយុត្តិ): subscript, bantoc, etc.
-const DIACRITIC_KEYS = ['KeyJ', 'Quote', 'Slash', 'Minus'];
-// Punctuation (សញ្ញាវាក្យ): period, comma, etc.
-const PUNCTUATION_KEYS = ['Comma', 'Period'];
-// Numbers (លេខ)
-const NUMBER_KEYS = ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0'];
-
-type CharType = 'vowel' | 'consonant' | 'diacritic' | 'punctuation' | 'number' | 'other';
-
-function getCharType(code: string): CharType {
-  if (VOWEL_KEYS.includes(code)) return 'vowel';
-  if (CONSONANT_KEYS.includes(code)) return 'consonant';
-  if (DIACRITIC_KEYS.includes(code)) return 'diacritic';
-  if (PUNCTUATION_KEYS.includes(code)) return 'punctuation';
-  if (NUMBER_KEYS.includes(code)) return 'number';
-  return 'other';
-}
-
-const CHAR_TYPE_STYLES: Record<CharType, string> = {
-  vowel: 'border-l-2 border-l-emerald-400',
-  consonant: 'border-l-2 border-l-blue-400',
-  diacritic: 'border-l-2 border-l-purple-400',
-  punctuation: 'border-l-2 border-l-orange-400',
-  number: 'border-l-2 border-l-slate-400',
-  other: ''
-};
-
 interface KeyProps {
   code: string;
   w?: string;
@@ -74,7 +42,6 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
   const isShiftKey = code === "ShiftLeft" || code === "ShiftRight";
   const isCapsLock = code === "CapsLock";
   const isModifierActive = (isShiftKey && mod === "SHIFT") || (isCapsLock && mod === "SHIFT");
-  const charType = getCharType(code);
 
   return (
     <div 
@@ -85,7 +52,6 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
         w === "w4" && "w-[112px]",
         w === "w5" && "w-[158px]",
         !w && "w-[46px]",
-        !fixed && CHAR_TYPE_STYLES[charType],
         active && "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg",
         correct && "ring-2 ring-accent ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-accent/20",
         wrong && "ring-2 ring-destructive ring-offset-2 ring-offset-background scale-110 z-20 shadow-lg bg-destructive/20",
@@ -271,32 +237,15 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
 
   return (
     <div className={cn("flex flex-col gap-4 p-4 rounded-3xl bg-card/50 border border-border w-full max-w-[1000px] mx-auto backdrop-blur-sm relative shadow-inner", className)}>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm">
-        <div className="flex gap-4 flex-wrap">
+      <div className="flex justify-between items-center text-sm">
+        <div className="flex gap-4">
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary border border-border">
             <span className="text-muted-foreground">ស្ថានភាព:</span>
             <span className="font-bold text-foreground w-12">{mod}</span>
           </div>
         </div>
-        
-        {/* Color Legend */}
-        <div className="flex flex-wrap gap-3 text-[10px] font-bold">
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded border-l-2 border-l-emerald-400 bg-secondary" />
-            <span className="text-emerald-600">ស្រៈ (Vowel)</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded border-l-2 border-l-blue-400 bg-secondary" />
-            <span className="text-blue-600">ព្យញ្ជនៈ (Cons.)</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded border-l-2 border-l-purple-400 bg-secondary" />
-            <span className="text-purple-600">វណ្ណយុត្តិ (Mark)</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded border-l-2 border-l-orange-400 bg-secondary" />
-            <span className="text-orange-600">សញ្ញា (Punct.)</span>
-          </div>
+        <div className="text-xs text-muted-foreground hidden sm:block italic">
+           ធ្វើតាម <b>ពន្លឺ</b>: ពណ៌លឿងទុំសម្រាប់ប៊ូតុងបញ្ជា, ពណ៌ខៀវសម្រាប់តួអក្សរ។
         </div>
       </div>
 
