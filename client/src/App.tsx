@@ -19,7 +19,7 @@ import NotFound from "@/pages/not-found";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Landing} />
+      <Route path="/" component={Home} />
       <Route path="/home" component={Home} />
       <Route path="/world/:id" component={StageSelect} />
       <Route path="/play/:wid/:sid" component={Play} />
@@ -33,6 +33,7 @@ function Router() {
       <Route path="/multiplayer" component={Multiplayer} />
       <Route path="/themes" component={ThemeSelector} />
       <Route path="/cultural" component={CulturalChallenges} />
+      <Route path="/teacher-mode" component={TeacherMode} />
       <Route path="/teacher" component={TeacherMode} />
       <Route component={NotFound} />
     </Switch>
