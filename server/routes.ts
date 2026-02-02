@@ -263,10 +263,18 @@ export async function registerRoutes(
 
     socket.on("student_update_progress", async ({ studentId, roomCode, progress, wpm, accuracy, timeSeconds }) => {
       try {
-        await storage.updateStudentProgress(studentId, progress, wpm, accuracy, timeSeconds);
-
         const room = await storage.getTeacherRoomByCode(roomCode);
         if (!room) return;
+
+        // Verify that the student belongs to this room
+        const students = await storage.getStudentResults(room.id);
+        const studentBelongsToRoom = students.some(s => s.id === studentId);
+        if (!studentBelongsToRoom) {
+          socket.emit("error", { message: "Invalid student" });
+          return;
+        }
+
+        await storage.updateStudentProgress(studentId, progress, wpm, accuracy, timeSeconds);
 
         const allStudents = await storage.getStudentResults(room.id);
         io.to(`teacher_${roomCode}`).emit("teacher_room_updated", {
@@ -280,10 +288,18 @@ export async function registerRoutes(
 
     socket.on("student_finish", async ({ studentId, roomCode, wpm, accuracy, timeSeconds }) => {
       try {
-        await storage.finishStudent(studentId, wpm, accuracy, timeSeconds);
-
         const room = await storage.getTeacherRoomByCode(roomCode);
         if (!room) return;
+
+        // Verify that the student belongs to this room
+        const students = await storage.getStudentResults(room.id);
+        const studentBelongsToRoom = students.some(s => s.id === studentId);
+        if (!studentBelongsToRoom) {
+          socket.emit("error", { message: "Invalid student" });
+          return;
+        }
+
+        await storage.finishStudent(studentId, wpm, accuracy, timeSeconds);
 
         const allStudents = await storage.getStudentResults(room.id);
         io.to(`teacher_${roomCode}`).emit("teacher_room_updated", {

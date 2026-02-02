@@ -63,6 +63,10 @@ export const TeacherMode: React.FC = () => {
       setStudentId(student.id);
       setJoinedRoom(room);
       setViewMode('student-typing');
+      // If room is already active, start the session for late joiners
+      if (room.status === 'active') {
+        setSessionStarted(true);
+      }
     });
 
     newSocket.on("session_started", ({ room, students: roomStudents }) => {
