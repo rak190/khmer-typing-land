@@ -149,9 +149,7 @@ export const HUD: React.FC = () => {
                     <span className="p-1.5 bg-amber-500/10 rounded-lg text-amber-500">🛡️</span>
                     បង្កើតឡើងសម្រាប់អ្នក
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed font-body">
-                    មិនថាអ្នកជាសិស្សដែលកំពុងចាប់ផ្តើមដំណើររបស់អ្នក ឬជាគ្រូបង្រៀនដែលកំពុងណែនាំអ្នកដទៃនោះទេ កម្មវិធីនេះផ្តល់នូវឧបករណ៍ដែលអ្នកត្រូវការដើម្បីទទួលបានជោគជ័យ ជាមួយនឹងការតាមដានសមត្ថភាពខ្ពស់ និងហ្គេមខ្នាតតូចដែលមានអន្តរកម្ម។
-                  </p>
+                  <p className="text-muted-foreground leading-relaxed font-body">មិនថាអ្នកជាសិស្សដែលកំពុងចាប់ផ្តើមដំណើរវាយអត្ថបទ ឬជាគ្រូបង្រៀនដែលកំពុងណែនាំសិស្សនោះទេ កម្មវិធីនេះផ្តល់នូវមុខងារដែលអ្នកត្រូវការដើម្បីទទួលបានជោគជ័យ ជាមួយនឹងការតាមដានល្បឿនវាយអត្ថបទ ភាពត្រឹមត្រូវ និងហ្គេមខ្នាតតូចដែលមានមានភាពទាក់ទាញ។</p>
                 </div>
 
                 <div className="pt-4 border-t border-border flex justify-between items-center text-xs text-muted-foreground italic font-body">
