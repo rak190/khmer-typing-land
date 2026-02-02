@@ -33,11 +33,11 @@ export const THEMES: Theme[] = [
     nameKh: "ប្រាសាទរាត្រី",
     icon: "🌙",
     colors: {
-      primary: "hsl(25, 100%, 55%)", // Bright Orange
-      secondary: "hsl(0, 0%, 15%)",  // Dark Slate/Black
-      accent: "hsl(25, 100%, 50%)",   // Slightly different Orange
-      background: "hsl(0, 0%, 5%)",   // Near Black
-      foreground: "hsl(0, 0%, 100%)", // Pure White
+      primary: "hsl(25, 100%, 60%)", // Brighter Orange for better contrast
+      secondary: "hsl(0, 0%, 18%)",  // Lighter Black for definition
+      accent: "hsl(25, 100%, 55%)",
+      background: "hsl(0, 0%, 8%)",   // Deep Black
+      foreground: "hsl(0, 0%, 100%)", // Crisp White
     },
     description: "High-contrast theme with orange, black, and white",
   },

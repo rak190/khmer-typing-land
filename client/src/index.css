@@ -100,9 +100,18 @@
   }
   .glass-panel {
     @apply backdrop-blur-xl border shadow-xl transition-all duration-300;
-    background-color: color-mix(in srgb, var(--card) 90%, transparent);
-    border-color: color-mix(in srgb, var(--border), transparent 30%);
+    background-color: color-mix(in srgb, var(--card) 95%, transparent);
+    border-color: color-mix(in srgb, var(--border), transparent 20%);
     color: var(--fg);
+    padding: 2.5rem;
+  }
+  
+  button, .button {
+    @apply font-bold tracking-wide transition-transform active:scale-95;
+  }
+  
+  .dark button:not(.ghost):not(.outline), .dark .button:not(.ghost):not(.outline) {
+    @apply shadow-[0_4px_0_rgba(0,0,0,0.3)];
   }
   .key-cap {
     @apply relative flex items-center justify-center select-none transition-all duration-75 font-bold border;
