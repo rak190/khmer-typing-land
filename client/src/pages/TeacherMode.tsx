@@ -163,6 +163,11 @@ export const TeacherMode: React.FC = () => {
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (!joinedRoom || !sessionStarted || finished) return;
     
+    // Prevent default behavior for keys that might scroll or affect the UI
+    if (e.key === ' ' || e.key === 'Backspace' || e.key === 'Tab') {
+      e.preventDefault();
+    }
+
     const text = joinedRoom.assignedText;
     const targetChar = text[currentIndex];
     
@@ -181,18 +186,24 @@ export const TeacherMode: React.FC = () => {
       const newIndex = currentIndex + 1;
       setCurrentIndex(newIndex);
 
-      // Calculate stats
-      const elapsed = (Date.now() - (startTime || Date.now())) / 1000 / 60;
+      // Calculate stats using local variables for immediate update
+      const now = Date.now();
+      const actualStartTime = startTime || now;
+      const elapsedMs = now - actualStartTime;
+      const elapsedMins = elapsedMs / 1000 / 60;
       const wordsTyped = newIndex / 5;
-      const currentWpm = elapsed > 0 ? Math.round(wordsTyped / elapsed) : 0;
-      const currentAccuracy = totalKeystrokes > 0 ? Math.round(((totalKeystrokes - errors) / totalKeystrokes) * 100) : 100;
-      const timeSeconds = Math.round((Date.now() - (startTime || Date.now())) / 1000);
+      const currentWpm = elapsedMins > 0 ? Math.round(wordsTyped / elapsedMins) : 0;
+      
+      // Use the updated totalKeystrokes count (prev + 1)
+      const currentTotalKeystrokes = totalKeystrokes + 1;
+      const currentAccuracy = currentTotalKeystrokes > 0 ? Math.round(((currentTotalKeystrokes - errors) / currentTotalKeystrokes) * 100) : 100;
+      const timeSeconds = Math.round(elapsedMs / 1000);
 
       setWpm(currentWpm);
       setAccuracy(currentAccuracy);
       setElapsedTime(timeSeconds);
 
-      // Update progress
+      // Update progress via socket
       socket?.emit("student_update_progress", {
         studentId,
         roomCode: joinedRoom.roomCode,
