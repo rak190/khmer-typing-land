@@ -86,7 +86,7 @@ header {
 }
 
 .main-title {
-    font-family: 'Moul', 'Battambang', cursive;
+    font-family: 'Moul', cursive;
     color: var(--primary);
     font-size: 42px;
     margin-bottom: 5px;
@@ -102,7 +102,7 @@ header {
 }
 
 .game-title {
-    font-family: 'Moul', 'Battambang', cursive;
+    font-family: 'Moul', cursive;
     font-size: 24px;
     color: var(--primary);
     opacity: 0.8;
@@ -115,7 +115,7 @@ header {
 }
 
 .user-name {
-    font-family: 'Freehand', 'Battambang', cursive;
+    font-family: 'Moul', cursive;
     font-size: 82px;
     color: var(--primary);
     margin: 30px 0;
@@ -136,14 +136,12 @@ header {
 }
 
 .achievement-text {
-    font-family: 'Battambang', sans-serif;
     font-size: 22px;
     line-height: 1.6;
     margin-bottom: 40px;
 }
 
 .highlight {
-    font-family: 'Battambang', sans-serif;
     color: var(--primary);
     font-weight: 700;
     font-size: 26px;
