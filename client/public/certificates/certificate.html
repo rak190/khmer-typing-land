@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="certificate.css">
     <link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.4.5/gifshot.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 <body>
     <div class="certificate-container" id="certificate">
@@ -86,8 +86,8 @@
     </div>
 
     <div class="actions">
-        <button onclick="downloadAsGif()" class="download-btn gif-btn" id="downloadBtn">
-            <span id="btnText">ទាញយកជា GIF / Download as GIF</span>
+        <button onclick="downloadAsPNG()" class="download-btn" id="downloadBtn">
+            <span id="btnText">ទាញយកជា PNG / Download as PNG</span>
         </button>
         <div id="progressContainer" style="display: none; width: 100%; max-width: 300px; margin-top: 15px; text-align: center;">
             <div style="background: #333; border-radius: 10px; overflow: hidden; height: 24px; position: relative;">
@@ -98,116 +98,53 @@
     </div>
 
     <script>
-        function downloadAsGif() {
-            const cert = document.getElementById('certificate');
-            const btn = document.getElementById('downloadBtn');
-            const progressContainer = document.getElementById('progressContainer');
-            const progressFill = document.getElementById('progressFill');
-            const progressText = document.getElementById('progressText');
-            const mascot = document.getElementById('certMascotImg');
+        function downloadAsPNG() {
+            var cert = document.getElementById('certificate');
+            var btn = document.getElementById('downloadBtn');
+            var progressContainer = document.getElementById('progressContainer');
+            var progressFill = document.getElementById('progressFill');
+            var progressText = document.getElementById('progressText');
 
             btn.disabled = true;
             btn.style.opacity = '0.5';
-            btn.style.cursor = 'wait';
             progressContainer.style.display = 'block';
             
-            const frames = [];
-            const totalFrames = 6;
-            let currentFrame = 0;
+            progressFill.style.width = '30%';
+            progressText.textContent = 'កំពុងថតរូប...';
 
-            function updateProgress(percent, text) {
-                progressFill.style.width = percent + '%';
-                progressText.textContent = text || (percent + '%');
-            }
-
-            function captureFrame() {
-                updateProgress(Math.round((currentFrame / totalFrames) * 70), 'កំពុងថត... ' + (currentFrame + 1) + '/' + totalFrames);
+            html2canvas(cert, {
+                useCORS: true,
+                scale: 2,
+                backgroundColor: '#ffffff',
+                logging: false,
+                allowTaint: true
+            }).then(function(canvas) {
+                progressFill.style.width = '70%';
+                progressText.textContent = 'កំពុងរៀបចំ...';
                 
-                if (mascot) {
-                    const scale = 1 + Math.sin((currentFrame / totalFrames) * Math.PI * 2) * 0.04;
-                    mascot.style.transform = 'scale(' + scale + ')';
-                }
-
-                html2canvas(cert, {
-                    useCORS: true,
-                    scale: 1.2,
-                    backgroundColor: '#ffffff',
-                    logging: false
-                }).then(function(canvas) {
-                    frames.push(canvas.toDataURL('image/png'));
-                    currentFrame++;
+                canvas.toBlob(function(blob) {
+                    progressFill.style.width = '100%';
+                    progressText.textContent = 'រួចរាល់!';
                     
-                    if (currentFrame < totalFrames) {
-                        setTimeout(captureFrame, 100);
-                    } else {
-                        if (mascot) mascot.style.transform = '';
-                        createGif();
-                    }
-                }).catch(function(err) {
-                    console.error('Capture error:', err);
-                    resetButton();
-                });
-            }
-
-            function createGif() {
-                updateProgress(80, 'កំពុងបង្កើត GIF...');
-
-                gifshot.createGIF({
-                    images: frames,
-                    gifWidth: Math.round(cert.offsetWidth * 1.2),
-                    gifHeight: Math.round(cert.offsetHeight * 1.2),
-                    interval: 0.12,
-                    numFrames: totalFrames,
-                    frameDuration: 1,
-                    sampleInterval: 10,
-                    progressCallback: function(captureProgress) {
-                        updateProgress(80 + Math.round(captureProgress * 20), 'កំពុងបង្កើត GIF...');
-                    }
-                }, function(obj) {
-                    if (!obj.error) {
-                        updateProgress(100, 'រួចរាល់!');
-                        
-                        // Convert base64 to blob for better download compatibility
-                        var byteString = atob(obj.image.split(',')[1]);
-                        var mimeString = obj.image.split(',')[0].split(':')[1].split(';')[0];
-                        var ab = new ArrayBuffer(byteString.length);
-                        var ia = new Uint8Array(ab);
-                        for (var i = 0; i < byteString.length; i++) {
-                            ia[i] = byteString.charCodeAt(i);
-                        }
-                        var blob = new Blob([ab], {type: mimeString});
-                        var blobUrl = URL.createObjectURL(blob);
-                        
-                        var link = document.createElement('a');
-                        link.href = blobUrl;
-                        link.download = 'Khmer-Typing-Certificate-' + document.getElementById('certName').textContent + '.gif';
-                        link.style.display = 'none';
-                        document.body.appendChild(link);
-                        link.click();
-                        
-                        setTimeout(function() {
-                            document.body.removeChild(link);
-                            URL.revokeObjectURL(blobUrl);
-                            resetButton();
-                        }, 1500);
-                    } else {
-                        console.error('GIF error:', obj.error);
-                        alert('មានបញ្ហា។ សូមព្យាយាមម្ដងទៀត។');
-                        resetButton();
-                    }
-                });
-            }
-
-            function resetButton() {
+                    var fileName = 'Khmer-Typing-Certificate-' + document.getElementById('certName').textContent + '.png';
+                    
+                    // Use FileSaver.js for reliable download
+                    saveAs(blob, fileName);
+                    
+                    setTimeout(function() {
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                        progressContainer.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 1500);
+                }, 'image/png', 1.0);
+            }).catch(function(err) {
+                console.error('Error:', err);
+                alert('មានបញ្ហា។ សូមព្យាយាមម្ដងទៀត។');
                 btn.disabled = false;
                 btn.style.opacity = '1';
-                btn.style.cursor = 'pointer';
                 progressContainer.style.display = 'none';
-                progressFill.style.width = '0%';
-                if (mascot) mascot.style.transform = '';
-            }
-
-            captureFrame();
+            });
         }
     </script>
 </body>
