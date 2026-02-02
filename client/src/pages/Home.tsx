@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGameStore } from '@/lib/store';
 import { buildWorlds } from '@/lib/curriculum';
 import { cn } from '@/lib/utils';
@@ -9,6 +9,7 @@ import { HUD } from '@/components/HUD';
 import { useTranslation } from '@/lib/useTranslation';
 import { AdBanner } from '@/components/AdBanner';
 import { WORLD_THEMES, applyTheme, getThemeById } from "@/lib/themes";
+import { DonationPopup } from '@/components/DonationPopup';
 
 import { STORY_CHAPTERS } from '@/lib/story';
 
@@ -18,6 +19,20 @@ export const Home: React.FC = () => {
   const { getTotalStars, profile, setProfileName, badgesOwned, resetProgress, difficulty, setDifficulty } = useGameStore();
   const { t, lang } = useTranslation();
   const totalStars = getTotalStars();
+  const [showDonation, setShowDonation] = useState(false);
+
+  // Show donation popup on first visit
+  useEffect(() => {
+    const hasSeenDonation = localStorage.getItem('hasSeenDonation');
+    if (!hasSeenDonation) {
+      setShowDonation(true);
+    }
+  }, []);
+
+  const handleCloseDonation = () => {
+    localStorage.setItem('hasSeenDonation', 'true');
+    setShowDonation(false);
+  };
 
   // Ensure default theme is applied on Home
   useEffect(() => {
@@ -307,6 +322,9 @@ export const Home: React.FC = () => {
           <AdBanner format="horizontal" className="mt-8" />
         </div>
       </div>
+
+      {/* Donation Popup - shows on first visit */}
+      {showDonation && <DonationPopup onClose={handleCloseDonation} />}
     </div>
   );
 };
