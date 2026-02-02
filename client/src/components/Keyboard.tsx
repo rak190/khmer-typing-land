@@ -239,51 +239,47 @@ export const Keyboard: React.FC<KeyboardProps> = ({ activeCode, correct, wrongCo
 
   return (
     <div className={cn(
-      "flex flex-col gap-4 p-4 rounded-3xl bg-card/50 border-2 w-full max-w-[1000px] mx-auto backdrop-blur-sm relative shadow-inner transition-all duration-300",
+      "flex flex-col gap-3 p-3 rounded-2xl bg-card/50 border-2 w-fit mx-auto backdrop-blur-sm relative shadow-inner transition-all duration-300",
       mod === "BASE" && "border-border",
       mod === "SHIFT" && "border-purple-500 shadow-[0_0_25px_rgba(168,85,247,0.3)] bg-purple-500/5",
       mod === "ALTGR" && "border-amber-500 shadow-[0_0_25px_rgba(245,158,11,0.3)] bg-amber-500/5",
       className
     )}>
-      <div className="flex justify-between items-center text-sm">
-        <div className="flex gap-4">
+      <div className="flex justify-between items-center text-sm px-1">
+        <div className="flex gap-2">
           <div className={cn(
-            "flex items-center gap-2 px-3 py-1 rounded-full border transition-all duration-300",
+            "flex items-center gap-2 px-2 py-0.5 rounded-full border transition-all duration-300 text-xs",
             mod === "BASE" && "bg-secondary border-border",
             mod === "SHIFT" && "bg-purple-500/20 border-purple-500/50",
             mod === "ALTGR" && "bg-amber-500/20 border-amber-500/50"
           )}>
-            <span className="text-muted-foreground">ស្ថានភាព:</span>
             <span className={cn(
-              "font-bold w-14 text-center transition-colors",
+              "font-bold text-center transition-colors",
               mod === "BASE" && "text-foreground",
               mod === "SHIFT" && "text-purple-600",
               mod === "ALTGR" && "text-amber-600"
             )}>
-              {mod === "BASE" ? "មូលដ្ឋាន" : mod === "SHIFT" ? "⬆️ Shift" : "Alt"}
+              {mod === "BASE" ? "មូលដ្ឋាន" : mod === "SHIFT" ? "⬆️ Shift" : "⌥ Alt"}
             </span>
           </div>
           
           {mod !== "BASE" && (
             <div className={cn(
-              "flex items-center gap-2 px-3 py-1 rounded-full animate-pulse",
+              "flex items-center gap-1 px-2 py-0.5 rounded-full animate-pulse text-xs",
               mod === "SHIFT" && "bg-purple-500/20 text-purple-600",
               mod === "ALTGR" && "bg-amber-500/20 text-amber-600"
             )}>
-              <span className="text-xs font-bold">
-                {mod === "SHIFT" ? "កំពុងបង្ហាញអក្សរ Shift" : "កំពុងបង្ហាញអក្សរ Alt"}
+              <span className="font-bold">
+                {mod === "SHIFT" ? "អក្សរ Shift" : "អក្សរ Alt"}
               </span>
             </div>
           )}
         </div>
-        <div className="text-xs text-muted-foreground hidden sm:block italic">
-           ធ្វើតាម <b>ពន្លឺ</b>: ពណ៌លឿងទុំសម្រាប់ប៊ូតុងបញ្ជា, ពណ៌ខៀវសម្រាប់តួអក្សរ។
-        </div>
       </div>
 
-      <div className="relative flex flex-col gap-1.5 items-center z-10">
+      <div className="relative flex flex-col gap-1 items-center z-10">
         {KEY_ROWS.map((row, i) => (
-          <div key={i} className="flex gap-1.5 relative z-10">
+          <div key={i} className="flex gap-1 relative z-10">
             {row.map(k => {
               const isModifierNeeded = (needsShift && (k.code === "ShiftLeft" || k.code === "ShiftRight")) || 
                                        (needsAltGr && k.code === "AltRight");
