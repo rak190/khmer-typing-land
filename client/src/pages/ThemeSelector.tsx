@@ -10,17 +10,26 @@ import { sounds, MUSIC_TRACKS } from "@/lib/sounds";
 
 export const ThemeSelector: React.FC = () => {
   const { profile, immersionMode, setImmersionMode } = useGameStore();
-  const [selectedTheme, setSelectedTheme] = useState("angkor-classic");
+  const [initialTheme] = useState(() => (profile as any).theme || "angkor-classic");
+  const [initialMusic] = useState(() => localStorage.getItem('selectedMusicTrack') || 'main');
+  
+  const [selectedTheme, setSelectedTheme] = useState(initialTheme);
   const [soundEffects, setSoundEffects] = useState(true);
-  const [selectedMusic, setSelectedMusic] = useState(() => {
-    return localStorage.getItem('selectedMusicTrack') || 'main';
-  });
+  const [selectedMusic, setSelectedMusic] = useState(initialMusic);
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
 
   const handleSelectTheme = (themeId: string) => {
     setSelectedTheme(themeId);
     const theme = getThemeById(themeId);
     applyTheme(theme);
+  };
+
+  const handleCancel = () => {
+    // Revert theme
+    const theme = getThemeById(initialTheme);
+    applyTheme(theme);
+    // Revert music
+    sounds.changeTrack(initialMusic);
   };
 
   const savePreferences = async () => {
@@ -34,6 +43,7 @@ export const ThemeSelector: React.FC = () => {
           soundEffects,
         }),
       });
+      // Music is already saved in localStorage via sounds.changeTrack/setCurrentTrack
       alert("Preferences saved successfully!");
     } catch (error) {
       console.error("Error saving preferences:", error);
@@ -47,7 +57,7 @@ export const ThemeSelector: React.FC = () => {
 
       <div className="container mx-auto px-4 max-w-6xl mt-8">
         <div className="flex items-center gap-4 mb-8">
-          <Link href="/home">
+          <Link href="/home" onClick={handleCancel}>
             <Button variant="ghost" size="icon" data-testid="button-back-home">
               <ArrowLeft />
             </Button>
@@ -229,7 +239,7 @@ export const ThemeSelector: React.FC = () => {
           >
             រក្សាទុក / Save Changes
           </Button>
-          <Link href="/home" className="flex-1">
+          <Link href="/home" className="flex-1" onClick={handleCancel}>
             <Button variant="outline" className="w-full h-14 text-lg font-black">
               ត្រឡប់ក្រោយ / Cancel
             </Button>
