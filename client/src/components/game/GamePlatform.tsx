@@ -104,8 +104,8 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, onComplete, onQ
   const needsShift = target && Object.values(NIDA_MAP).some(m => m.shift === target);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
-      <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden min-h-[350px] flex flex-col items-center justify-between">
+    <div className="flex flex-col items-center justify-center w-full max-w-[1400px] mx-auto gap-4">
+      <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden min-h-[450px] flex flex-col items-center justify-between">
         {/* Progress bar and other HUD elements */}
         
         {/* Shift Hint Sticky Note */}
