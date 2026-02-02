@@ -139,9 +139,7 @@ export const HUD: React.FC = () => {
                     </p>
                   </div>
                   <div className="p-4 bg-secondary/50 rounded-2xl border border-border">
-                    <h4 className="font-bold text-foreground mb-2 flex items-center gap-2 font-display">
-                      🏫 របៀបគ្រូបង្រៀន
-                    </h4>
+                    <h4 className="font-bold text-foreground mb-2 flex items-center gap-2 font-display">🏫 មុខងារសម្រាប់គ្រូបង្រៀន</h4>
                     <p className="text-sm text-muted-foreground font-body">
                       ផ្តល់អំណាចដល់គ្រូបង្រៀនជាមួយនឹងការគ្រប់គ្រងបន្ទប់រៀន និងការតាមដានការរីកចម្រើនរបស់សិស្សក្នុងពេលជាក់ស្តែង។
                     </p>
