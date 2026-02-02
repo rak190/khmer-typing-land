@@ -28,18 +28,17 @@ export const THEMES: Theme[] = [
     description: "Traditional blue and gold inspired by Angkor Wat",
   },
   {
-    id: "night-temple",
-    name: "Night Temple",
-    nameKh: "ប្រាសាទរាត្រី",
-    icon: "🌙",
+    id: "lotus-pink",
+    name: "Lotus Pink",
+    nameKh: "ផ្កាឈូក",
+    icon: "🪷",
     colors: {
-      primary: "hsl(25, 100%, 60%)", // Brighter Orange for better contrast
-      secondary: "hsl(0, 0%, 18%)",  // Lighter Black for definition
-      accent: "hsl(25, 100%, 55%)",
-      background: "hsl(0, 0%, 8%)",   // Deep Black
-      foreground: "hsl(0, 0%, 100%)", // Crisp White
+      primary: "hsl(330, 80%, 60%)",
+      secondary: "hsl(330, 20%, 95%)",
+      accent: "hsl(330, 100%, 70%)",
+      background: "hsl(330, 40%, 98%)",
     },
-    description: "High-contrast theme with orange, black, and white",
+    description: "Elegant pink theme inspired by the sacred lotus flower",
   },
   {
     id: "krama-red",
