@@ -88,10 +88,11 @@ header {
 .main-title {
     font-family: 'Koulen', sans-serif;
     color: var(--primary);
-    font-size: 48px;
+    font-size: 44px;
     margin-bottom: 5px;
-    letter-spacing: 2px;
-    text-shadow: 0 0 1px rgba(0,0,0,0.1);
+    letter-spacing: 0.5px;
+    text-shadow: none;
+    font-weight: normal;
 }
 
 .sub-title {
@@ -103,11 +104,11 @@ header {
 }
 
 .game-title {
-    font-family: 'Moul', cursive;
+    font-family: 'Koulen', sans-serif;
     font-size: 24px;
     color: var(--primary);
     opacity: 0.8;
-    text-shadow: 0 0 1px rgba(0,0,0,0.1);
+    text-shadow: none;
 }
 
 .certifies-text {
@@ -117,7 +118,7 @@ header {
 }
 
 .user-name {
-    font-family: 'Moul', cursive;
+    font-family: 'Koulen', sans-serif;
     font-size: 82px;
     color: var(--primary);
     margin: 30px 0;
@@ -125,7 +126,7 @@ header {
     border-bottom: 5px double var(--gold);
     display: inline-block;
     min-width: 450px;
-    text-shadow: 0 0 1px rgba(0,0,0,0.1);
+    text-shadow: none;
 }
 
 .divider {
