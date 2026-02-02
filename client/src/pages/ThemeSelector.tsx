@@ -10,50 +10,34 @@ import { sounds, MUSIC_TRACKS } from "@/lib/sounds";
 
 export const ThemeSelector: React.FC = () => {
   const { profile, immersionMode, setImmersionMode } = useGameStore();
-  const [savedTheme] = useState(() => {
-    return (profile as any).theme || localStorage.getItem('selectedTheme') || "angkor-classic";
-  });
-  const [selectedTheme, setSelectedTheme] = useState(savedTheme);
+  const [selectedTheme, setSelectedTheme] = useState("angkor-classic");
   const [soundEffects, setSoundEffects] = useState(true);
-  const [savedMusic] = useState(() => {
+  const [selectedMusic, setSelectedMusic] = useState(() => {
     return localStorage.getItem('selectedMusicTrack') || 'main';
   });
-  const [selectedMusic, setSelectedMusic] = useState(savedMusic);
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
 
   const handleSelectTheme = (themeId: string) => {
     setSelectedTheme(themeId);
-  };
-
-  const handleSelectMusic = (trackId: string) => {
-    setSelectedMusic(trackId);
+    const theme = getThemeById(themeId);
+    applyTheme(theme);
   };
 
   const savePreferences = async () => {
     try {
-      const theme = getThemeById(selectedTheme);
-      applyTheme(theme);
-      localStorage.setItem('selectedTheme', selectedTheme);
-      
-      sounds.changeTrack(selectedMusic);
-      
       await fetch("/api/preferences", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          playerId: profile.name,
+          playerId: profile.name, // Using name as temp ID
           theme: selectedTheme,
           soundEffects,
         }),
       });
-      alert("រក្សាទុកបានជោគជ័យ! / Saved successfully!");
+      alert("Preferences saved successfully!");
     } catch (error) {
       console.error("Error saving preferences:", error);
-      const theme = getThemeById(selectedTheme);
-      applyTheme(theme);
-      localStorage.setItem('selectedTheme', selectedTheme);
-      sounds.changeTrack(selectedMusic);
-      alert("រក្សាទុកបានជោគជ័យ! / Saved successfully!");
+      alert("Failed to save preferences");
     }
   };
 
@@ -165,6 +149,7 @@ export const ThemeSelector: React.FC = () => {
                   key={track.id}
                   onClick={() => {
                     setSelectedMusic(track.id);
+                    sounds.changeTrack(track.id);
                   }}
                   className={cn(
                     "relative p-4 rounded-xl border-2 transition-all duration-300 text-left flex items-center gap-4 group",
