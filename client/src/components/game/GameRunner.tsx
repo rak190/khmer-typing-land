@@ -28,14 +28,17 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
   const [score, setScore] = useState(0);
   const [activeCode, setActiveCode] = useState<string | null>(null);
   const [wrongCode, setWrongCode] = useState<string | null>(null);
-  const [gameOver, setGameOver] = useState(false);
   const [currentTarget, setCurrentTarget] = useState<string>("");
+  const [obstacles, setObstacles] = useState<Obstacle[]>([]);
+  const [heroY, setHeroY] = useState(0);
+  const [isJumping, setIsJumping] = useState(false);
 
   const heroRef = useRef<HTMLDivElement>(null);
-  const groundRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
+  const lastTimeRef = useRef<number>(0);
   
-  const baseSpeed = difficulty === "beginner" ? 3 : difficulty === "intermediate" ? 4 : 5;
+  const baseSpeed = difficulty === "beginner" ? 0.8 : difficulty === "intermediate" ? 1.2 : 1.6;
+  const spawnInterval = difficulty === "beginner" ? 3500 : difficulty === "intermediate" ? 2800 : 2200;
   
   const stateRef = useRef({
     heroY: 0,
@@ -43,8 +46,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
     isJumping: false,
     obstacles: [] as Obstacle[],
     nextObstacleId: 0,
-    frameCount: 0,
-    spawnTimer: 0,
+    lastSpawnTime: 0,
     speed: baseSpeed,
     score: 0,
     hits: 0,
@@ -59,7 +61,8 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
   const jump = useCallback(() => {
     if (!stateRef.current.isJumping && stateRef.current.heroY === 0) {
       stateRef.current.isJumping = true;
-      stateRef.current.heroVY = 18;
+      stateRef.current.heroVY = 12;
+      setIsJumping(true);
       sounds.playClick();
     }
   }, []);
@@ -69,68 +72,74 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
     const obstacle: Obstacle = {
       id: stateRef.current.nextObstacleId++,
       char,
-      x: 100,
+      x: 95,
       passed: false,
       hit: false
     };
     stateRef.current.obstacles.push(obstacle);
-    setCurrentTarget(char);
-    
-    const k = findKeyForTarget(char);
-    setActiveCode(k?.code || null);
+    stateRef.current.lastSpawnTime = performance.now();
   }, [pick]);
 
   useEffect(() => {
     spawnObstacle();
+    stateRef.current.lastSpawnTime = performance.now();
   }, []);
 
   useEffect(() => {
-    const animate = () => {
-      if (gameOver) return;
+    let lastFrame = performance.now();
+    
+    const animate = (currentTime: number) => {
+      const deltaTime = Math.min((currentTime - lastFrame) / 16.67, 2);
+      lastFrame = currentTime;
       
-      stateRef.current.frameCount++;
-      
-      stateRef.current.heroY += stateRef.current.heroVY;
-      stateRef.current.heroVY -= 1.2;
+      stateRef.current.heroY += stateRef.current.heroVY * deltaTime;
+      stateRef.current.heroVY -= 0.6 * deltaTime;
       
       if (stateRef.current.heroY <= 0) {
         stateRef.current.heroY = 0;
         stateRef.current.heroVY = 0;
-        stateRef.current.isJumping = false;
+        if (stateRef.current.isJumping) {
+          stateRef.current.isJumping = false;
+          setIsJumping(false);
+        }
       }
+      setHeroY(stateRef.current.heroY);
 
-      if (heroRef.current) {
-        heroRef.current.style.bottom = `${32 + stateRef.current.heroY}px`;
-      }
-
-      stateRef.current.groundOffset -= stateRef.current.speed;
+      stateRef.current.groundOffset -= stateRef.current.speed * deltaTime;
       if (stateRef.current.groundOffset <= -40) {
-        stateRef.current.groundOffset = 0;
+        stateRef.current.groundOffset += 40;
       }
 
-      stateRef.current.spawnTimer++;
-      const spawnInterval = difficulty === "beginner" ? 90 : difficulty === "intermediate" ? 70 : 55;
-      if (stateRef.current.spawnTimer >= spawnInterval && stateRef.current.obstacles.length < 3) {
-        stateRef.current.spawnTimer = 0;
+      const timeSinceLastSpawn = currentTime - stateRef.current.lastSpawnTime;
+      if (timeSinceLastSpawn >= spawnInterval && stateRef.current.obstacles.filter(o => !o.passed && !o.hit).length < 2) {
         spawnObstacle();
       }
 
+      let needsUpdate = false;
       stateRef.current.obstacles = stateRef.current.obstacles.filter(obs => {
-        obs.x -= stateRef.current.speed * 0.5;
+        const prevX = obs.x;
+        obs.x -= stateRef.current.speed * 0.4 * deltaTime;
         
-        if (obs.x < 15 && obs.x > 5 && !obs.passed && !obs.hit) {
-          if (stateRef.current.heroY < 50) {
+        if (obs.x !== prevX) needsUpdate = true;
+        
+        if (obs.x < 18 && obs.x > 8 && !obs.passed && !obs.hit) {
+          if (stateRef.current.heroY < 40) {
             obs.passed = true;
             stateRef.current.miss++;
             setMiss(stateRef.current.miss);
             sounds.playWrong();
             setWrongCode("miss");
-            setTimeout(() => setWrongCode(null), 200);
+            setTimeout(() => setWrongCode(null), 300);
+            needsUpdate = true;
           }
         }
         
-        return obs.x > -10;
+        return obs.x > -15;
       });
+
+      if (needsUpdate) {
+        setObstacles([...stateRef.current.obstacles]);
+      }
 
       const frontObstacle = stateRef.current.obstacles.find(o => !o.passed && !o.hit);
       if (frontObstacle) {
@@ -142,12 +151,13 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
         setActiveCode(null);
       }
 
-      stateRef.current.score++;
-      if (stateRef.current.score % 60 === 0) {
-        setScore(Math.floor(stateRef.current.score / 60));
+      stateRef.current.score += deltaTime * 0.5;
+      const newScore = Math.floor(stateRef.current.score);
+      if (newScore !== score) {
+        setScore(newScore);
       }
 
-      if (Math.floor(stateRef.current.score / 60) >= distanceGoal) {
+      if (stateRef.current.hits >= distanceGoal) {
         sounds.playLevelUp();
         onComplete({ hits: stateRef.current.hits, miss: stateRef.current.miss });
         return;
@@ -158,12 +168,11 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
 
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
-  }, [gameOver, distanceGoal, onComplete, spawnObstacle, difficulty]);
+  }, [distanceGoal, onComplete, spawnObstacle, spawnInterval]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Shift" || e.key === "Alt" || e.key === "Control") return;
-      if (gameOver) return;
 
       const produced = nidaFromEvent(e);
       if (!produced) return;
@@ -174,6 +183,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
         frontObstacle.hit = true;
         stateRef.current.hits++;
         setHits(stateRef.current.hits);
+        setObstacles([...stateRef.current.obstacles]);
         sounds.playCorrect();
         jump();
       } else {
@@ -181,38 +191,60 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
         stateRef.current.miss++;
         setMiss(stateRef.current.miss);
         setWrongCode(e.code);
-        setTimeout(() => setWrongCode(null), 150);
+        setTimeout(() => setWrongCode(null), 200);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [gameOver, jump]);
+  }, [jump]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
-      <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[350px] flex flex-col justify-between">
+      <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[400px] flex flex-col justify-between">
         <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm z-10 relative">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span>Runner Mode</span>
           </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-foreground font-bold">HI {String(distanceGoal).padStart(5, '0')}</span>
-            <span className="text-primary font-bold">{String(score).padStart(5, '0')}</span>
-            <span className="text-accent">Hits: {hits}</span>
-            <span className="text-destructive">Miss: {miss}</span>
+          <div className="flex gap-6 items-center">
+            <div className="flex flex-col items-end">
+              <span className="text-[10px] text-muted-foreground uppercase">Goal</span>
+              <span className="text-foreground font-bold">{hits} / {distanceGoal}</span>
+            </div>
+            <div className="flex flex-col items-end">
+              <span className="text-[10px] text-muted-foreground uppercase">Score</span>
+              <span className="text-primary font-bold">{String(score).padStart(5, '0')}</span>
+            </div>
+            <div className="flex flex-col items-end">
+              <span className="text-[10px] text-accent uppercase">Hits</span>
+              <span className="text-accent font-bold">{hits}</span>
+            </div>
+            <div className="flex flex-col items-end">
+              <span className="text-[10px] text-destructive uppercase">Miss</span>
+              <span className="text-destructive font-bold">{miss}</span>
+            </div>
           </div>
         </div>
 
-        <div className="absolute inset-0 flex items-end overflow-hidden" style={{ background: 'linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.1) 100%)' }}>
-          
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20">
+          {currentTarget && (
+            <>
+              <div className="text-xs text-muted-foreground uppercase tracking-widest animate-pulse">Type this letter to jump!</div>
+              <div className="w-28 h-28 rounded-2xl border-4 border-dashed border-primary/50 bg-primary/10 flex items-center justify-center backdrop-blur-sm">
+                <span className="text-7xl font-khmer font-bold text-foreground drop-shadow-lg">
+                  {currentTarget}
+                </span>
+              </div>
+            </>
+          )}
+        </div>
+
+        <div className="absolute inset-x-0 bottom-0 h-48 overflow-hidden">
           <div 
-            ref={groundRef}
-            className="absolute bottom-0 left-0 w-full h-8 border-t-2 border-foreground/30"
+            className="absolute bottom-0 left-0 w-full h-10 border-t-2 border-foreground/20 bg-gradient-to-t from-foreground/5 to-transparent"
             style={{ 
-              backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 38px, rgba(0,0,0,0.1) 38px, rgba(0,0,0,0.1) 40px)',
-              backgroundSize: '40px 100%',
+              backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 38px, rgba(128,128,128,0.1) 38px, rgba(128,128,128,0.1) 40px)',
               backgroundPosition: `${stateRef.current.groundOffset}px 0`
             }}
           />
@@ -220,54 +252,53 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
           <div 
             ref={heroRef}
             className={cn(
-              "absolute left-16 w-16 h-16 bg-primary/20 border-2 border-primary/50 rounded-xl flex items-center justify-center text-4xl z-20 transition-none",
-              stateRef.current.isJumping && "shadow-[0_0_30px_rgba(90,200,250,0.5)]"
+              "absolute left-16 w-20 h-20 bg-primary/20 border-2 border-primary rounded-2xl flex items-center justify-center text-5xl z-20 transition-shadow duration-200",
+              isJumping && "shadow-[0_0_40px_rgba(90,200,250,0.6)] border-white"
             )}
-            style={{ bottom: '32px' }}
+            style={{ 
+              bottom: `${40 + heroY}px`,
+              transition: 'box-shadow 0.2s'
+            }}
           >
-            {mascot}
+            <div className={cn("transition-transform duration-100", isJumping && "scale-110")}>
+              {mascot}
+            </div>
           </div>
 
-          {stateRef.current.obstacles.map(obs => (
+          {obstacles.map(obs => (
             <div
               key={obs.id}
               className={cn(
-                "absolute bottom-8 flex flex-col items-center transition-none z-10",
-                obs.hit && "opacity-30 scale-75",
-                obs.passed && !obs.hit && "opacity-50"
+                "absolute flex flex-col items-center z-10 transition-opacity duration-200",
+                obs.hit && "opacity-20",
+                obs.passed && !obs.hit && "opacity-40"
               )}
               style={{ 
                 left: `${obs.x}%`,
+                bottom: '40px',
                 transform: 'translateX(-50%)'
               }}
             >
               <div className={cn(
-                "w-14 h-14 rounded-lg border-2 flex items-center justify-center text-3xl font-khmer font-bold transition-all",
-                obs.hit ? "border-accent/50 bg-accent/10 text-accent" : 
-                obs.passed ? "border-destructive/50 bg-destructive/10 text-destructive" :
-                "border-foreground/30 bg-background/80 text-foreground shadow-lg"
+                "w-16 h-16 rounded-xl border-3 flex items-center justify-center text-4xl font-khmer font-bold transition-all duration-200",
+                obs.hit ? "border-accent bg-accent/20 text-accent scale-90" : 
+                obs.passed ? "border-destructive bg-destructive/20 text-destructive" :
+                "border-orange-400 bg-orange-400/20 text-foreground shadow-lg shadow-orange-400/20"
               )}>
                 {obs.char}
               </div>
-              {!obs.hit && !obs.passed && (
-                <div className="text-[8px] text-muted-foreground mt-1 uppercase tracking-wider">Type to jump</div>
-              )}
             </div>
           ))}
 
-          <div className="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1">
-            {currentTarget && (
-              <>
-                <div className="text-[10px] text-muted-foreground uppercase tracking-widest">Next</div>
-                <div className="text-6xl font-khmer font-bold text-foreground drop-shadow-lg">
-                  {currentTarget}
-                </div>
-              </>
-            )}
-          </div>
+          <div 
+            className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent"
+            style={{
+              animation: 'pulse 2s ease-in-out infinite'
+            }}
+          />
         </div>
 
-        <div className="w-full flex justify-center z-10">
+        <div className="w-full flex justify-center z-10 mt-auto pt-4">
           <Button variant="secondary" onClick={onQuit}>Quit</Button>
         </div>
       </div>
