@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, Check, Palette, Languages } from "lucide-react";
+import { ArrowLeft, Check, Palette, Languages, Volume2 } from "lucide-react";
 import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/lib/store";
@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 export const ThemeSelector: React.FC = () => {
   const { profile, immersionMode, setImmersionMode } = useGameStore();
   const [selectedTheme, setSelectedTheme] = useState("angkor-classic");
-  const [fontStyle, setFontStyle] = useState("battambang");
+  const [soundEffects, setSoundEffects] = useState(true);
 
   const handleSelectTheme = (themeId: string) => {
     setSelectedTheme(themeId);
@@ -26,13 +26,13 @@ export const ThemeSelector: React.FC = () => {
         body: JSON.stringify({
           playerId: profile.name, // Using name as temp ID
           theme: selectedTheme,
-          fontStyle,
+          soundEffects,
         }),
       });
-      alert("Theme saved successfully!");
+      alert("Preferences saved successfully!");
     } catch (error) {
       console.error("Error saving preferences:", error);
-      alert("Failed to save theme");
+      alert("Failed to save preferences");
     }
   };
 
@@ -100,24 +100,31 @@ export const ThemeSelector: React.FC = () => {
           </div>
 
           <div className="border-t border-border pt-6">
-            <h3 className="text-lg font-black text-foreground mb-4">Font Style</h3>
-            <div className="flex gap-4">
-              <Button
-                variant={fontStyle === "battambang" ? "default" : "outline"}
-                onClick={() => setFontStyle("battambang")}
-                className="font-khmer"
-                data-testid="button-font-battambang"
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-black text-foreground flex items-center gap-2">
+                  <Volume2 size={20} className="text-primary" />
+                  សំឡេងពេលវាយ / Typing Sound Effects
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Enable mechanical keyboard sound effects while typing
+                </p>
+              </div>
+              <button
+                onClick={() => setSoundEffects(!soundEffects)}
+                className={cn(
+                  "relative w-14 h-8 rounded-full transition-colors",
+                  soundEffects ? "bg-primary" : "bg-muted"
+                )}
+                data-testid="toggle-sound-effects"
               >
-                Battambang (Default)
-              </Button>
-              <Button
-                variant={fontStyle === "kantumruy" ? "default" : "outline"}
-                onClick={() => setFontStyle("kantumruy")}
-                className="font-body"
-                data-testid="button-font-kantumruy"
-              >
-                Kantumruy Pro
-              </Button>
+                <div
+                  className={cn(
+                    "absolute top-1 w-6 h-6 rounded-full bg-white shadow-md transition-all",
+                    soundEffects ? "left-7" : "left-1"
+                  )}
+                />
+              </button>
             </div>
           </div>
 
