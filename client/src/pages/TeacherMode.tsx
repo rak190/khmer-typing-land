@@ -268,7 +268,6 @@ export const TeacherMode: React.FC = () => {
   return (
     <div className="min-h-screen bg-background pb-20 pt-20">
       <HUD />
-
       <div className="container mx-auto px-4 mt-8 max-w-5xl">
         <div className="flex items-center gap-4 mb-8">
           <Button variant="secondary" size="icon" className="rounded-full" onClick={() => {
@@ -280,7 +279,7 @@ export const TeacherMode: React.FC = () => {
           }} data-testid="button-back">
             <ArrowLeft size={18} />
           </Button>
-          <h1 className="text-3xl font-black text-foreground">Teacher Mode</h1>
+          <h1 className="text-3xl font-black text-foreground">សម្រាប់គ្រូ</h1>
         </div>
 
         {/* Selection Mode */}
