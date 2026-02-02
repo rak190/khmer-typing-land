@@ -248,7 +248,8 @@ export const useGameStore = create<GameState>()(
           progress: player.progress,
           badgesOwned: player.badgesOwned,
           selectedBadgeId: player.selectedBadgeId,
-          difficulty: state.difficulty
+          difficulty: state.difficulty,
+          immersionMode: state.immersionMode
         };
       }),
 
