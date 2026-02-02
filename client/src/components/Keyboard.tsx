@@ -22,21 +22,28 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
   // Decide what to show
   let label = "";
   let subLabel = "";
+  let khmerUnicode = "";
   
-  if (fixed) {
-    label = fixed;
-  } else if (map) {
+  if (map) {
     const { base, shift, altgr } = map;
     if (mod === "SHIFT") {
-      label = shift || base;
-      subLabel = base;
+      khmerUnicode = shift || base;
     } else if (mod === "ALTGR") {
-      label = altgr || base;
-      subLabel = base;
+      khmerUnicode = altgr || base;
     } else {
-      label = base;
-      subLabel = shift || "";
+      khmerUnicode = base;
     }
+  }
+
+  if (fixed) {
+    label = fixed;
+  } else {
+    // Show the standard US keyboard layout symbol as the label
+    const codeMap: Record<string, string> = {
+      "Minus": "-", "Equal": "=", "BracketLeft": "[", "BracketRight": "]",
+      "Semicolon": ";", "Quote": "'", "Comma": ",", "Period": ".", "Slash": "/"
+    };
+    label = codeMap[code] || code.replace(/Key|Digit/, "");
   }
 
   const isShiftKey = code === "ShiftLeft" || code === "ShiftRight";
@@ -69,20 +76,12 @@ const Key: React.FC<KeyProps> = ({ code, w, fixed, active, correct, wrong, mod, 
           "text-lg font-black transition-all font-khmer", 
           (isTargetKey || active || isModifierActive) ? "text-primary scale-110" : isModifierNeeded ? "text-amber-600" : "text-slate-600"
         )}>
-          {label}
+          {khmerUnicode || label}
         </span>
-        {subLabel && !fixed && (
-          <span className={cn(
-            "text-[10px] font-khmer font-bold transition-colors",
-            mod === "BASE" ? "text-purple-500/60" : "text-slate-400/40"
-          )}>
-            {subLabel}
-          </span>
-        )}
       </div>
       
       <span className={cn("absolute right-1 bottom-0.5 text-[8px] font-mono transition-colors", (isTargetKey || active) ? "text-primary/40" : isModifierNeeded ? "text-amber-600/40" : "text-slate-400")}>
-        {code.replace(/Key|Digit/, "")}
+        {label}
       </span>
     </div>
   );
@@ -93,14 +92,14 @@ const KEY_ROWS = [
   [
     { code:"Digit1" },{ code:"Digit2" },{ code:"Digit3" },{ code:"Digit4" },{ code:"Digit5" },
     { code:"Digit6" },{ code:"Digit7" },{ code:"Digit8" },{ code:"Digit9" },{ code:"Digit0" },
-    { code:"Minus", fixed:"-" },{ code:"Equal", fixed:"=" },{ code:"Backspace", w:"w3", fixed:"⌫" }
+    { code:"Minus" },{ code:"Equal" },{ code:"Backspace", w:"w3", fixed:"⌫" }
   ],
   // Row 2
   [
     { code:"Tab", w:"w2", fixed:"Tab" },
     { code:"KeyQ" },{ code:"KeyW" },{ code:"KeyE" },{ code:"KeyR" },{ code:"KeyT" },{ code:"KeyY" },
     { code:"KeyU" },{ code:"KeyI" },{ code:"KeyO" },{ code:"KeyP" },
-    { code:"BracketLeft", fixed:"[" },{ code:"BracketRight", fixed:"]" },
+    { code:"BracketLeft" },{ code:"BracketRight" },
     { code:"Enter", w:"w3", fixed:"Enter" }
   ],
   // Row 3
@@ -108,13 +107,13 @@ const KEY_ROWS = [
     { code:"CapsLock", w:"w3", fixed:"Caps" },
     { code:"KeyA" },{ code:"KeyS" },{ code:"KeyD" },{ code:"KeyF" },{ code:"KeyG" },{ code:"KeyH" },
     { code:"KeyJ" },{ code:"KeyK" },{ code:"KeyL" },
-    { code:"Semicolon", fixed:";" },{ code:"Quote", fixed:"'" }
+    { code:"Semicolon" },{ code:"Quote" }
   ],
   // Row 4
   [
     { code:"ShiftLeft", w:"w4", fixed:"Shift" },
     { code:"KeyZ" },{ code:"KeyX" },{ code:"KeyC" },{ code:"KeyV" },{ code:"KeyB" },{ code:"KeyN" },{ code:"KeyM" },
-    { code:"Comma", fixed:"," },{ code:"Period", fixed:"." },{ code:"Slash", fixed:"/" },
+    { code:"Comma" },{ code:"Period" },{ code:"Slash" },
     { code:"ShiftRight", w:"w4", fixed:"Shift" }
   ],
   // Row 5
