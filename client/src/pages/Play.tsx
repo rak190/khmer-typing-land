@@ -45,7 +45,7 @@ export const Play: React.FC = () => {
   const mascot = badge.icon;
 
   useEffect(() => {
-    // Start background music on entry
+    // Start background music on entry and keep it playing
     sounds.startBackgroundMusic();
 
     // Random Event & Easter Egg Check
@@ -61,7 +61,7 @@ export const Play: React.FC = () => {
         setActiveEgg(egg);
       }
     }
-  }, [phase, getTotalStars]);
+  }, [getTotalStars]); // Removed phase from dependencies to prevent restart on phase change
 
   if (!world || !stage) return <div>Stage not found</div>;
 
