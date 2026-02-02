@@ -26,10 +26,11 @@ export const StageSelect: React.FC = () => {
       applyTheme(WORLD_THEMES[params.id]);
     } else {
       // Fallback to selected theme or classic
-      const currentTheme = getThemeById(profile?.theme || "angkor-classic");
+      const themeId = (profile as any).theme || "angkor-classic";
+      const currentTheme = getThemeById(themeId);
       applyTheme(currentTheme);
     }
-  }, [params?.id, profile?.theme]);
+  }, [params?.id, (profile as any).theme]);
   
   if (!world) return <div className="text-white p-20">World not found</div>;
 

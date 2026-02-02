@@ -18,7 +18,7 @@ interface Player {
 }
 
 interface GameState {
-  profile: { name: string };
+  profile: { name: string; theme: string };
   progress: Progress;
   badgesOwned: string[];
   selectedBadgeId: string;
@@ -47,7 +47,7 @@ interface GameState {
 }
 
 const DEFAULT_STATE = {
-  profile: { name: "Player" },
+  profile: { name: "Player", theme: "angkor-classic" },
   progress: { 
     starsByStage: {}, 
     scoresByStage: {}, 
@@ -229,7 +229,7 @@ export const useGameStore = create<GameState>()(
         if (!player) return state;
         return {
           currentPlayerId: name,
-          profile: { name: player.name },
+          profile: { name: player.name, theme: (player as any).theme || "angkor-classic" },
           progress: player.progress,
           badgesOwned: player.badgesOwned,
           selectedBadgeId: player.selectedBadgeId,

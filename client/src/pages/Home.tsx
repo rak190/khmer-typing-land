@@ -21,9 +21,10 @@ export const Home: React.FC = () => {
 
   // Ensure default theme is applied on Home
   useEffect(() => {
-    const currentTheme = getThemeById(profile.theme);
+    const themeId = (profile as any).theme || "angkor-classic";
+    const currentTheme = getThemeById(themeId);
     applyTheme(currentTheme);
-  }, [profile.theme]);
+  }, [(profile as any).theme]);
 
   return (
     <div className="min-h-screen bg-[linear-gradient(to_bottom,_#bae6fd,_#e0f2fe,_#fefce8)] pb-20 pt-20 relative overflow-hidden font-body">
