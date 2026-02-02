@@ -149,7 +149,7 @@ export const FreeTyping: React.FC = () => {
                 className="absolute opacity-0 pointer-events-none"
               />
               <div 
-                className="cursor-text absolute inset-0 z-10" 
+                className="cursor-text absolute inset-0 z-[5]" 
                 onClick={() => inputRef.current?.focus()}
               />
               
