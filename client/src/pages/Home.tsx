@@ -41,33 +41,59 @@ export const Home: React.FC = () => {
     applyTheme(currentTheme);
   }, [(profile as any).theme]);
 
+  const currentTheme = getThemeById((profile as any).theme || "angkor-classic");
+
   return (
-    <div className="min-h-screen bg-[linear-gradient(to_bottom,_#bae6fd,_#e0f2fe,_#fefce8)] pb-20 pt-20 relative overflow-hidden font-body">
+    <div 
+      className="min-h-screen pb-20 pt-20 relative overflow-hidden font-body transition-colors duration-500"
+      style={{ 
+        backgroundColor: currentTheme.colors.background,
+        backgroundImage: `linear-gradient(to bottom, ${currentTheme.colors.background}, ${currentTheme.colors.secondary}40, ${currentTheme.colors.background})`
+      }}
+    >
       {/* Concept-inspired background elements */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {/* Soft clouds */}
-        <div className="absolute top-[5%] left-[10%] w-64 h-32 bg-white/60 blur-3xl rounded-full animate-cloud-slow" />
-        <div className="absolute top-[15%] right-[15%] w-80 h-40 bg-white/40 blur-3xl rounded-full animate-cloud-fast" />
-        <div className="absolute top-[40%] left-[60%] w-48 h-24 bg-white/30 blur-2xl rounded-full animate-cloud-slow" style={{ animationDelay: '1s' }} />
+        <div 
+          className="absolute top-[5%] left-[10%] w-64 h-32 blur-3xl rounded-full animate-cloud-slow opacity-60" 
+          style={{ backgroundColor: currentTheme.colors.primary }}
+        />
+        <div 
+          className="absolute top-[15%] right-[15%] w-80 h-40 blur-3xl rounded-full animate-cloud-fast opacity-40" 
+          style={{ backgroundColor: currentTheme.colors.accent }}
+        />
+        <div 
+          className="absolute top-[40%] left-[60%] w-48 h-24 blur-2xl rounded-full animate-cloud-slow opacity-30" 
+          style={{ animationDelay: '1s', backgroundColor: currentTheme.colors.primary }} 
+        />
         
         {/* Soft watercolor splashes */}
-        <div className="absolute top-[40%] left-[-5%] w-[50%] h-[50%] bg-sky-200/30 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[10%] right-[-5%] w-[40%] h-[40%] bg-rose-200/30 blur-[100px] rounded-full" />
-        <div className="absolute top-[20%] right-0 w-[30%] h-[30%] bg-amber-100/40 blur-[100px] rounded-full" />
+        <div 
+          className="absolute top-[40%] left-[-5%] w-[50%] h-[50%] blur-[120px] rounded-full opacity-20" 
+          style={{ backgroundColor: currentTheme.colors.primary }}
+        />
+        <div 
+          className="absolute bottom-[10%] right-[-5%] w-[40%] h-[40%] blur-[100px] rounded-full opacity-20" 
+          style={{ backgroundColor: currentTheme.colors.accent }}
+        />
+        <div 
+          className="absolute top-[20%] right-0 w-[30%] h-[30%] blur-[100px] rounded-full opacity-20" 
+          style={{ backgroundColor: currentTheme.colors.primary }}
+        />
 
         {/* Floating Icons from concept */}
-        <div className="absolute top-[10%] left-[5%] text-6xl opacity-30 rotate-12 animate-float">🏮</div>
-        <div className="absolute top-[25%] right-[8%] text-4xl opacity-20 -rotate-12 animate-float" style={{ animationDelay: '1s' }}>✨</div>
-        <div className="absolute bottom-[20%] left-[12%] text-5xl opacity-30 animate-float" style={{ animationDelay: '3s' }}>🐘</div>
-        <div className="absolute bottom-[15%] right-[20%] text-6xl opacity-35 animate-float" style={{ animationDelay: '2s' }}>🪷</div>
-        <div className="absolute top-[60%] left-[2%] text-4xl opacity-20 animate-float" style={{ animationDelay: '4s' }}>🏯</div>
-        <div className="absolute top-[45%] right-[5%] text-5xl opacity-25 animate-float" style={{ animationDelay: '1.5s' }}>🛶</div>
-        <div className="absolute bottom-[5%] left-[40%] text-4xl opacity-20 animate-float" style={{ animationDelay: '5s' }}>🏺</div>
+        <div className="absolute top-[10%] left-[5%] text-6xl opacity-30 rotate-12 animate-float" style={{ color: currentTheme.colors.primary }}>🏮</div>
+        <div className="absolute top-[25%] right-[8%] text-4xl opacity-20 -rotate-12 animate-float" style={{ animationDelay: '1s', color: currentTheme.colors.accent }}>✨</div>
+        <div className="absolute bottom-[20%] left-[12%] text-5xl opacity-30 animate-float" style={{ animationDelay: '3s', color: currentTheme.colors.primary }}>🐘</div>
+        <div className="absolute bottom-[15%] right-[20%] text-6xl opacity-35 animate-float" style={{ animationDelay: '2s', color: currentTheme.colors.accent }}>🪷</div>
+        <div className="absolute top-[60%] left-[2%] text-4xl opacity-20 animate-float" style={{ animationDelay: '4s', color: currentTheme.colors.primary }}>🏯</div>
+        <div className="absolute top-[45%] right-[5%] text-5xl opacity-25 animate-float" style={{ animationDelay: '1.5s', color: currentTheme.colors.accent }}>🛶</div>
+        <div className="absolute bottom-[5%] left-[40%] text-4xl opacity-20 animate-float" style={{ animationDelay: '5s', color: currentTheme.colors.primary }}>🏺</div>
 
         {/* Animated Particles */}
-        <div className="absolute top-[20%] left-[30%] w-2 h-2 bg-white rounded-full animate-ping opacity-40" />
-        <div className="absolute top-[60%] right-[30%] w-2 h-2 bg-amber-200 rounded-full animate-ping opacity-40" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-[80%] left-[60%] w-2 h-2 bg-sky-200 rounded-full animate-ping opacity-40" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[20%] left-[30%] w-2 h-2 rounded-full animate-ping opacity-40" style={{ backgroundColor: currentTheme.colors.primary }} />
+        <div className="absolute top-[60%] right-[30%] w-2 h-2 rounded-full animate-ping opacity-40" style={{ animationDelay: '1s', backgroundColor: currentTheme.colors.accent }} />
+        <div className="absolute top-[80%] left-[60%] w-2 h-2 rounded-full animate-ping opacity-40" style={{ animationDelay: '2s', backgroundColor: currentTheme.colors.primary }} />
       </div>
       
       <div className="relative z-10">
@@ -75,7 +101,13 @@ export const Home: React.FC = () => {
         
         <div className="container mx-auto px-4 mt-8 max-w-5xl">
           {/* Welcome Card */}
-          <div className="glass-panel p-8 rounded-3xl mb-12 border-white/40 bg-white/30 backdrop-blur-md shadow-xl">
+          <div 
+            className="glass-panel p-8 rounded-3xl mb-12 border-white/40 backdrop-blur-md shadow-xl transition-all duration-500"
+            style={{ 
+              backgroundColor: `${currentTheme.colors.background}80`,
+              borderColor: `${currentTheme.colors.primary}40`
+            }}
+          >
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
               <div>
                 <h1 className="text-4xl font-black text-foreground mb-2 font-display">
