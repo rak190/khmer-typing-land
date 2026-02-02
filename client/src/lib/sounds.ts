@@ -159,9 +159,8 @@ class SoundManager {
     if (this.isMuted || this.isBgPlaying) return;
     this.init();
 
-    // Check localStorage for the latest preference
     const savedTrack = localStorage.getItem('selectedMusicTrack');
-    if (savedTrack && savedTrack !== this.currentTrackId) {
+    if (savedTrack) {
       this.currentTrackId = savedTrack;
     }
 

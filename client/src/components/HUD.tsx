@@ -60,9 +60,6 @@ export const HUD: React.FC = () => {
 
   const toggleMusic = () => {
     if (isMuted) {
-      // Re-fetch the saved track before starting
-      const savedTrack = localStorage.getItem('selectedMusicTrack') || 'main';
-      sounds.setCurrentTrack(savedTrack);
       sounds.startBackgroundMusic();
       setIsMuted(false);
       localStorage.setItem('musicMuted', 'false');
