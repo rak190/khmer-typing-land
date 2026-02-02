@@ -5,8 +5,6 @@ import { cn } from '@/lib/utils';
 import { Keyboard } from '@/components/Keyboard';
 import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 import { sounds } from '@/lib/sounds';
-import { AttackEffect, SkillInfo } from './AttackEffect';
-import { getAvatarSkill } from '@/lib/avatar-skills';
 
 interface GameProps {
   pool: string[];
@@ -27,8 +25,6 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
 
   const [combo, setCombo] = useState(0);
   const [speedMult, setSpeedMult] = useState(1);
-  const [attackTrigger, setAttackTrigger] = useState(0);
-  const [isAttacking, setIsAttacking] = useState(false);
 
   // Progressive speed challenge: speed ramps up while the player maintains accuracy.
   // We treat combo as an "accuracy streak" (resets on any miss).
@@ -164,10 +160,6 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
         stateRef.current.hits++;
         setHits(stateRef.current.hits);
         
-        setAttackTrigger(prev => prev + 1);
-        setIsAttacking(true);
-        setTimeout(() => setIsAttacking(false), 200);
-        
         // Combo & Speed logic
         const newCombo = combo + 1;
         setCombo(newCombo);
@@ -205,21 +197,10 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
       <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[350px] flex flex-col justify-between">
-        
-        <AttackEffect
-          trigger={attackTrigger}
-          mascot={mascot}
-          startX={10}
-          startY={75}
-          targetX={75}
-          targetY={50}
-        />
-
         <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm z-10 relative">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span>Runner Mode</span>
-            <SkillInfo mascot={mascot} className="ml-2 hidden sm:flex" />
           </div>
           <div className="flex gap-4 items-center">
             <span className="text-foreground">Goal: {dist}/{distanceGoal}m</span>
@@ -262,33 +243,14 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
           <div 
             ref={heroRef}
             className={cn(
-              "w-20 h-20 border-2 rounded-2xl flex items-center justify-center text-4xl z-10 transition-transform duration-75 ease-linear will-change-transform",
-              speedMult > 1.5 && "scale-105",
-              isAttacking && "scale-110"
+              "w-20 h-20 bg-primary/20 border border-primary/50 rounded-2xl flex items-center justify-center text-4xl shadow-[0_0_30px_rgba(90,200,250,0.3)] z-10 transition-transform duration-75 ease-linear will-change-transform",
+              speedMult > 1.5 && "shadow-[0_0_50px_rgba(90,200,250,0.6)] border-white/50"
             )}
-            style={{
-              borderColor: getAvatarSkill(mascot).color,
-              backgroundColor: `${getAvatarSkill(mascot).color}20`,
-              boxShadow: isAttacking 
-                ? `0 0 50px ${getAvatarSkill(mascot).color}, 0 0 80px ${getAvatarSkill(mascot).color}` 
-                : `0 0 30px ${getAvatarSkill(mascot).color}40`
-            }}
           >
             <div className="relative">
               {mascot}
               {speedMult > 2 && (
-                <div 
-                  className="absolute inset-0 animate-ping opacity-50 rounded-full" 
-                  style={{ backgroundColor: getAvatarSkill(mascot).color }}
-                />
-              )}
-              {isAttacking && (
-                <div 
-                  className="absolute -right-6 top-1/2 -translate-y-1/2 text-2xl"
-                  style={{ filter: `drop-shadow(0 0 8px ${getAvatarSkill(mascot).color})` }}
-                >
-                  {getAvatarSkill(mascot).projectile}
-                </div>
+                <div className="absolute inset-0 animate-ping opacity-50 bg-primary rounded-full" />
               )}
             </div>
           </div>
