@@ -101,7 +101,7 @@ export const HUD: React.FC = () => {
           <DialogTrigger asChild>
             <button 
               className="p-2 rounded-full bg-secondary border border-border text-foreground hover:text-primary transition-colors"
-              title="About Us"
+              title="អំពីយើង"
               data-testid="button-about-us"
             >
               <Info size={18} />
@@ -114,8 +114,8 @@ export const HUD: React.FC = () => {
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl animate-float">🇰🇭</div>
                   <div>
-                    <h2 className="text-3xl font-black tracking-tight">Khmer Typing Land</h2>
-                    <p className="text-primary-foreground/80 font-medium">Master the Art of Khmer Typing</p>
+                    <h2 className="text-3xl font-black tracking-tight font-display">ពិភពវាយអត្ថបទខ្មែរ</h2>
+                    <p className="text-primary-foreground/80 font-medium font-body">ស្ទាត់ជំនាញក្នុងការវាយអត្ថបទខ្មែរ</p>
                   </div>
                 </div>
               </div>
@@ -123,47 +123,47 @@ export const HUD: React.FC = () => {
               {/* Content Section */}
               <div className="p-8 space-y-6 max-h-[60vh] overflow-y-auto font-body">
                 <div>
-                  <h3 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2">
+                  <h3 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2 font-display">
                     <span className="p-1.5 bg-primary/10 rounded-lg text-primary">✨</span>
-                    Our Mission
+                    បេសកកម្មរបស់យើង
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Khmer Typing Land is a gamified educational platform dedicated to preserving and promoting the Khmer language in the digital age. Our goal is to make learning the NiDA keyboard layout fun, engaging, and accessible for everyone.
+                  <p className="text-muted-foreground leading-relaxed font-body">
+                    ពិភពវាយអត្ថបទខ្មែរ គឺជាកម្មវិធីអប់រំតាមបែបហ្គេម ដែលបង្កើតឡើងដើម្បីថែរក្សា និងលើកកម្ពស់ភាសាខ្មែរក្នុងសម័យឌីជីថល។ គោលដៅរបស់យើងគឺធ្វើឱ្យការរៀនវាយអត្ថបទតាមរយៈក្តារចុច NiDA មានភាពសប្បាយរីករាយ និងងាយស្រួលសម្រាប់អ្នករាល់គ្នា។
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="p-4 bg-secondary/50 rounded-2xl border border-border">
-                    <h4 className="font-bold text-foreground mb-2 flex items-center gap-2">
-                      🎮 Gamified Learning
+                    <h4 className="font-bold text-foreground mb-2 flex items-center gap-2 font-display">
+                      🎮 ការរៀនបែបកម្សាន្ត
                     </h4>
-                    <p className="text-sm text-muted-foreground">
-                      Explore 9 unique worlds with 81 challenging stages designed for steady progression.
+                    <p className="text-sm text-muted-foreground font-body">
+                      រុករកពិភពប្លែកៗចំនួន ៩ ជាមួយ ៨១ វគ្គដែលបានរៀបចំឡើងសម្រាប់ការរីកចម្រើនជាជំហានៗ។
                     </p>
                   </div>
                   <div className="p-4 bg-secondary/50 rounded-2xl border border-border">
-                    <h4 className="font-bold text-foreground mb-2 flex items-center gap-2">
-                      🏫 Teacher Mode
+                    <h4 className="font-bold text-foreground mb-2 flex items-center gap-2 font-display">
+                      🏫 របៀបគ្រូបង្រៀន
                     </h4>
-                    <p className="text-sm text-muted-foreground">
-                      Empowering educators with real-time room management and student progress tracking.
+                    <p className="text-sm text-muted-foreground font-body">
+                      ផ្តល់អំណាចដល់គ្រូបង្រៀនជាមួយនឹងការគ្រប់គ្រងបន្ទប់រៀន និងការតាមដានការរីកចម្រើនរបស់សិស្សក្នុងពេលជាក់ស្តែង។
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2">
+                  <h3 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2 font-display">
                     <span className="p-1.5 bg-amber-500/10 rounded-lg text-amber-500">🛡️</span>
-                    Built for You
+                    បង្កើតឡើងសម្រាប់អ្នក
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Whether you're a student starting your journey or a teacher guiding others, this platform provides the tools you need to succeed with high-performance tracking and interactive mini-games.
+                  <p className="text-muted-foreground leading-relaxed font-body">
+                    មិនថាអ្នកជាសិស្សដែលកំពុងចាប់ផ្តើមដំណើររបស់អ្នក ឬជាគ្រូបង្រៀនដែលកំពុងណែនាំអ្នកដទៃនោះទេ កម្មវិធីនេះផ្តល់នូវឧបករណ៍ដែលអ្នកត្រូវការដើម្បីទទួលបានជោគជ័យ ជាមួយនឹងការតាមដានសមត្ថភាពខ្ពស់ និងហ្គេមខ្នាតតូចដែលមានអន្តរកម្ម។
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-border flex justify-between items-center text-xs text-muted-foreground italic">
-                  <span>Version 2.0.0 (NiDA Layout)</span>
-                  <span>Made with ❤️ for Cambodia</span>
+                <div className="pt-4 border-t border-border flex justify-between items-center text-xs text-muted-foreground italic font-body">
+                  <span>កំណែ ២.០.០ (ប្លង់ NiDA)</span>
+                  <span>បង្កើតឡើងដោយ ❤️ សម្រាប់កម្ពុជា</span>
                 </div>
               </div>
             </div>
