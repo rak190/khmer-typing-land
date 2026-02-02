@@ -312,7 +312,10 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
               title={`Type: ${enemyVisual.target}`}
             >
               <div className="absolute -top-16 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                <div className="text-5xl font-khmer text-foreground font-bold drop-shadow-sm flex items-center gap-1 bg-white/60 px-4 py-2 rounded-xl border border-border backdrop-blur-sm">
+                <div className={cn(
+                  "text-5xl font-khmer text-foreground font-bold drop-shadow-sm flex items-center gap-1 bg-white/60 px-4 py-2 rounded-xl border border-border backdrop-blur-sm transition-colors",
+                  wrongCode && "border-destructive text-destructive animate-shake bg-destructive/10"
+                )}>
                   {enemyVisual.target}
                 </div>
                 {enemyVisual.isBoss && (

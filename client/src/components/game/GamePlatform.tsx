@@ -161,7 +161,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
              className={cn(
                "w-48 h-48 rounded-full border-4 border-dashed border-slate-200 flex items-center justify-center text-9xl font-khmer text-foreground transition-all duration-200 relative",
                flash === "good" && "border-accent bg-accent/10 scale-110 shadow-lg",
-               flash === "bad" && "border-destructive bg-destructive/10 scale-95 shadow-lg"
+               flash === "bad" && "border-destructive bg-destructive/10 scale-95 shadow-lg text-destructive animate-shake"
              )}
            >
              {target}

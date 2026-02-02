@@ -282,8 +282,9 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
               <div className={cn(
                 "w-16 h-16 rounded-xl border-3 flex items-center justify-center text-4xl font-khmer font-bold transition-all duration-200",
                 obs.hit ? "border-accent bg-accent/20 text-accent scale-90" : 
-                obs.passed ? "border-destructive bg-destructive/20 text-destructive" :
-                "border-orange-400 bg-orange-400/20 text-foreground shadow-lg shadow-orange-400/20"
+                obs.passed ? "border-destructive bg-destructive/20 text-destructive animate-shake" :
+                "border-orange-400 bg-orange-400/20 text-foreground shadow-lg shadow-orange-400/20",
+                wrongCode === obs.char && "border-destructive bg-destructive/10 text-destructive animate-shake"
               )}>
                 {obs.char}
               </div>
