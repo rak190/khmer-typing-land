@@ -90,7 +90,7 @@ export const TRANSLATIONS: Record<"en" | "km", TranslationSet> = {
     accuracyMode: "Accuracy Mode",
     multiplayer: "Multiplayer",
     challenges: "Challenges",
-    culturalChallenges: "Cultural Challenges",
+    culturalChallenges: "General Culture",
     survivalMode: "Survival Mode",
     
     // Stats
@@ -164,7 +164,7 @@ export const TRANSLATIONS: Record<"en" | "km", TranslationSet> = {
     accuracyMode: "ភាពត្រឹមត្រូវ",
     multiplayer: "ប្រកួតផ្ទាល់",
     challenges: "ការប្រកួត",
-    culturalChallenges: "ប្រកួតប្រជែងវប្បធម៌",
+    culturalChallenges: "វប្បធម៌ទូទៅ",
     survivalMode: "ការប្រកួតរស់រាន",
     
     // Stats
