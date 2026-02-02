@@ -97,29 +97,29 @@ const KEY_ROWS = [
   ],
   // Row 2
   [
-    { code:"Tab", w:"w2", fixed:"Tab" },
+    { code:"Tab", w:"w2", fixed:"⇥" },
     { code:"KeyQ" },{ code:"KeyW" },{ code:"KeyE" },{ code:"KeyR" },{ code:"KeyT" },{ code:"KeyY" },
     { code:"KeyU" },{ code:"KeyI" },{ code:"KeyO" },{ code:"KeyP" },
     { code:"BracketLeft" },{ code:"BracketRight" },
-    { code:"Enter", w:"w3", fixed:"Enter" }
+    { code:"Enter", w:"w3", fixed:"↵" }
   ],
   // Row 3
   [
-    { code:"CapsLock", w:"w3", fixed:"Caps" },
+    { code:"CapsLock", w:"w3", fixed:"⇪" },
     { code:"KeyA" },{ code:"KeyS" },{ code:"KeyD" },{ code:"KeyF" },{ code:"KeyG" },{ code:"KeyH" },
     { code:"KeyJ" },{ code:"KeyK" },{ code:"KeyL" },
     { code:"Semicolon" },{ code:"Quote" }
   ],
   // Row 4
   [
-    { code:"ShiftLeft", w:"w4", fixed:"Shift" },
+    { code:"ShiftLeft", w:"w4", fixed:"⇧" },
     { code:"KeyZ" },{ code:"KeyX" },{ code:"KeyC" },{ code:"KeyV" },{ code:"KeyB" },{ code:"KeyN" },{ code:"KeyM" },
     { code:"Comma" },{ code:"Period" },{ code:"Slash" },
-    { code:"ShiftRight", w:"w4", fixed:"Shift" }
+    { code:"ShiftRight", w:"w4", fixed:"⇧" }
   ],
   // Row 5
   [
-    { code:"Space", w:"w5", fixed:"Space" }
+    { code:"Space", w:"w5", fixed:"␣" }
   ]
 ];
 
