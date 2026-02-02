@@ -22,11 +22,9 @@ export const Challenges: React.FC = () => {
       
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="flex items-center gap-4 mb-8">
-          <Link href="/">
-            <Button variant="ghost" size="icon" data-testid="button-back">
-              <ArrowLeft />
-            </Button>
-          </Link>
+          <Button variant="ghost" size="icon" data-testid="button-back" onClick={() => window.history.back()}>
+            <ArrowLeft />
+          </Button>
           <h1 className="text-4xl font-black font-display text-foreground">ការប្រកួតប្រជែង / Challenges</h1>
         </div>
 
