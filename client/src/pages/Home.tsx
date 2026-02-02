@@ -21,9 +21,13 @@ export const Home: React.FC = () => {
   const totalStars = getTotalStars();
   const [showDonation, setShowDonation] = useState(false);
 
-  // Show donation popup on every visit
+  // Show donation popup only once per session
   useEffect(() => {
-    setShowDonation(true);
+    const sessionDonation = sessionStorage.getItem('hasSeenDonationSession');
+    if (!sessionDonation) {
+      setShowDonation(true);
+      sessionStorage.setItem('hasSeenDonationSession', 'true');
+    }
   }, []);
 
   const handleCloseDonation = () => {
