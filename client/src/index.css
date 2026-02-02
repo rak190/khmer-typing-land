@@ -100,8 +100,9 @@
   }
   .glass-panel {
     @apply backdrop-blur-xl border shadow-xl transition-all duration-300;
-    background-color: color-mix(in srgb, var(--card) 80%, transparent);
-    border-color: color-mix(in srgb, var(--border), transparent 50%);
+    background-color: color-mix(in srgb, var(--card) 90%, transparent);
+    border-color: color-mix(in srgb, var(--border), transparent 30%);
+    color: var(--fg);
   }
   .key-cap {
     @apply relative flex items-center justify-center select-none transition-all duration-75 font-bold border;
