@@ -26,11 +26,9 @@ export const StageSelect: React.FC = () => {
 
       <div className="container mx-auto px-4 mt-8 max-w-5xl">
         <div className="flex flex-col md:flex-row md:items-center gap-6 mb-12 glass-panel p-8 rounded-3xl border-primary/20">
-          <Link href="/home">
-            <Button variant="secondary" size="icon" className="rounded-full shrink-0">
-              <ArrowLeft size={18} />
-            </Button>
-          </Link>
+          <Button variant="secondary" size="icon" className="rounded-full shrink-0" onClick={() => window.history.back()}>
+            <ArrowLeft size={18} />
+          </Button>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-1">
               <h1 className="text-3xl font-black text-foreground">{world.name}</h1>

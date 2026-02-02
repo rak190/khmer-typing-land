@@ -45,11 +45,9 @@ export const Library: React.FC = () => {
       
       <div className="container mx-auto px-4 mt-8 max-w-5xl">
         <div className="flex items-center gap-4 mb-10">
-          <Link href="/home">
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <ArrowLeft />
-            </Button>
-          </Link>
+          <Button variant="ghost" size="icon" className="rounded-full" onClick={() => window.history.back()}>
+            <ArrowLeft />
+          </Button>
           <h1 className="text-4xl font-black text-foreground font-display flex items-center gap-3">
             <GraduationCap className="text-primary" size={40} />
             បណ្ណាល័យវិញ្ញាបនបត្រ <span className="text-muted-foreground text-2xl font-body">/ Certificate Library</span>

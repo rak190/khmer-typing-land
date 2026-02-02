@@ -106,7 +106,7 @@ export const Play: React.FC = () => {
   };
 
   const handleQuit = () => {
-    setLocation(`/world/${worldId}`);
+    window.history.back();
   };
 
   return (
