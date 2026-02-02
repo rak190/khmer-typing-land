@@ -30,6 +30,7 @@ interface GameState {
 
   // Actions
   setProfileName: (name: string) => void;
+  updateProfile: (profile: Partial<{ name: string; theme: string }>) => void;
   setDifficulty: (difficulty: "beginner" | "intermediate" | "expert") => void;
   setImmersionMode: (enabled: boolean) => void;
   recordStageResult: (worldId: string, stageId: string, stars: number, performance?: { wpm: number; accuracy: number }) => { newBadges: string[] };
@@ -77,6 +78,20 @@ export const useGameStore = create<GameState>()(
           updatedPlayers[state.currentPlayerId] = {
             ...updatedPlayers[state.currentPlayerId],
             name
+          };
+          return { ...newState, players: updatedPlayers };
+        }
+        return newState;
+      }),
+
+      updateProfile: (updates) => set((state) => {
+        const newState = { profile: { ...state.profile, ...updates } };
+        if (state.currentPlayerId) {
+          const updatedPlayers = { ...state.players };
+          updatedPlayers[state.currentPlayerId] = {
+            ...updatedPlayers[state.currentPlayerId],
+            ...updates,
+            name: updates.name || state.profile.name
           };
           return { ...newState, players: updatedPlayers };
         }

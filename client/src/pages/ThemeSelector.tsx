@@ -34,6 +34,9 @@ export const ThemeSelector: React.FC = () => {
 
   const savePreferences = async () => {
     try {
+      // Update local store immediately
+      useGameStore.getState().updateProfile({ theme: selectedTheme });
+      
       await fetch("/api/preferences", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
