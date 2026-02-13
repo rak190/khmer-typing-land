@@ -33,7 +33,7 @@ export const ThemeSelector: React.FC = () => {
     sounds.changeTrack(initialMusic);
   };
 
-  const savePreferences = async () => {
+  const savePreferences = () => {
     try {
       // Update local store immediately
       const theme = getThemeById(selectedTheme);
@@ -44,17 +44,6 @@ export const ThemeSelector: React.FC = () => {
       localStorage.setItem('selectedMusicTrack', selectedMusic);
       sounds.setCurrentTrack(selectedMusic);
 
-      if (!STATIC_MODE) {
-        await fetch("/api/preferences", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            playerId: profile.name,
-            theme: selectedTheme,
-            soundEffects,
-          }),
-        });
-      }
       // Music is already saved in localStorage via sounds.changeTrack/setCurrentTrack
       alert("Preferences saved successfully!");
     } catch (error) {
