@@ -120,31 +120,7 @@ export const useGameStore = create<GameState>()(
         const stageKey = `${worldId}${stageId}`;
         const prevStars = state.progress.starsByStage[stageKey] || 0;
         
-        // Save session to backend
-        const saveSession = async () => {
-          if (STATIC_MODE) return;
-          try {
-            await fetch("/api/sessions", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                playerId: state.profile.name,
-                mode: "platform", // Determine from worldId/stageId
-                difficulty: state.difficulty,
-                wpm: performance?.wpm || 0,
-                accuracy: performance?.accuracy || 0,
-                errors: 0, // Calculate if available
-                stars,
-                duration: 60, // Estimate or track
-                worldId,
-                stageId,
-              }),
-            });
-          } catch (error) {
-            console.error("Error saving session:", error);
-          }
-        };
-        saveSession();
+        // Frontend-only: server saving removed
         
         // Always update score if it's higher or first time
         const currentScore = stars * 1000; // Mock score calculation

@@ -13,6 +13,24 @@ import type { TeacherRoom, StudentResult } from '@shared/schema';
 type ViewMode = 'select' | 'create' | 'join' | 'teacher-dashboard' | 'student-typing';
 
 export const TeacherMode: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-background pb-20 pt-20 flex flex-col items-center justify-center p-4 text-center">
+      <HUD />
+      <div className="glass-panel p-12 rounded-[2.5rem] max-w-xl">
+        <BookOpen size={64} className="text-primary mx-auto mb-6" />
+        <h1 className="text-3xl font-black mb-4 font-display">របៀបគ្រូបង្រៀន / Teacher Mode</h1>
+        <p className="text-muted-foreground mb-8">
+          មុខងារនេះតម្រូវឱ្យមានម៉ាស៊ីនបម្រើ (Server) ដើម្បីដំណើរការ។ នៅក្នុងកំណែ static នេះ មុខងារនេះត្រូវបានបិទជាបណ្តោះអាសន្ន។
+        </p>
+        <Link href="/home">
+          <Button size="lg" className="w-full">ត្រឡប់ទៅទំព័រដើម</Button>
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+const _OldTeacherMode: React.FC = () => {
   if (STATIC_MODE) {
     return (
       <div className="min-h-screen bg-background pb-20 pt-20">
