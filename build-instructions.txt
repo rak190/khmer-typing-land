@@ -1,0 +1,132 @@
+===============================================================
+  Khmer Typing Land - GitHub Pages Build Instructions
+  ការណែនាំសម្រាប់ដាក់គេហទំព័រលើ GitHub Pages
+===============================================================
+
+=== Prerequisites / តម្រូវការ ===
+
+English:
+- Node.js (version 18 or higher) installed on your computer
+  Download from: https://nodejs.org/
+- Git installed on your computer
+  Download from: https://git-scm.com/
+- A GitHub account (https://github.com)
+
+ខ្មែរ:
+- ដំឡើង Node.js (កំណែ 18 ឬខ្ពស់ជាងនេះ) នៅលើកុំព្យូទ័ររបស់អ្នក
+  ទាញយកពី: https://nodejs.org/
+- ដំឡើង Git នៅលើកុំព្យូទ័ររបស់អ្នក
+  ទាញយកពី: https://git-scm.com/
+- គណនី GitHub (https://github.com)
+
+=== Step 1: Download the Project / ទាញយកគម្រោង ===
+
+English:
+1. In Replit, click the three dots menu (⋮) at the top of the file panel
+2. Select "Download as zip"
+3. Extract the zip file on your computer
+
+ខ្មែរ:
+1. នៅក្នុង Replit សូមចុចម៉ឺនុយចំណុចបី (⋮) នៅផ្នែកខាងលើនៃបន្ទះឯកសារ
+2. ជ្រើសរើស "Download as zip"
+3. ស្រង់ឯកសារ zip នៅលើកុំព្យូទ័ររបស់អ្នក
+
+=== Step 2: Install Dependencies / ដំឡើង Dependencies ===
+
+English:
+Open a terminal/command prompt, navigate to the project folder, and run:
+
+  cd client
+  npm install
+
+ខ្មែរ:
+បើក terminal/command prompt រុករកទៅថតគម្រោង ហើយដំណើរការ:
+
+  cd client
+  npm install
+
+=== Step 3: Build the Static Site / បង្កើតគេហទំព័រ Static ===
+
+English:
+From the project root folder, run the build script:
+
+  bash build-for-github.sh
+
+Or manually:
+
+  cd client
+  npx vite build --outDir ../docs --base ./
+
+This will create a "docs" folder with all the static files.
+
+ខ្មែរ:
+ពីថតគម្រោងចម្បង សូមដំណើរការស្គ្រីបបង្កើត:
+
+  bash build-for-github.sh
+
+ឬដោយដៃ:
+
+  cd client
+  npx vite build --outDir ../docs --base ./
+
+នេះនឹងបង្កើតថត "docs" ជាមួយនឹងឯកសារ static ទាំងអស់។
+
+=== Step 4: Push to GitHub / ផ្ញើទៅ GitHub ===
+
+English:
+1. Create a new repository on GitHub (https://github.com/new)
+2. In the terminal, from the project root folder:
+
+  git init
+  git add .
+  git commit -m "Khmer Typing Land static build"
+  git branch -M main
+  git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git
+  git push -u origin main
+
+ខ្មែរ:
+1. បង្កើត repository ថ្មីនៅលើ GitHub (https://github.com/new)
+2. នៅក្នុង terminal ពីថតគម្រោងចម្បង:
+
+  git init
+  git add .
+  git commit -m "Khmer Typing Land static build"
+  git branch -M main
+  git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git
+  git push -u origin main
+
+=== Step 5: Enable GitHub Pages / បើក GitHub Pages ===
+
+English:
+1. Go to your repository on GitHub
+2. Click "Settings" tab
+3. Click "Pages" in the left sidebar
+4. Under "Source", select "Deploy from a branch"
+5. Select "main" branch and "/docs" folder
+6. Click "Save"
+7. Wait a few minutes for the site to deploy
+8. Your site will be live at: https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
+
+ខ្មែរ:
+1. ចូលទៅ repository របស់អ្នកនៅលើ GitHub
+2. ចុចផ្ទាំង "Settings"
+3. ចុច "Pages" នៅរបារចំហៀងឆ្វេង
+4. នៅក្រោម "Source" ជ្រើសរើស "Deploy from a branch"
+5. ជ្រើសរើសមែក "main" និងថត "/docs"
+6. ចុច "Save"
+7. រង់ចាំពីរបីនាទីដើម្បីឱ្យគេហទំព័រដាក់ពង្រាយ
+8. គេហទំព័ររបស់អ្នកនឹងដំណើរការនៅ: https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
+
+=== Notes / ចំណាំ ===
+
+English:
+- The static version works fully offline for single-player features
+- Multiplayer and Teacher Mode features require the full server version
+- All game progress is saved in your browser's localStorage
+- If you clear your browser data, your progress will be lost
+
+ខ្មែរ:
+- កំណែ static ដំណើរការពេញលេញដោយមិនចាំបាច់ internet សម្រាប់មុខងារអ្នកលេងម្នាក់
+- មុខងារ Multiplayer និង Teacher Mode ត្រូវការកំណែ server ពេញ
+- វឌ្ឍនភាពហ្គេមទាំងអស់ត្រូវបានរក្សាទុកក្នុង localStorage របស់កម្មវិធីរុករក
+- ប្រសិនបើអ្នកសម្អាតទិន្នន័យកម្មវិធីរុករក វឌ្ឍនភាពរបស់អ្នកនឹងបាត់បង់

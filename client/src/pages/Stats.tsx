@@ -21,6 +21,7 @@ import {
 
 import { useGameStore } from "@/lib/store";
 import { buildWorlds } from "@/lib/curriculum";
+import { STATIC_MODE } from "@/lib/static-mode";
 
 const WORLDS = buildWorlds();
 
@@ -84,6 +85,10 @@ export const Stats: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (STATIC_MODE) {
+      setLoading(false);
+      return;
+    }
     async function fetchSessions() {
       try {
         const response = await fetch(`/api/sessions/player/${profile.name}?limit=30`);
@@ -91,7 +96,6 @@ export const Stats: React.FC = () => {
           const data = await response.json();
           setSessions(data);
         } else {
-          // Fall back to mock data
           setSessions([]);
         }
       } catch (error) {

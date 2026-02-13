@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { makeBadges, unlockBadges } from './badges';
 import { buildWorlds } from './curriculum';
+import { STATIC_MODE } from './static-mode';
 
 interface Progress {
   starsByStage: Record<string, number>; // "w1s1" -> 0..3
@@ -121,6 +122,7 @@ export const useGameStore = create<GameState>()(
         
         // Save session to backend
         const saveSession = async () => {
+          if (STATIC_MODE) return;
           try {
             await fetch("/api/sessions", {
               method: "POST",

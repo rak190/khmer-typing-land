@@ -5,6 +5,7 @@ import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/lib/store";
 import { connectSocket, disconnectSocket } from "@/lib/socket";
+import { STATIC_MODE } from "@/lib/static-mode";
 import type { Socket } from "socket.io-client";
 
 type Phase = "menu" | "creating" | "lobby" | "racing" | "results";
@@ -19,6 +20,30 @@ interface Participant {
 }
 
 export const Multiplayer: React.FC = () => {
+  if (STATIC_MODE) {
+    return (
+      <div className="min-h-screen bg-background pb-20 pt-20">
+        <HUD />
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="flex items-center gap-4 mb-8">
+            <Link href="/home">
+              <Button variant="ghost" size="icon"><ArrowLeft /></Button>
+            </Link>
+            <h1 className="text-3xl font-black font-display text-foreground">ប្រកួត Multiplayer</h1>
+          </div>
+          <div className="glass-panel p-12 rounded-3xl text-center">
+            <Users size={64} className="mx-auto text-muted-foreground mb-6" />
+            <h2 className="text-2xl font-bold mb-4">មុខងារនេះត្រូវការ Server</h2>
+            <p className="text-muted-foreground mb-6">មុខងារ Multiplayer ត្រូវការ server ដើម្បីដំណើរការ។ សូមប្រើគេហទំព័រ online version ដើម្បីប្រកួតជាមួយមិត្តភ័ក្ដិ។</p>
+            <Link href="/home">
+              <Button size="lg">ត្រឡប់ទំព័រដើម</Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const [, navigate] = useLocation();
   const { profile, difficulty } = useGameStore();
   const [phase, setPhase] = useState<Phase>("menu");
