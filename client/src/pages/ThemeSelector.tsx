@@ -5,7 +5,6 @@ import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/lib/store";
 import { THEMES, getThemeById, applyTheme } from "@/lib/themes";
-import { STATIC_MODE } from "@/lib/static-mode";
 import { cn } from "@/lib/utils";
 import { sounds, MUSIC_TRACKS } from "@/lib/sounds";
 
@@ -33,7 +32,7 @@ export const ThemeSelector: React.FC = () => {
     sounds.changeTrack(initialMusic);
   };
 
-  const savePreferences = () => {
+  const savePreferences = async () => {
     try {
       // Update local store immediately
       const theme = getThemeById(selectedTheme);
@@ -44,6 +43,15 @@ export const ThemeSelector: React.FC = () => {
       localStorage.setItem('selectedMusicTrack', selectedMusic);
       sounds.setCurrentTrack(selectedMusic);
 
+      await fetch("/api/preferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          playerId: profile.name, // Using name as temp ID
+          theme: selectedTheme,
+          soundEffects,
+        }),
+      });
       // Music is already saved in localStorage via sounds.changeTrack/setCurrentTrack
       alert("Preferences saved successfully!");
     } catch (error) {
