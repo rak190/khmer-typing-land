@@ -17,7 +17,7 @@ interface Racer {
 }
 
 const RACE_TEXT =
-  "Khmer Typing Land helps learners build speed, accuracy, and confidence through short typing races.";
+  "ការប្រកួតវាយអក្សរខ្មែរ ជួយឱ្យអ្នករៀនបង្កើនល្បឿន ភាពត្រឹមត្រូវ និងទំនុកចិត្ត។";
 
 export const Multiplayer: React.FC = () => {
   const { profile } = useGameStore();
@@ -39,10 +39,10 @@ export const Multiplayer: React.FC = () => {
     setErrors(0);
     setStartTime(Date.now());
     setRacers([
-      { id: "you", name: profile.name || "You", progress: 0, wpm: 0, accuracy: 100, finished: false },
-      { id: "bot-1", name: "Nita", progress: 0, wpm: 0, accuracy: 97, finished: false },
-      { id: "bot-2", name: "Dara", progress: 0, wpm: 0, accuracy: 94, finished: false },
-      { id: "bot-3", name: "Sokha", progress: 0, wpm: 0, accuracy: 91, finished: false },
+      { id: "you", name: profile.name || "អ្នក", progress: 0, wpm: 0, accuracy: 100, finished: false },
+      { id: "bot-1", name: "នីតា", progress: 0, wpm: 0, accuracy: 97, finished: false },
+      { id: "bot-2", name: "ដារ៉ា", progress: 0, wpm: 0, accuracy: 94, finished: false },
+      { id: "bot-3", name: "សុខា", progress: 0, wpm: 0, accuracy: 91, finished: false },
     ]);
     setPhase("racing");
   };
@@ -129,10 +129,10 @@ export const Multiplayer: React.FC = () => {
           </Link>
           <div>
             <h1 className="text-4xl font-black font-display text-foreground" data-testid="text-multiplayer-title">
-              Multiplayer Race
+              ការប្រកួតផ្ទាល់
             </h1>
             <p className="text-muted-foreground">
-              Static hosting mode uses local racers, so this works on Vercel and Firebase without a server.
+              ប្រកួតជាមួយអ្នកលេងកុំព្យូទ័រ ដើម្បីហ្វឹកហាត់ល្បឿន និងភាពត្រឹមត្រូវ។
             </p>
           </div>
         </div>
@@ -140,12 +140,12 @@ export const Multiplayer: React.FC = () => {
         {phase === "menu" && (
           <div className="glass-panel rounded-3xl p-8 border-border bg-card max-w-2xl mx-auto text-center">
             <Users className="mx-auto mb-4 text-primary" size={56} />
-            <h2 className="text-2xl font-black text-foreground mb-3">Ready for a quick race?</h2>
+            <h2 className="text-2xl font-black text-foreground mb-3">ត្រៀមប្រកួតខ្លីៗហើយឬនៅ?</h2>
             <p className="text-muted-foreground mb-8">
-              Race against local computer players and keep the whole app deployable as a static website.
+              ចាប់ផ្តើមវាយអក្សរតាមអត្ថបទ ហើយមើលចំណាត់ថ្នាក់ផ្ទាល់ពេលប្រកួត។
             </p>
             <Button onClick={startRace} className="h-14 px-8 text-lg font-black" data-testid="button-start-local-race">
-              <Play className="mr-2" fill="currentColor" /> Start Race
+              <Play className="mr-2" fill="currentColor" /> ចាប់ផ្តើមប្រកួត
             </Button>
           </div>
         )}
@@ -176,22 +176,22 @@ export const Multiplayer: React.FC = () => {
                 value={typedText}
                 onChange={(event) => handleTyping(event.target.value)}
                 className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                placeholder="Start typing..."
+                placeholder="ចាប់ផ្តើមវាយអក្សរ..."
                 data-testid="input-race-typing"
                 autoFocus
               />
 
               <div className="mt-6 grid grid-cols-3 gap-4">
                 <div className="bg-muted/30 rounded-xl p-4">
-                  <div className="text-xs font-black uppercase text-muted-foreground">WPM</div>
+                  <div className="text-xs font-black uppercase text-muted-foreground">ពាក្យ/នាទី</div>
                   <div className="text-3xl font-mono font-black text-foreground">{myRacer?.wpm || 0}</div>
                 </div>
                 <div className="bg-muted/30 rounded-xl p-4">
-                  <div className="text-xs font-black uppercase text-muted-foreground">Accuracy</div>
+                  <div className="text-xs font-black uppercase text-muted-foreground">ភាពត្រឹមត្រូវ</div>
                   <div className="text-3xl font-mono font-black text-foreground">{myRacer?.accuracy || 100}%</div>
                 </div>
                 <div className="bg-muted/30 rounded-xl p-4">
-                  <div className="text-xs font-black uppercase text-muted-foreground">Errors</div>
+                  <div className="text-xs font-black uppercase text-muted-foreground">កំហុស</div>
                   <div className="text-3xl font-mono font-black text-red-600">{errors}</div>
                 </div>
               </div>
@@ -199,7 +199,7 @@ export const Multiplayer: React.FC = () => {
 
             <div className="glass-panel rounded-3xl p-8 border-border bg-card">
               <h2 className="text-xl font-black mb-4 flex items-center gap-2">
-                <Trophy size={20} className="text-amber-500" /> Live Rankings
+                <Trophy size={20} className="text-amber-500" /> ចំណាត់ថ្នាក់ផ្ទាល់
               </h2>
               <div className="space-y-3">
                 {sortedRacers.map((racer, index) => (
@@ -209,7 +209,7 @@ export const Multiplayer: React.FC = () => {
                         {index + 1}
                       </div>
                       <span className="font-bold text-sm">{racer.name}</span>
-                      {racer.finished && <span className="ml-auto text-xs font-black text-emerald-600">DONE</span>}
+                      {racer.finished && <span className="ml-auto text-xs font-black text-emerald-600">រួចរាល់</span>}
                     </div>
                     <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
                       <div
@@ -218,7 +218,7 @@ export const Multiplayer: React.FC = () => {
                       />
                     </div>
                     <div className="mt-2 flex gap-3 text-xs text-muted-foreground">
-                      <span><Zap size={12} className="inline" /> {racer.wpm} WPM</span>
+                      <span><Zap size={12} className="inline" /> {racer.wpm} ពាក្យ/នាទី</span>
                       <span><Target size={12} className="inline" /> {racer.accuracy}%</span>
                     </div>
                   </div>
@@ -230,7 +230,7 @@ export const Multiplayer: React.FC = () => {
 
         {phase === "results" && (
           <div className="glass-panel rounded-3xl p-8 border-border bg-card max-w-3xl mx-auto">
-            <h2 className="text-3xl font-black text-foreground mb-6 text-center">Race Complete</h2>
+            <h2 className="text-3xl font-black text-foreground mb-6 text-center">ការប្រកួតបានបញ្ចប់</h2>
             <div className="space-y-4">
               {sortedRacers.map((racer, index) => (
                 <div key={racer.id} className={`rounded-2xl p-5 flex items-center gap-4 ${racer.id === "you" ? "bg-primary/10 border-2 border-primary" : "bg-secondary/40"}`}>
@@ -239,18 +239,18 @@ export const Multiplayer: React.FC = () => {
                   </div>
                   <div className="flex-1">
                     <div className="font-black text-lg">{racer.name}</div>
-                    <div className="text-sm text-muted-foreground">{racer.wpm} WPM · {racer.accuracy}% accuracy · {renderProgress(racer)}% complete</div>
+                    <div className="text-sm text-muted-foreground">{racer.wpm} ពាក្យ/នាទី · ភាពត្រឹមត្រូវ {racer.accuracy}% · បានបញ្ចប់ {renderProgress(racer)}%</div>
                   </div>
                 </div>
               ))}
             </div>
             <div className="mt-8 flex gap-4">
               <Button onClick={startRace} className="flex-1 h-14 text-lg font-black" data-testid="button-new-race">
-                <RotateCcw className="mr-2" /> Race Again
+                <RotateCcw className="mr-2" /> ប្រកួតម្តងទៀត
               </Button>
               <Link href="/home" className="flex-1">
                 <Button variant="outline" className="w-full h-14 text-lg font-black">
-                  Back to Home
+                  ត្រឡប់ទៅទំព័រដើម
                 </Button>
               </Link>
             </div>

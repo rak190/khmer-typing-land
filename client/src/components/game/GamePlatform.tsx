@@ -67,10 +67,10 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
         setFlash("good");
         
         if (newCombo % 5 === 0) {
-          showFeedback(`${newCombo} COMBO!`);
+          showFeedback(`ខ្សែបន្ត ${newCombo}!`);
           sounds.playLevelUp();
         } else if (newCombo > 2) {
-          showFeedback("Perfect!");
+          showFeedback("ល្អឥតខ្ចោះ!");
         }
 
         setTimeout(() => setFlash(null), 180);
@@ -87,7 +87,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
         // Miss
         sounds.playWrong();
         setCombo(0);
-        showFeedback("Oops!");
+        showFeedback("ខុសហើយ!");
         setMiss(m => m + 1);
         setFlash("bad");
         setWrongCode(e.code);
@@ -113,7 +113,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
             <div className="bg-purple-600 text-white px-4 py-2 rounded-xl shadow-lg border-b-4 border-purple-800 flex items-center gap-2">
               <span className="text-xl">⬆️</span>
               <div className="flex flex-col items-start">
-                <span className="text-[10px] font-black uppercase tracking-widest leading-none mb-1">Shift Required</span>
+                <span className="text-[10px] font-black uppercase tracking-widest leading-none mb-1">ត្រូវការ Shift</span>
                 <span className="text-sm font-bold font-khmer">ចុច Shift + {findKeyForTarget(target)?.code.replace('Key', '')}</span>
               </div>
             </div>
@@ -130,12 +130,12 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
         <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm z-10">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span>Platform Mode</span>
+            <span>របៀបវេទិកា</span>
           </div>
           <div className="flex gap-4">
-            <span className="text-accent font-bold">Hits: {hits}</span>
-            <span className="text-destructive">Miss: {miss}</span>
-            <span className="text-foreground">Left: {count - done}</span>
+            <span className="text-accent font-bold">ត្រូវ៖ {hits}</span>
+            <span className="text-destructive">ខុស៖ {miss}</span>
+            <span className="text-foreground">នៅសល់៖ {count - done}</span>
           </div>
         </div>
 
@@ -143,7 +143,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
           {/* Combo Display */}
           {combo > 1 && (
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-8 flex flex-col items-center animate-bounce">
-              <span className="text-xs font-bold text-primary uppercase tracking-tighter">Combo</span>
+              <span className="text-xs font-bold text-primary uppercase tracking-tighter">ខ្សែបន្ត</span>
               <span className="text-3xl font-black text-foreground italic drop-shadow-sm">{combo}</span>
             </div>
           )}
@@ -169,7 +169,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
         </div>
 
         <div className="w-full flex justify-center">
-          <Button variant="secondary" onClick={onQuit}>Quit</Button>
+          <Button variant="secondary" onClick={onQuit}>ចាកចេញ</Button>
         </div>
       </div>
 

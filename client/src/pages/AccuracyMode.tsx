@@ -185,10 +185,10 @@ export const AccuracyMode: React.FC = () => {
           </Link>
           <div className="flex flex-col">
             <h1 className="text-4xl font-black font-display text-foreground" data-testid="text-accuracy-title">
-              ការផ្តោតលើភាពត្រឹមត្រូវ / Accuracy Mode
+              ការផ្តោតលើភាពត្រឹមត្រូវ
             </h1>
             <p className="text-muted-foreground" data-testid="text-accuracy-subtitle">
-              Rewards perfect typing. One mistake breaks your streak.
+              ផ្តល់រង្វាន់ដល់ការវាយត្រឹមត្រូវ។ កំហុសមួយនឹងផ្តាច់ខ្សែបន្តរបស់អ្នក។
             </p>
           </div>
         </div>
@@ -197,7 +197,7 @@ export const AccuracyMode: React.FC = () => {
           <div className="lg:col-span-3 glass-panel rounded-3xl p-8 border-border bg-card">
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <div className="text-xs font-black uppercase tracking-widest text-muted-foreground">Target</div>
+                <div className="text-xs font-black uppercase tracking-widest text-muted-foreground">គោលដៅ</div>
                 <div className="text-6xl font-khmer font-black text-emerald-600 mt-2" data-testid="text-accuracy-target">
                   {target || "—"}
                 </div>
@@ -205,7 +205,7 @@ export const AccuracyMode: React.FC = () => {
 
               <div className="flex flex-col items-end">
                 <div className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                  <ShieldCheck size={14} /> Perfect
+                  <ShieldCheck size={14} /> ល្អឥតខ្ចោះ
                 </div>
                 <div className="text-4xl font-mono font-black text-foreground mt-2 flex items-center gap-2" data-testid="text-perfect-streak">
                   {perfectStreak}
@@ -218,7 +218,7 @@ export const AccuracyMode: React.FC = () => {
               ref={inputRef}
               value={typed}
               onChange={(e) => handleKey(e.target.value)}
-              placeholder={phase === "running" ? "Type here…" : "Press Start…"}
+              placeholder={phase === "running" ? "វាយទីនេះ..." : "ចុចចាប់ផ្តើម..."}
               className="w-full bg-secondary border border-border rounded-2xl px-6 py-5 text-2xl font-khmer text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
               data-testid="input-accuracy"
               disabled={phase !== "running"}
@@ -228,21 +228,21 @@ export const AccuracyMode: React.FC = () => {
             <div className="mt-6 flex flex-wrap gap-3">
               {phase !== "running" ? (
                 <Button size="lg" className="h-12 rounded-2xl px-8 font-black bg-emerald-600 hover:bg-emerald-500" onClick={start} data-testid="button-start-accuracy">
-                  Start
+                  ចាប់ផ្តើម
                 </Button>
               ) : (
                 <Button size="lg" variant="secondary" className="h-12 rounded-2xl px-8 font-black" onClick={() => setPhase("done")} data-testid="button-finish-accuracy">
-                  Finish
+                  បញ្ចប់
                 </Button>
               )}
 
               <Button size="lg" variant="outline" className="h-12 rounded-2xl px-6 font-bold" onClick={reset} data-testid="button-reset-accuracy">
                 <RotateCcw size={18} />
-                Reset
+                កំណត់ឡើងវិញ
               </Button>
 
               <div className="ml-auto flex items-center gap-2 bg-white/50 border border-emerald-300 shadow-sm rounded-2xl px-3 py-2" data-testid="group-duration-accuracy">
-                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-700">Duration</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-700">រយៈពេល</span>
                 <select
                   value={duration}
                   onChange={(e) => setDuration(Number(e.target.value) as Duration)}
@@ -259,25 +259,25 @@ export const AccuracyMode: React.FC = () => {
             {phase === "done" && (
               <div className="mt-8 p-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/5" data-testid="panel-accuracy-results">
                 <div className="text-xs font-black uppercase tracking-widest text-emerald-700 mb-3 flex items-center gap-2">
-                  <Trophy size={14} /> Results
+                  <Trophy size={14} /> លទ្ធផល
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="bg-white/60 rounded-xl p-4 border border-white/70">
                     <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                      <Target size={12} /> Accuracy
+                      <Target size={12} /> ភាពត្រឹមត្រូវ
                     </div>
                     <div className="text-3xl font-mono font-black text-foreground mt-2" data-testid="text-result-accuracy-mode">
                       {accuracy}%
                     </div>
                   </div>
                   <div className="bg-white/60 rounded-xl p-4 border border-white/70">
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Miss</div>
+                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">ខុស</div>
                     <div className="text-3xl font-mono font-black text-red-600 mt-2" data-testid="text-result-miss-mode">
                       {miss}
                     </div>
                   </div>
                   <div className="bg-white/60 rounded-xl p-4 border border-white/70">
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Perfect Streak</div>
+                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">ខ្សែបន្តល្អឥតខ្ចោះ</div>
                     <div className="text-3xl font-mono font-black text-emerald-700 mt-2" data-testid="text-result-streak-mode">
                       {perfectStreak}
                     </div>
@@ -285,36 +285,36 @@ export const AccuracyMode: React.FC = () => {
                 </div>
 
                 <p className="text-sm text-muted-foreground mt-4" data-testid="text-accuracy-note">
-                  Perfect runs (0 mistakes) are the fastest way to earn rewards here.
+                  ការវាយដោយគ្មានកំហុស គឺជាវិធីលឿនបំផុតក្នុងការទទួលរង្វាន់នៅទីនេះ។
                 </p>
               </div>
             )}
           </div>
 
           <div className="lg:col-span-2 glass-panel rounded-3xl p-8 border-border bg-card">
-            <div className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-4">Live Stats</div>
+            <div className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-4">ស្ថិតិផ្ទាល់</div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-2xl bg-muted/30 border border-border p-4">
-                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Hits</div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">ត្រូវ</div>
                 <div className="text-3xl font-mono font-black text-foreground mt-2" data-testid="text-live-hits-accuracy">
                   {hits}
                 </div>
               </div>
               <div className="rounded-2xl bg-muted/30 border border-border p-4">
-                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Miss</div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">ខុស</div>
                 <div className="text-3xl font-mono font-black text-red-600 mt-2" data-testid="text-live-miss-accuracy">
                   {miss}
                 </div>
               </div>
               <div className="rounded-2xl bg-muted/30 border border-border p-4">
-                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Accuracy</div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">ភាពត្រឹមត្រូវ</div>
                 <div className="text-3xl font-mono font-black text-foreground mt-2" data-testid="text-live-accuracy-accuracy">
                   {accuracy}%
                 </div>
               </div>
               <div className="rounded-2xl bg-muted/30 border border-border p-4">
-                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Streak</div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">ខ្សែបន្ត</div>
                 <div className="text-3xl font-mono font-black text-emerald-700 mt-2" data-testid="text-live-streak-accuracy">
                   {perfectStreak}
                 </div>
@@ -322,9 +322,9 @@ export const AccuracyMode: React.FC = () => {
             </div>
 
             <div className="mt-8 rounded-2xl border border-border bg-white/40 p-4" data-testid="panel-accuracy-rules">
-              <div className="text-sm font-black mb-2">Rule</div>
+              <div className="text-sm font-black mb-2">ច្បាប់</div>
               <p className="text-sm text-muted-foreground">
-                This mode is strict: mistakes matter. Slow and clean beats fast and messy.
+                របៀបនេះតឹងរឹង៖ កំហុសមានសារៈសំខាន់។ យឺតតែត្រឹមត្រូវ ប្រសើរជាងលឿនតែខុសច្រើន។
               </p>
             </div>
           </div>

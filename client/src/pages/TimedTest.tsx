@@ -186,10 +186,10 @@ export const TimedTest: React.FC = () => {
           </Link>
           <div className="flex flex-col">
             <h1 className="text-4xl font-black font-display text-foreground" data-testid="text-timedtest-title">
-              ការប្រឡងពេលវេលា / Timed Test
+              ការប្រឡងពេលវេលា
             </h1>
             <p className="text-muted-foreground" data-testid="text-timedtest-subtitle">
-              Type as many characters as possible before time runs out.
+              វាយអក្សរឱ្យបានច្រើនបំផុត មុនពេលវេលាអស់។
             </p>
           </div>
         </div>
@@ -198,7 +198,7 @@ export const TimedTest: React.FC = () => {
           <div className="lg:col-span-3 glass-panel rounded-3xl p-8 border-border bg-card">
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <div className="text-xs font-black uppercase tracking-widest text-muted-foreground">Target</div>
+                <div className="text-xs font-black uppercase tracking-widest text-muted-foreground">គោលដៅ</div>
                 <div className="text-6xl font-khmer font-black text-primary mt-2" data-testid="text-target-char">
                   {target || "—"}
                 </div>
@@ -206,7 +206,7 @@ export const TimedTest: React.FC = () => {
 
               <div className="flex flex-col items-end">
                 <div className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                  <Clock3 size={14} /> Time
+                  <Clock3 size={14} /> ពេលវេលា
                 </div>
                 <div className="text-4xl font-mono font-black text-foreground mt-2" data-testid="text-time-left">
                   {formatSeconds(timeLeft)}
@@ -217,12 +217,12 @@ export const TimedTest: React.FC = () => {
             <div className="relative">
               {lastMistake && phase === "running" && (
                 <div className="mb-3 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3" data-testid="panel-error-feedback">
-                  <div className="text-xs font-black uppercase tracking-widest text-red-400">Oops</div>
+                  <div className="text-xs font-black uppercase tracking-widest text-red-400">ខុសហើយ</div>
                   <div className="mt-1 text-sm text-red-200">
-                    Expected <span className="font-khmer font-black">{lastMistake.expected}</span> but you typed <span className="font-khmer font-black">{lastMistake.got}</span>.
+                    ត្រូវវាយ <span className="font-khmer font-black">{lastMistake.expected}</span> ប៉ុន្តែអ្នកបានវាយ <span className="font-khmer font-black">{lastMistake.got}</span>។
                   </div>
                   <div className="mt-1 text-xs text-red-200/80">
-                    Hint: look at the highlighted key below.
+                    សូមមើលគ្រាប់ចុចដែលបានបន្លិចខាងក្រោម។
                   </div>
                 </div>
               )}
@@ -230,7 +230,7 @@ export const TimedTest: React.FC = () => {
                 ref={inputRef}
                 value={typed}
                 onChange={(e) => handleInputChange(e.target.value)}
-                placeholder={phase === "running" ? "Type here…" : "Press Start…"}
+                placeholder={phase === "running" ? "វាយទីនេះ..." : "ចុចចាប់ផ្តើម..."}
                 className="w-full bg-secondary border border-border rounded-2xl px-6 py-5 text-2xl font-khmer text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 data-testid="input-timedtest"
                 disabled={phase !== "running"}
@@ -239,7 +239,7 @@ export const TimedTest: React.FC = () => {
               {phase !== "running" && (
                 <div className="absolute inset-0 rounded-2xl bg-background/40 backdrop-blur-sm flex items-center justify-center">
                   <div className="text-sm font-bold text-muted-foreground" data-testid="text-overlay-hint">
-                    Choose a duration and press Start
+                    ជ្រើសរយៈពេល រួចចុចចាប់ផ្តើម
                   </div>
                 </div>
               )}
@@ -253,7 +253,7 @@ export const TimedTest: React.FC = () => {
                   onClick={start}
                   data-testid="button-start-timedtest"
                 >
-                  Start
+                  ចាប់ផ្តើម
                 </Button>
               ) : (
                 <Button
@@ -263,7 +263,7 @@ export const TimedTest: React.FC = () => {
                   onClick={() => setPhase("done")}
                   data-testid="button-finish-timedtest"
                 >
-                  Finish
+                  បញ្ចប់
                 </Button>
               )}
 
@@ -275,14 +275,14 @@ export const TimedTest: React.FC = () => {
                 data-testid="button-reset-timedtest"
               >
                 <RotateCcw size={18} />
-                Reset
+                កំណត់ឡើងវិញ
               </Button>
 
               <div
                 className="ml-auto flex items-center gap-2 bg-white/50 border border-amber-300 shadow-sm rounded-2xl px-3 py-2"
                 data-testid="group-duration"
               >
-                <span className="text-[10px] font-black uppercase tracking-widest text-amber-700">Duration</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-700">រយៈពេល</span>
                 <select
                   value={duration}
                   onChange={(e) => setDuration(Number(e.target.value) as Duration)}
@@ -299,11 +299,11 @@ export const TimedTest: React.FC = () => {
 
             {phase === "done" && (
               <div className="mt-8 p-5 rounded-2xl border border-primary/20 bg-primary/5" data-testid="panel-results">
-                <div className="text-xs font-black uppercase tracking-widest text-primary mb-3">Results</div>
+                <div className="text-xs font-black uppercase tracking-widest text-primary mb-3">លទ្ធផល</div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="bg-white/60 rounded-xl p-4 border border-white/70">
                     <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                      <Gauge size={12} /> WPM
+                      <Gauge size={12} /> ពាក្យ/នាទី
                     </div>
                     <div className="text-3xl font-mono font-black text-foreground mt-2" data-testid="text-result-wpm">
                       {Number.isFinite(wpmLive) ? wpmLive : 0}
@@ -311,14 +311,14 @@ export const TimedTest: React.FC = () => {
                   </div>
                   <div className="bg-white/60 rounded-xl p-4 border border-white/70">
                     <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                      <Target size={12} /> Accuracy
+                      <Target size={12} /> ភាពត្រឹមត្រូវ
                     </div>
                     <div className="text-3xl font-mono font-black text-foreground mt-2" data-testid="text-result-accuracy">
                       {accuracy}%
                     </div>
                   </div>
                   <div className="bg-white/60 rounded-xl p-4 border border-white/70">
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Typed</div>
+                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">បានវាយ</div>
                     <div className="text-3xl font-mono font-black text-foreground mt-2" data-testid="text-result-count">
                       {hits}
                     </div>
@@ -326,36 +326,36 @@ export const TimedTest: React.FC = () => {
                 </div>
 
                 <p className="text-sm text-muted-foreground mt-4" data-testid="text-results-note">
-                  Tip: Increase difficulty (កម្រិត) on Home to unlock a bigger character pool.
+                  គន្លឹះ៖ បង្កើនកម្រិតនៅទំព័រដើម ដើម្បីហ្វឹកហាត់អក្សរច្រើនជាងមុន។
                 </p>
               </div>
             )}
           </div>
 
           <div className="lg:col-span-2 glass-panel rounded-3xl p-8 border-border bg-card">
-            <div className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-4">Live Stats</div>
+            <div className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-4">ស្ថិតិផ្ទាល់</div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-2xl bg-muted/30 border border-border p-4">
-                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Hits</div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">ត្រូវ</div>
                 <div className="text-3xl font-mono font-black text-foreground mt-2" data-testid="text-live-hits">
                   {hits}
                 </div>
               </div>
               <div className="rounded-2xl bg-muted/30 border border-border p-4">
-                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Miss</div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">ខុស</div>
                 <div className="text-3xl font-mono font-black text-red-600 mt-2" data-testid="text-live-miss">
                   {miss}
                 </div>
               </div>
               <div className="rounded-2xl bg-muted/30 border border-border p-4">
-                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Accuracy</div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">ភាពត្រឹមត្រូវ</div>
                 <div className="text-3xl font-mono font-black text-foreground mt-2" data-testid="text-live-accuracy">
                   {accuracy}%
                 </div>
               </div>
               <div className="rounded-2xl bg-muted/30 border border-border p-4">
-                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">WPM</div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">ពាក្យ/នាទី</div>
                 <div className="text-3xl font-mono font-black text-primary mt-2" data-testid="text-live-wpm">
                   {Number.isFinite(wpmLive) ? wpmLive : 0}
                 </div>
@@ -363,11 +363,11 @@ export const TimedTest: React.FC = () => {
             </div>
 
             <div className="mt-8 rounded-2xl border border-border bg-white/40 p-4" data-testid="panel-rules">
-              <div className="text-sm font-black mb-2">How it works</div>
+              <div className="text-sm font-black mb-2">របៀបលេង</div>
               <ul className="text-sm text-muted-foreground space-y-2">
-                <li>• You’ll see one target character at a time.</li>
-                <li>• Each correct key adds to your score.</li>
-                <li>• Mistypes reduce accuracy (but you keep going).</li>
+                <li>• អ្នកនឹងឃើញអក្សរគោលដៅមួយរាល់លើក។</li>
+                <li>• រាល់ការចុចត្រូវ នឹងបន្ថែមពិន្ទុ។</li>
+                <li>• ការវាយខុសនឹងបន្ថយភាពត្រឹមត្រូវ ប៉ុន្តែអ្នកអាចបន្តបាន។</li>
               </ul>
             </div>
           </div>

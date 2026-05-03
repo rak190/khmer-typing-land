@@ -124,7 +124,7 @@ export const Play: React.FC = () => {
       {phase !== "result" && (
         <div className="w-full max-w-4xl flex justify-between items-center mb-8 relative z-10">
            <Button variant="ghost" onClick={handleQuit} className="gap-2 text-slate-400 hover:text-white">
-             <ArrowLeft size={16} /> Quit Lesson
+             <ArrowLeft size={16} /> ចាកចេញពីមេរៀន
            </Button>
         </div>
       )}
@@ -132,23 +132,23 @@ export const Play: React.FC = () => {
       <div className="container mx-auto px-4 flex flex-col items-center justify-start pt-8 min-h-[60vh]">
         {phase === "intro" && (
           <div className="glass-panel p-10 rounded-3xl text-center max-w-2xl w-full animate-in fade-in zoom-in duration-500 border-primary/40 shadow-[0_0_50px_rgba(59,130,246,0.15)]">
-            <div className="text-sm font-bold text-primary uppercase tracking-[0.3em] mb-4">Quest Objective</div>
+            <div className="text-sm font-bold text-primary uppercase tracking-[0.3em] mb-4">គោលដៅមេរៀន</div>
             <h1 className="text-4xl font-black text-slate-900 mb-6">{stage.name}</h1>
             
             <div className="flex items-center justify-center gap-8 mb-8">
               <div className="text-6xl animate-bounce">{mascot}</div>
-              <div className="text-2xl text-slate-400 font-bold">VS</div>
+              <div className="text-2xl text-slate-400 font-bold">ប៉ះ</div>
               <div className="text-6xl animate-pulse">{chapter?.monsterEmoji}</div>
             </div>
 
             <p className="text-slate-600 italic text-xl mb-10 leading-relaxed">
-              "To defeat the {chapter?.monsterName}, you must master these scripts: <span className="text-slate-900 font-bold not-italic">{stage.pool.join(' ')}</span>"
+              "ដើម្បីឈ្នះ {chapter?.monsterName} អ្នកត្រូវហ្វឹកហាត់អក្សរទាំងនេះ៖ <span className="text-slate-900 font-bold not-italic">{stage.pool.join(' ')}</span>"
             </p>
 
             {activeEvent && (
               <div className="mb-8 p-4 bg-yellow-400/10 border border-yellow-400/30 rounded-2xl animate-pulse">
                 <div className="text-yellow-400 font-bold flex items-center justify-center gap-2">
-                  ✨ Random Event: {activeEvent.name}
+                  ✨ ព្រឹត្តិការណ៍ពិសេស៖ {activeEvent.name}
                 </div>
                 <div className="text-xs text-yellow-200/70">{activeEvent.description}</div>
               </div>
@@ -156,28 +156,28 @@ export const Play: React.FC = () => {
 
             {activeEgg && (
               <div className="mb-8 p-6 bg-purple-500/20 border border-purple-500/50 rounded-2xl animate-pulse relative overflow-hidden group hover:scale-105 transition-transform cursor-pointer" onClick={() => setPhase("easter-egg")}>
-                <div className="absolute top-0 right-0 p-2 text-xs font-black bg-purple-500 text-white rounded-bl-xl">HIDDEN QUEST</div>
+                <div className="absolute top-0 right-0 p-2 text-xs font-black bg-purple-500 text-white rounded-bl-xl">ភារកិច្ចលាក់</div>
                 <div className="text-purple-300 font-bold flex items-center justify-center gap-2 text-lg">
-                  💎 Secret Unlocked: {activeEgg.name}
+                  💎 បានបើកអាថ៌កំបាំង៖ {activeEgg.name}
                 </div>
-                <div className="text-sm text-purple-200/70 mt-1">A mysterious portal has appeared. Click to enter!</div>
+                <div className="text-sm text-purple-200/70 mt-1">ច្រកអាថ៌កំបាំងបានលេចឡើង។ ចុចដើម្បីចូល!</div>
               </div>
             )}
 
             <Button size="lg" className="px-12 py-8 text-2xl font-black bg-primary hover:bg-primary/80 text-primary-foreground rounded-2xl shadow-xl shadow-primary/20" onClick={() => setPhase("platform")}>
-              BEGIN QUEST
+              ចាប់ផ្តើមភារកិច្ច
             </Button>
           </div>
         )}
 
         {phase === "easter-egg" && activeEgg && (
           <div className="glass-panel p-10 rounded-3xl text-center max-w-2xl w-full animate-in slide-in-from-bottom-20 duration-500 border-purple-500/50 shadow-[0_0_80px_rgba(168,85,247,0.3)]">
-            <div className="text-sm font-bold text-purple-400 uppercase tracking-[0.4em] mb-4">Secret Realm</div>
+            <div className="text-sm font-bold text-purple-400 uppercase tracking-[0.4em] mb-4">ដែនអាថ៌កំបាំង</div>
             <h1 className="text-4xl font-black text-white mb-4">{activeEgg.name}</h1>
             <p className="text-slate-300 mb-8 leading-relaxed">"{activeEgg.description}"</p>
             
             <div className="bg-black/40 p-8 rounded-2xl border border-white/10 mb-8">
-              <div className="text-xs font-bold text-slate-500 uppercase mb-4 tracking-widest">Type the Secret Script to Claim Your Reward</div>
+              <div className="text-xs font-bold text-slate-500 uppercase mb-4 tracking-widest">វាយពាក្យសម្ងាត់ ដើម្បីទទួលរង្វាន់</div>
               <div className="text-6xl font-khmer text-white mb-6 animate-pulse select-none">
                 {activeEgg.secretWord}
               </div>
@@ -195,12 +195,12 @@ export const Play: React.FC = () => {
                   }
                 }}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-center text-3xl font-khmer text-primary focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="Type here..."
+                placeholder="វាយទីនេះ..."
               />
             </div>
 
             <Button variant="ghost" className="text-slate-400" onClick={() => setPhase("intro")}>
-              Return to Quest
+              ត្រឡប់ទៅភារកិច្ច
             </Button>
           </div>
         )}
@@ -263,13 +263,13 @@ export const Play: React.FC = () => {
 
             <div className="grid grid-cols-3 gap-4 mb-8">
               <div className="bg-white/5 rounded-xl p-4">
-                <div className="text-sm text-slate-400 uppercase tracking-widest">WPM</div>
+                <div className="text-sm text-slate-400 uppercase tracking-widest">ពាក្យ/នាទី</div>
                 <div className="text-2xl font-mono font-bold text-primary">
                   {Math.round(stats.hits / 1.5)}
                 </div>
               </div>
               <div className="bg-white/5 rounded-xl p-4">
-                <div className="text-sm text-slate-400 uppercase tracking-widest">Accuracy</div>
+                <div className="text-sm text-slate-400 uppercase tracking-widest">ភាពត្រឹមត្រូវ</div>
                 <div className="text-2xl font-mono font-bold text-white">
                   {stats.hits + stats.miss > 0 
                     ? Math.round((stats.hits / (stats.hits + stats.miss)) * 100) 
@@ -277,14 +277,14 @@ export const Play: React.FC = () => {
                 </div>
               </div>
               <div className="bg-white/5 rounded-xl p-4">
-                <div className="text-sm text-slate-400 uppercase tracking-widest">Misses</div>
+                <div className="text-sm text-slate-400 uppercase tracking-widest">កំហុស</div>
                 <div className="text-2xl font-mono font-bold text-red-400">{stats.miss}</div>
               </div>
             </div>
 
             {newBadges.length > 0 && (
               <div className="mb-8 p-4 bg-primary/20 border border-primary/40 rounded-xl">
-                 <div className="text-primary font-bold mb-2">New Badges Unlocked!</div>
+                 <div className="text-primary font-bold mb-2">បានបើកមេដាយថ្មី!</div>
                  <div className="flex justify-center gap-2 flex-wrap">
                    {newBadges.map(bid => {
                      const b = ALL_BADGES.find(x => x.id === bid);
@@ -319,7 +319,7 @@ export const Play: React.FC = () => {
                     setLocation(`/world/${worldId}`);
                   }
                 }}>
-                  Next Stage →
+                  វគ្គបន្ទាប់ →
                 </Button>
               )}
               <Button size="lg" variant="outline" className="w-full" onClick={() => {
@@ -327,10 +327,10 @@ export const Play: React.FC = () => {
                 setStats({ hits: 0, miss: 0 });
                 setNewBadges([]);
               }}>
-                Play Again
+                លេងម្តងទៀត
               </Button>
               <Button size="lg" variant="secondary" className="w-full" onClick={handleQuit}>
-                Back to Stages
+                ត្រឡប់ទៅវគ្គ
               </Button>
             </div>
           </div>

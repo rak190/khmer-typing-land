@@ -8,11 +8,11 @@ import { cn } from '@/lib/utils';
 
 const DEFAULT_ARTICLES = [
   {
-    title: "រឿងព្រេងខ្មែរ (Khmer Legend)",
+    title: "រឿងព្រេងខ្មែរ",
     text: "កាលពីព្រេងនាយ មានបុរសម្នាក់ឈ្មោះថា ឆោត។ គាត់ជាមនុស្សស្លូតបូតណាស់។"
   },
   {
-    title: "ធម្មជាតិ (Nature)",
+    title: "ធម្មជាតិ",
     text: "ប្រទេសកម្ពុជាមានព្រៃឈើ និងភ្នំយ៉ាងស្រស់ស្អាត។ យើងត្រូវរួមគ្នាថែរក្សាការពារបរិស្ថាន។"
   }
 ];
@@ -71,7 +71,7 @@ export const FreeTyping: React.FC = () => {
               <ArrowLeft />
             </Button>
           </Link>
-          <h1 className="text-4xl font-black font-display text-foreground">សរសេរដោយសេរី / Free Typing</h1>
+          <h1 className="text-4xl font-black font-display text-foreground">សរសេរដោយសេរី</h1>
         </div>
 
         {mode === 'select' ? (
@@ -119,11 +119,11 @@ export const FreeTyping: React.FC = () => {
               <div className="flex justify-between items-center mb-6">
                 <div className="flex gap-8">
                   <div className="flex flex-col">
-                    <span className="text-xs uppercase font-black text-muted-foreground">Speed</span>
-                    <span className="text-3xl font-mono font-black text-primary">{stats.wpm} <small className="text-sm">WPM</small></span>
+                    <span className="text-xs uppercase font-black text-muted-foreground">ល្បឿន</span>
+                    <span className="text-3xl font-mono font-black text-primary">{stats.wpm} <small className="text-sm">ពាក្យ/នាទី</small></span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-xs uppercase font-black text-muted-foreground">Accuracy</span>
+                    <span className="text-xs uppercase font-black text-muted-foreground">ភាពត្រឹមត្រូវ</span>
                     <span className="text-3xl font-mono font-black text-foreground">
                       {userInput.length > 0 ? Math.round((stats.hits / userInput.length) * 100) : 100}%
                     </span>

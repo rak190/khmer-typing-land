@@ -205,23 +205,23 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
         <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm z-10 relative">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span>Runner Mode</span>
+            <span>របៀបរត់</span>
           </div>
           <div className="flex gap-6 items-center">
             <div className="flex flex-col items-end">
-              <span className="text-[10px] text-muted-foreground uppercase">Goal</span>
+              <span className="text-[10px] text-muted-foreground uppercase">គោលដៅ</span>
               <span className="text-foreground font-bold">{hits} / {distanceGoal}</span>
             </div>
             <div className="flex flex-col items-end">
-              <span className="text-[10px] text-muted-foreground uppercase">Score</span>
+              <span className="text-[10px] text-muted-foreground uppercase">ពិន្ទុ</span>
               <span className="text-primary font-bold">{String(score).padStart(5, '0')}</span>
             </div>
             <div className="flex flex-col items-end">
-              <span className="text-[10px] text-accent uppercase">Hits</span>
+              <span className="text-[10px] text-accent uppercase">ត្រូវ</span>
               <span className="text-accent font-bold">{hits}</span>
             </div>
             <div className="flex flex-col items-end">
-              <span className="text-[10px] text-destructive uppercase">Miss</span>
+              <span className="text-[10px] text-destructive uppercase">ខុស</span>
               <span className="text-destructive font-bold">{miss}</span>
             </div>
           </div>
@@ -230,7 +230,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
         <div className="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20">
           {currentTarget && (
             <>
-              <div className="text-xs text-muted-foreground uppercase tracking-widest animate-pulse">Type this letter to jump!</div>
+              <div className="text-xs text-muted-foreground uppercase tracking-widest animate-pulse">វាយអក្សរនេះដើម្បីលោត!</div>
               <div className="w-28 h-28 rounded-2xl border-4 border-dashed border-primary/50 bg-primary/10 flex items-center justify-center backdrop-blur-sm">
                 <span className="text-7xl font-khmer font-bold text-foreground drop-shadow-lg">
                   {currentTarget}
@@ -300,7 +300,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
         </div>
 
         <div className="w-full flex justify-center z-10 mt-auto pt-4">
-          <Button variant="secondary" onClick={onQuit}>Quit</Button>
+          <Button variant="secondary" onClick={onQuit}>ចាកចេញ</Button>
         </div>
       </div>
 

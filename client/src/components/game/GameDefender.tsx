@@ -95,7 +95,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
         if (stateRef.current.shield > 0) {
           stateRef.current.shield = Math.max(0, stateRef.current.shield - 50);
           setShield(stateRef.current.shield);
-          showPowerUp("SHIELD BLOCK!");
+          showPowerUp("ខែលបានការពារ!");
           triggerExplosion(limit, "cyan");
         } else {
           sounds.playWrong();
@@ -173,7 +173,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
             if (newCombo > 0 && newCombo % 5 === 0) {
               stateRef.current.shield = 100;
               setShield(100);
-              showPowerUp("SHIELD ACTIVATED!");
+              showPowerUp("ខែលបានដំណើរការ!");
               sounds.playLevelUp();
             }
             
@@ -217,12 +217,12 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
         <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm z-10 relative">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <span>Defender Mode</span>
+            <span>របៀបការពារ</span>
             <SkillInfo mascot={mascot} className="ml-2 hidden sm:flex" />
           </div>
           <div className="flex gap-4 items-center">
              <div className="flex flex-col items-end">
-               <span className="text-[10px] uppercase text-muted-foreground font-bold">Shield</span>
+               <span className="text-[10px] uppercase text-muted-foreground font-bold">ខែល</span>
                <div className="w-24 h-1.5 bg-secondary rounded-full overflow-hidden border border-border">
                  <div 
                    className="h-full bg-cyan-400 shadow-sm transition-all duration-300" 
@@ -230,9 +230,9 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
                  />
                </div>
              </div>
-             <span className="text-destructive font-black tracking-tighter">HP: {"❤️".repeat(hp)}</span>
-            <span className="text-foreground">Kills: {kills}/{killsGoal}</span>
-            {combo > 2 && <span className="text-primary font-bold animate-pulse">{combo}x Combo!</span>}
+             <span className="text-destructive font-black tracking-tighter">ជីវិត៖ {"❤️".repeat(hp)}</span>
+            <span className="text-foreground">បានឈ្នះ៖ {kills}/{killsGoal}</span>
+            {combo > 2 && <span className="text-primary font-bold animate-pulse">ខ្សែបន្ត {combo}x!</span>}
           </div>
         </div>
 
@@ -309,7 +309,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
             <div 
               id="enemy-sprite"
               className="absolute right-[-100px] bottom-16 flex flex-col items-center gap-1 z-10 will-change-transform"
-              title={`Type: ${enemyVisual.target}`}
+              title={`វាយ៖ ${enemyVisual.target}`}
             >
               <div className="absolute -top-16 left-1/2 -translate-x-1/2 flex flex-col items-center">
                 <div className={cn(
@@ -319,7 +319,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
                   {enemyVisual.target}
                 </div>
                 {enemyVisual.isBoss && (
-                  <div className="text-[10px] font-black uppercase text-purple-600 tracking-tighter mt-1 animate-pulse">Boss Detected</div>
+                  <div className="text-[10px] font-black uppercase text-purple-600 tracking-tighter mt-1 animate-pulse">គូប្រកួតធំ</div>
                 )}
               </div>
               <div className={cn(
@@ -334,7 +334,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
         </div>
 
         <div className="w-full flex justify-center z-10">
-          <Button variant="secondary" onClick={onQuit}>Quit</Button>
+          <Button variant="secondary" onClick={onQuit}>ចាកចេញ</Button>
         </div>
       </div>
 
