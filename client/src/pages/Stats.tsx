@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, TrendingUp, Target, AlertTriangle, Activity } from "lucide-react";
+import { ArrowLeft, TrendingUp, Target, AlertTriangle } from "lucide-react";
 
 import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ import {
 
 import { useGameStore } from "@/lib/store";
 import { buildWorlds } from "@/lib/curriculum";
+import { readLocalSessions, type LocalTypingSession } from "@/lib/localSessions";
 
 const WORLDS = buildWorlds();
 
@@ -67,41 +68,13 @@ function computeSessionSeries(starsByStage: Record<string, number>): SessionStat
   });
 }
 
-interface SessionData {
-  id: string;
-  mode: string;
-  wpm: number;
-  accuracy: number;
-  errors: number;
-  stars: number;
-  completedAt: string;
-}
-
 export const Stats: React.FC = () => {
   const { progress, getTotalStars, profile } = useGameStore();
   const totalStars = getTotalStars();
-  const [sessions, setSessions] = useState<SessionData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [sessions, setSessions] = useState<LocalTypingSession[]>([]);
 
   useEffect(() => {
-    async function fetchSessions() {
-      try {
-        const response = await fetch(`/api/sessions/player/${profile.name}?limit=30`);
-        if (response.ok) {
-          const data = await response.json();
-          setSessions(data);
-        } else {
-          // Fall back to mock data
-          setSessions([]);
-        }
-      } catch (error) {
-        console.error("Error fetching sessions:", error);
-        setSessions([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchSessions();
+    setSessions(readLocalSessions(profile.name, 30));
   }, [profile.name]);
 
   const series = useMemo(() => {
@@ -292,14 +265,7 @@ export const Stats: React.FC = () => {
             </ChartContainer>
           </div>
 
-          {loading && (
-            <div className="mt-6 text-sm text-muted-foreground flex items-center gap-2">
-              <Activity className="animate-spin" size={16} />
-              Loading your stats...
-            </div>
-          )}
-          
-          {!loading && !series.length && (
+          {!series.length && (
             <div
               className="mt-6 text-sm text-muted-foreground"
               data-testid="text-no-stats"
@@ -308,9 +274,9 @@ export const Stats: React.FC = () => {
             </div>
           )}
 
-          {!loading && sessions.length > 0 && (
+          {sessions.length > 0 && (
             <div className="mt-6 text-sm text-emerald-600 font-bold" data-testid="text-real-data">
-              ✓ Showing your real typing session data ({sessions.length} sessions tracked)
+              Showing locally saved typing session data ({sessions.length} sessions tracked)
             </div>
           )}
         </Card>

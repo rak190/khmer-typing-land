@@ -41,18 +41,9 @@ export const ThemeSelector: React.FC = () => {
 
       // Persist selected music track
       localStorage.setItem('selectedMusicTrack', selectedMusic);
+      localStorage.setItem('typingSoundEffects', String(soundEffects));
       sounds.setCurrentTrack(selectedMusic);
 
-      await fetch("/api/preferences", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          playerId: profile.name, // Using name as temp ID
-          theme: selectedTheme,
-          soundEffects,
-        }),
-      });
-      // Music is already saved in localStorage via sounds.changeTrack/setCurrentTrack
       alert("Preferences saved successfully!");
     } catch (error) {
       console.error("Error saving preferences:", error);
