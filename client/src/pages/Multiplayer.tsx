@@ -6,7 +6,7 @@ import { child, get, onValue, ref, remove, set, update } from "firebase/database
 import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { realtimeDb, isFirebaseRealtimeReady } from "@/lib/firebase";
+import { realtimeDatabaseUrl, realtimeDb, isFirebaseRealtimeReady } from "@/lib/firebase";
 import { useGameStore } from "@/lib/store";
 
 type Phase = "menu" | "lobby" | "racing" | "results";
@@ -82,6 +82,27 @@ const withFirebaseTimeout = async <T,>(task: Promise<T>, action: string) => {
     return await Promise.race([task, timeout]);
   } finally {
     if (timeoutId) window.clearTimeout(timeoutId);
+  }
+};
+
+const getRoomRestUrl = (roomCode: string) => {
+  if (!realtimeDatabaseUrl) throw new Error("Firebase Realtime Database URL is not configured.");
+  return `${realtimeDatabaseUrl.replace(/\/$/, "")}/matchRooms/${roomCode}.json`;
+};
+
+const writeRoomWithRest = async (roomCode: string, nextRoom: MatchRoom) => {
+  const response = await withFirebaseTimeout(
+    fetch(getRoomRestUrl(roomCode), {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nextRoom),
+    }),
+    "Create room",
+  );
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`${response.status}: ${text || response.statusText}`);
   }
 };
 
@@ -202,7 +223,7 @@ export const Multiplayer: React.FC = () => {
         },
       };
 
-      await withFirebaseTimeout(set(getRoomRef(code), nextRoom), "Create room");
+      await writeRoomWithRest(code, nextRoom);
       setMode("room");
       setRoomCode(code);
       setTypedText("");

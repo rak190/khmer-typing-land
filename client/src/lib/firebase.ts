@@ -19,6 +19,8 @@ export const isFirebaseRealtimeReady =
   Boolean(firebaseConfig.databaseURL) &&
   firebaseConfig.databaseURL !== "PASTE_YOUR_DATABASE_URL_HERE";
 
+export const realtimeDatabaseUrl = firebaseConfig.databaseURL;
+
 let app: FirebaseApp | null = null;
 let database: Database | null = null;
 
