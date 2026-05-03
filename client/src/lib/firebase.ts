@@ -1,5 +1,6 @@
-import { FirebaseApp, initializeApp, getApps } from "firebase/app";
-import { getDatabase } from "firebase/database";
+import { initializeApp, getApps } from "firebase/app";
+import type { FirebaseApp } from "firebase/app";
+import { getDatabase, type Database } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -18,10 +19,16 @@ export const isFirebaseRealtimeReady =
   Boolean(firebaseConfig.databaseURL) &&
   firebaseConfig.databaseURL !== "PASTE_YOUR_DATABASE_URL_HERE";
 
-const app: FirebaseApp | null = isFirebaseRealtimeReady
-  ? getApps().length
-    ? getApps()[0]
-    : initializeApp(firebaseConfig)
-  : null;
+let app: FirebaseApp | null = null;
+let database: Database | null = null;
 
-export const realtimeDb = app ? getDatabase(app) : null;
+if (isFirebaseRealtimeReady) {
+  try {
+    app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    database = getDatabase(app);
+  } catch (error) {
+    console.warn("Firebase is not ready. Room matches are disabled until the config is fixed.", error);
+  }
+}
+
+export const realtimeDb = database;
