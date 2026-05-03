@@ -1,4 +1,4 @@
-import { initializeApp, getApps } from "firebase/app";
+import { FirebaseApp, initializeApp, getApps } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
@@ -18,6 +18,10 @@ export const isFirebaseRealtimeReady =
   Boolean(firebaseConfig.databaseURL) &&
   firebaseConfig.databaseURL !== "PASTE_YOUR_DATABASE_URL_HERE";
 
-const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+const app: FirebaseApp | null = isFirebaseRealtimeReady
+  ? getApps().length
+    ? getApps()[0]
+    : initializeApp(firebaseConfig)
+  : null;
 
-export const realtimeDb = isFirebaseRealtimeReady ? getDatabase(app) : null;
+export const realtimeDb = app ? getDatabase(app) : null;
