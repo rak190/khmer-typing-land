@@ -53,6 +53,21 @@ const getRoomRef = (roomCode: string) => {
   return ref(realtimeDb, `matchRooms/${roomCode}`);
 };
 
+const getFirebaseStatusMessage = (error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  const lowerMessage = message.toLowerCase();
+
+  if (lowerMessage.includes("permission")) {
+    return "Firebase Rules មិនអនុញ្ញាតឱ្យបង្កើតបន្ទប់ទេ។ សូមកំណត់ Rules សម្រាប់ matchRooms ឱ្យអាច read/write បាន។";
+  }
+
+  if (lowerMessage.includes("network") || lowerMessage.includes("offline")) {
+    return "មិនអាចភ្ជាប់ទៅ Firebase បានទេ។ សូមពិនិត្យអ៊ីនធឺណិត រួចសាកល្បងម្តងទៀត។";
+  }
+
+  return `មិនអាចបង្កើត ឬចូលបន្ទប់បានទេ៖ ${message}`;
+};
+
 export const Multiplayer: React.FC = () => {
   const { profile } = useGameStore();
   const [phase, setPhase] = useState<Phase>("menu");
@@ -142,48 +157,54 @@ export const Multiplayer: React.FC = () => {
   }, [mode, phase, racers]);
 
   const createRoom = async () => {
-    setStatusText("");
+    setStatusText("កំពុងបង្កើតបន្ទប់...");
     if (!isFirebaseRealtimeReady || !realtimeDb) {
       setStatusText("សូមកំណត់ VITE_FIREBASE_DATABASE_URL សិន ដើម្បីប្រើបន្ទប់ប្រកួត។");
       return;
     }
 
-    let code = makeRoomCode();
-    let roomSnapshot = await get(child(ref(realtimeDb), `matchRooms/${code}`));
-    while (roomSnapshot.exists()) {
-      code = makeRoomCode();
-      roomSnapshot = await get(child(ref(realtimeDb), `matchRooms/${code}`));
-    }
+    try {
+      let code = makeRoomCode();
+      let roomSnapshot = await get(child(ref(realtimeDb), `matchRooms/${code}`));
+      while (roomSnapshot.exists()) {
+        code = makeRoomCode();
+        roomSnapshot = await get(child(ref(realtimeDb), `matchRooms/${code}`));
+      }
 
-    const nextRoom: MatchRoom = {
-      code,
-      hostId: playerId,
-      status: "waiting",
-      raceText: RACE_TEXT,
-      createdAt: Date.now(),
-      players: {
-        [playerId]: {
-          id: playerId,
-          name: playerName,
-          progress: 0,
-          wpm: 0,
-          accuracy: 100,
-          finished: false,
-          joinedAt: Date.now(),
+      const nextRoom: MatchRoom = {
+        code,
+        hostId: playerId,
+        status: "waiting",
+        raceText: RACE_TEXT,
+        createdAt: Date.now(),
+        players: {
+          [playerId]: {
+            id: playerId,
+            name: playerName,
+            progress: 0,
+            wpm: 0,
+            accuracy: 100,
+            finished: false,
+            joinedAt: Date.now(),
+          },
         },
-      },
-    };
+      };
 
-    await set(getRoomRef(code), nextRoom);
-    setMode("room");
-    setRoomCode(code);
-    setTypedText("");
-    setErrors(0);
-    setPhase("lobby");
+      await set(getRoomRef(code), nextRoom);
+      setMode("room");
+      setRoomCode(code);
+      setTypedText("");
+      setErrors(0);
+      setPhase("lobby");
+      setStatusText("");
+    } catch (error) {
+      console.error("Create room failed", error);
+      setStatusText(getFirebaseStatusMessage(error));
+    }
   };
 
   const joinRoom = async () => {
-    setStatusText("");
+    setStatusText("កំពុងចូលបន្ទប់...");
     if (!isFirebaseRealtimeReady || !realtimeDb) {
       setStatusText("សូមកំណត់ VITE_FIREBASE_DATABASE_URL សិន ដើម្បីប្រើបន្ទប់ប្រកួត។");
       return;
@@ -195,34 +216,40 @@ export const Multiplayer: React.FC = () => {
       return;
     }
 
-    const snapshot = await get(getRoomRef(code));
-    const existingRoom = snapshot.val() as MatchRoom | null;
-    if (!existingRoom) {
-      setStatusText("រកមិនឃើញបន្ទប់នេះទេ។");
-      return;
-    }
-    if (existingRoom.status !== "waiting") {
-      setStatusText("បន្ទប់នេះបានចាប់ផ្តើមរួចហើយ។");
-      return;
-    }
+    try {
+      const snapshot = await get(getRoomRef(code));
+      const existingRoom = snapshot.val() as MatchRoom | null;
+      if (!existingRoom) {
+        setStatusText("រកមិនឃើញបន្ទប់នេះទេ។");
+        return;
+      }
+      if (existingRoom.status !== "waiting") {
+        setStatusText("បន្ទប់នេះបានចាប់ផ្តើមរួចហើយ។");
+        return;
+      }
 
-    await update(getRoomRef(code), {
-      [`players/${playerId}`]: {
-        id: playerId,
-        name: playerName,
-        progress: 0,
-        wpm: 0,
-        accuracy: 100,
-        finished: false,
-        joinedAt: Date.now(),
-      },
-    });
+      await update(getRoomRef(code), {
+        [`players/${playerId}`]: {
+          id: playerId,
+          name: playerName,
+          progress: 0,
+          wpm: 0,
+          accuracy: 100,
+          finished: false,
+          joinedAt: Date.now(),
+        },
+      });
 
-    setMode("room");
-    setRoomCode(code);
-    setTypedText("");
-    setErrors(0);
-    setPhase("lobby");
+      setMode("room");
+      setRoomCode(code);
+      setTypedText("");
+      setErrors(0);
+      setPhase("lobby");
+      setStatusText("");
+    } catch (error) {
+      console.error("Join room failed", error);
+      setStatusText(getFirebaseStatusMessage(error));
+    }
   };
 
   const startLocalRace = () => {
