@@ -57,6 +57,10 @@ const getFirebaseStatusMessage = (error: unknown) => {
   const message = error instanceof Error ? error.message : String(error);
   const lowerMessage = message.toLowerCase();
 
+  if (lowerMessage.includes("timed out")) {
+    return "Firebase ឆ្លើយតបយឺតពេក។ សូមពិនិត្យ VITE_FIREBASE_DATABASE_URL នៅ Vercel ឱ្យត្រូវនឹង URL ក្នុង Realtime Database។";
+  }
+
   if (lowerMessage.includes("permission")) {
     return "Firebase Rules មិនអនុញ្ញាតឱ្យបង្កើតបន្ទប់ទេ។ សូមកំណត់ Rules សម្រាប់ matchRooms ឱ្យអាច read/write បាន។";
   }
@@ -66,6 +70,19 @@ const getFirebaseStatusMessage = (error: unknown) => {
   }
 
   return `មិនអាចបង្កើត ឬចូលបន្ទប់បានទេ៖ ${message}`;
+};
+
+const withFirebaseTimeout = async <T,>(task: Promise<T>, action: string) => {
+  let timeoutId: number | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = window.setTimeout(() => reject(new Error(`${action} timed out`)), 8000);
+  });
+
+  try {
+    return await Promise.race([task, timeout]);
+  } finally {
+    if (timeoutId) window.clearTimeout(timeoutId);
+  }
 };
 
 export const Multiplayer: React.FC = () => {
@@ -164,12 +181,7 @@ export const Multiplayer: React.FC = () => {
     }
 
     try {
-      let code = makeRoomCode();
-      let roomSnapshot = await get(child(ref(realtimeDb), `matchRooms/${code}`));
-      while (roomSnapshot.exists()) {
-        code = makeRoomCode();
-        roomSnapshot = await get(child(ref(realtimeDb), `matchRooms/${code}`));
-      }
+      const code = makeRoomCode();
 
       const nextRoom: MatchRoom = {
         code,
@@ -190,7 +202,7 @@ export const Multiplayer: React.FC = () => {
         },
       };
 
-      await set(getRoomRef(code), nextRoom);
+      await withFirebaseTimeout(set(getRoomRef(code), nextRoom), "Create room");
       setMode("room");
       setRoomCode(code);
       setTypedText("");
@@ -217,7 +229,7 @@ export const Multiplayer: React.FC = () => {
     }
 
     try {
-      const snapshot = await get(getRoomRef(code));
+      const snapshot = await withFirebaseTimeout(get(getRoomRef(code)), "Join room");
       const existingRoom = snapshot.val() as MatchRoom | null;
       if (!existingRoom) {
         setStatusText("រកមិនឃើញបន្ទប់នេះទេ។");
@@ -228,17 +240,20 @@ export const Multiplayer: React.FC = () => {
         return;
       }
 
-      await update(getRoomRef(code), {
-        [`players/${playerId}`]: {
-          id: playerId,
-          name: playerName,
-          progress: 0,
-          wpm: 0,
-          accuracy: 100,
-          finished: false,
-          joinedAt: Date.now(),
-        },
-      });
+      await withFirebaseTimeout(
+        update(getRoomRef(code), {
+          [`players/${playerId}`]: {
+            id: playerId,
+            name: playerName,
+            progress: 0,
+            wpm: 0,
+            accuracy: 100,
+            finished: false,
+            joinedAt: Date.now(),
+          },
+        }),
+        "Join room",
+      );
 
       setMode("room");
       setRoomCode(code);
