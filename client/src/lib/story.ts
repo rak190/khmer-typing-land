@@ -108,30 +108,30 @@ export const STORY_CHAPTERS: StoryChapter[] = [
 export const RANDOM_EVENTS = [
   {
     id: "e1",
-    name: "Golden Snitch",
-    description: "A rare word appeared! Type it fast for double points!",
-    reward: "Bonus Stars",
+    name: "ពាក្យមាស",
+    description: "ពាក្យកម្រមួយបានលេចឡើង! វាយឱ្យលឿន ដើម្បីទទួលពិន្ទុគុណពីរ!",
+    reward: "ផ្កាយបន្ថែម",
     chance: 0.1,
   },
   {
     id: "e2",
-    name: "Scribe's Fever",
-    description: "Typing speed increased for 10 seconds!",
-    reward: "Speed Boost",
+    name: "កម្លាំងអ្នកសរសេរ",
+    description: "ល្បឿនវាយអក្សរកើនឡើងរយៈពេល ១០ វិនាទី!",
+    reward: "បង្កើនល្បឿន",
     chance: 0.05,
   },
   {
     id: "e3",
-    name: "Hidden Scroll",
-    description: "You found an ancient secret!",
-    reward: "Rare Badge",
+    name: "ក្រដាសរមូរលាក់",
+    description: "អ្នកបានរកឃើញអាថ៌កំបាំងបុរាណ!",
+    reward: "មេដាយកម្រ",
     chance: 0.02,
   },
   {
     id: "e4",
-    name: "Dragon's Challenge",
-    description: "A legendary beast appeared! Defeat it for a hidden reward!",
-    reward: "Secret Item",
+    name: "ការប្រកួតរឿងព្រេង",
+    description: "សត្រូវរឿងព្រេងបានលេចឡើង! ឈ្នះវា ដើម្បីទទួលរង្វាន់លាក់!",
+    reward: "រង្វាន់សម្ងាត់",
     chance: 0.03,
   },
 ];
@@ -149,17 +149,17 @@ export const EASTER_EGGS: EasterEgg[] = [
   {
     id: "egg1",
     triggerMilestone: 20,
-    name: "The First Scribe's Echo",
-    description: "A secret message from the past has appeared in your journey.",
+    name: "សម្លេងអ្នកសរសេរដំបូង",
+    description: "សារសម្ងាត់ពីអតីតកាលបានលេចឡើងក្នុងដំណើររបស់អ្នក។",
     secretWord: "អរគុណ", // Thank you in Khmer
-    reward: "Ancient Ink Badge",
+    reward: "មេដាយទឹកខ្មៅបុរាណ",
   },
   {
     id: "egg2",
     triggerMilestone: 50,
-    name: "The Hidden Glyph",
-    description: "You've unlocked a secret challenge in the void.",
+    name: "អក្សរលាក់",
+    description: "អ្នកបានបើកការប្រកួតសម្ងាត់មួយ។",
     secretWord: "សន្តិភាព", // Peace in Khmer
-    reward: "Peacekeeper Aura",
+    reward: "ពន្លឺអ្នកថែរក្សាសន្តិភាព",
   },
 ];

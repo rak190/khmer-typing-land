@@ -79,7 +79,7 @@ export const Landing: React.FC = () => {
                 KHMER <span className="text-[#D4AF37] drop-shadow-[0_8px_0_rgba(26,35,126,0.3)]">TYPING</span> LAND
               </h1>
               <div className="absolute -top-6 -right-12 bg-[#FFD700] text-[#1A237E] text-xs font-black px-4 py-1.5 rounded-full rotate-12 shadow-lg border-2 border-[#1A237E] animate-pulse">
-                FUN & EDUCATIONAL!
+                សប្បាយ និងអប់រំ!
               </div>
             </div>
             

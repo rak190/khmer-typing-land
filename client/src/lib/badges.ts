@@ -27,26 +27,26 @@ export function makeBadges(): Badge[] {
     badges.push({
       id: `B${String(i).padStart(3,"0")}`,
       icon,
-      name: `Badge ${String(i).padStart(3,"0")}`,
+      name: `មេដាយ ${String(i).padStart(3,"0")}`,
       unlock: { type:"stars", value: threshold }
     });
   }
   
   // Custom Performance Badges
-  badges.push({ id: "P001", icon: "⚡", name: "Speed Demon", unlock: { type: "wpm", value: 40 } });
-  badges.push({ id: "P002", icon: "🏹", name: "Sharp Shooter", unlock: { type: "accuracy", value: 100 } });
-  badges.push({ id: "P003", icon: "🌀", name: "Whiz Kid", unlock: { type: "wpm", value: 60 } });
+  badges.push({ id: "P001", icon: "⚡", name: "អ្នកវាយលឿន", unlock: { type: "wpm", value: 40 } });
+  badges.push({ id: "P002", icon: "🏹", name: "អ្នកវាយត្រឹមត្រូវ", unlock: { type: "accuracy", value: 100 } });
+  badges.push({ id: "P003", icon: "🌀", name: "ជើងឯកវ័យក្មេង", unlock: { type: "wpm", value: 60 } });
 
   // Make a few "special" looking ones at key milestones
   const specials = [
-    { idx: 1,   name:"Starter Paw" },
-    { idx: 10,  name:"Quick Claws" },
-    { idx: 25,  name:"Silver Tail" },
-    { idx: 50,  name:"Golden Mane" },
-    { idx: 75,  name:"Dragon Heart" },
-    { idx: 100, name:"Master Fang" },
-    { idx: 125, name:"Mythic Wing" },
-    { idx: 150, name:"Typing Legend" },
+    { idx: 1,   name:"អ្នកចាប់ផ្តើម" },
+    { idx: 10,  name:"វាយរហ័ស" },
+    { idx: 25,  name:"កម្រិតប្រាក់" },
+    { idx: 50,  name:"កម្រិតមាស" },
+    { idx: 75,  name:"បេះដូងក្លាហាន" },
+    { idx: 100, name:"អ្នកជំនាញ" },
+    { idx: 125, name:"ស្លាបរឿងព្រេង" },
+    { idx: 150, name:"ជើងឯកវាយអក្សរ" },
   ];
   for(const s of specials){
     if (badges[s.idx-1]) {

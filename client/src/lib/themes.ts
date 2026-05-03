@@ -25,7 +25,7 @@ export const WORLD_THEMES: Record<string, Theme> = {
       accent: "hsl(142, 76%, 30%)",
       background: "hsl(220, 100%, 98%)",
     },
-    description: "Traditional blue and gold inspired by Angkor Wat",
+    description: "ពណ៌ខៀវ និងមាស បំផុសគំនិតពីអង្គរវត្ត",
   },
   "w2": {
     id: "world-2",
@@ -38,7 +38,7 @@ export const WORLD_THEMES: Record<string, Theme> = {
       accent: "hsl(80, 60%, 50%)",
       background: "hsl(140, 30%, 98%)",
     },
-    description: "Fresh green theme inspired by Cambodian forests",
+    description: "ពណ៌បៃតងស្រស់ បំផុសគំនិតពីព្រៃខ្មែរ",
   },
   "w3": {
     id: "world-3",
@@ -51,7 +51,7 @@ export const WORLD_THEMES: Record<string, Theme> = {
       accent: "hsl(30, 100%, 45%)",
       background: "hsl(40, 40%, 98%)",
     },
-    description: "Luxurious gold theme fit for royalty",
+    description: "ពណ៌មាសប្រណិត សមស្របនឹងរចនាបថរាជវង្ស",
   },
   "w4": {
     id: "world-4",
@@ -64,7 +64,7 @@ export const WORLD_THEMES: Record<string, Theme> = {
       accent: "hsl(330, 100%, 70%)",
       background: "hsl(330, 40%, 98%)",
     },
-    description: "Elegant pink theme inspired by the sacred lotus flower",
+    description: "ពណ៌ផ្កាឈូកស្រស់ស្អាត បំផុសគំនិតពីផ្កាឈូក",
   },
   "w5": {
     id: "world-5",
@@ -77,7 +77,7 @@ export const WORLD_THEMES: Record<string, Theme> = {
       accent: "hsl(30, 100%, 50%)",
       background: "hsl(30, 30%, 98%)",
     },
-    description: "Warm red tones inspired by traditional Cambodian scarves",
+    description: "ពណ៌ក្រហមកក់ក្តៅ បំផុសគំនិតពីក្រមាខ្មែរ",
   },
   "w6": {
     id: "world-6",
@@ -90,7 +90,7 @@ export const WORLD_THEMES: Record<string, Theme> = {
       accent: "hsl(180, 70%, 40%)",
       background: "hsl(200, 40%, 98%)",
     },
-    description: "Calm ocean blues for peaceful typing",
+    description: "ពណ៌ខៀវស្ងប់ស្ងាត់ សម្រាប់ការវាយអក្សរបែបស្រួលចិត្ត",
   },
   "w7": {
     id: "world-7",
@@ -103,7 +103,7 @@ export const WORLD_THEMES: Record<string, Theme> = {
       accent: "hsl(45, 100%, 50%)",
       background: "hsl(25, 40%, 98%)",
     },
-    description: "Warm orange and yellow tones of a beach sunset",
+    description: "ពណ៌ទឹកក្រូច និងលឿងកក់ក្តៅ ដូចថ្ងៃលិចលើឆ្នេរ",
   },
   "w8": {
     id: "world-8",
@@ -116,7 +116,7 @@ export const WORLD_THEMES: Record<string, Theme> = {
       accent: "hsl(320, 80%, 60%)",
       background: "hsl(280, 30%, 98%)",
     },
-    description: "Purple and lavender tones of mountain mist",
+    description: "ពណ៌ស្វាយ និងឡាវេនឌ័រ ដូចអ័ព្ទលើភ្នំ",
   },
   "w9": {
     id: "world-9",
@@ -129,7 +129,7 @@ export const WORLD_THEMES: Record<string, Theme> = {
       accent: "hsl(320, 80%, 60%)",
       background: "hsl(280, 30%, 98%)",
     },
-    description: "Purple and lavender tones for the final challenge",
+    description: "ពណ៌ស្វាយ និងឡាវេនឌ័រ សម្រាប់ការប្រកួតចុងក្រោយ",
   },
 };
 
@@ -145,7 +145,7 @@ export const THEMES: Theme[] = [
       accent: "hsl(142, 76%, 30%)",
       background: "hsl(220, 100%, 98%)",
     },
-    description: "Traditional blue and gold inspired by Angkor Wat",
+    description: "ពណ៌ខៀវ និងមាស បំផុសគំនិតពីអង្គរវត្ត",
   },
   {
     id: "lotus-pink",
@@ -158,7 +158,7 @@ export const THEMES: Theme[] = [
       accent: "hsl(330, 100%, 70%)",
       background: "hsl(330, 40%, 98%)",
     },
-    description: "Elegant pink theme inspired by the sacred lotus flower",
+    description: "ពណ៌ផ្កាឈូកស្រស់ស្អាត បំផុសគំនិតពីផ្កាឈូក",
   },
   {
     id: "krama-red",
@@ -171,7 +171,7 @@ export const THEMES: Theme[] = [
       accent: "hsl(30, 100%, 50%)",
       background: "hsl(30, 30%, 98%)",
     },
-    description: "Warm red tones inspired by traditional Cambodian scarves",
+    description: "ពណ៌ក្រហមកក់ក្តៅ បំផុសគំនិតពីក្រមាខ្មែរ",
   },
   {
     id: "emerald-forest",
@@ -184,7 +184,7 @@ export const THEMES: Theme[] = [
       accent: "hsl(80, 60%, 50%)",
       background: "hsl(140, 30%, 98%)",
     },
-    description: "Fresh green theme inspired by Cambodian forests",
+    description: "ពណ៌បៃតងស្រស់ បំផុសគំនិតពីព្រៃខ្មែរ",
   },
   {
     id: "royal-gold",
@@ -197,7 +197,7 @@ export const THEMES: Theme[] = [
       accent: "hsl(30, 100%, 45%)",
       background: "hsl(40, 40%, 98%)",
     },
-    description: "Luxurious gold theme fit for royalty",
+    description: "ពណ៌មាសប្រណិត សមស្របនឹងរចនាបថរាជវង្ស",
   },
   {
     id: "ocean-blue",
@@ -210,7 +210,7 @@ export const THEMES: Theme[] = [
       accent: "hsl(180, 70%, 40%)",
       background: "hsl(200, 40%, 98%)",
     },
-    description: "Calm ocean blues for peaceful typing",
+    description: "ពណ៌ខៀវស្ងប់ស្ងាត់ សម្រាប់ការវាយអក្សរបែបស្រួលចិត្ត",
   },
 ];
 

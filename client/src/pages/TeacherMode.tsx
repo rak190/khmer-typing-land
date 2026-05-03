@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 type ViewMode = "setup" | "typing" | "results";
 
 const DEFAULT_TEXT =
-  "Practice makes typing smoother. Read carefully, keep your rhythm, and focus on accuracy first.";
+  "ការហាត់ប្រាណធ្វើឱ្យការវាយអក្សររលូនជាងមុន។ អានឱ្យប្រុងប្រយ័ត្ន រក្សាចង្វាក់ ហើយផ្តោតលើភាពត្រឹមត្រូវជាមុន។";
 
 export const TeacherMode: React.FC = () => {
   const [, navigate] = useLocation();
@@ -37,7 +37,7 @@ export const TeacherMode: React.FC = () => {
 
   const startAssignment = () => {
     if (!assignedText.trim()) {
-      alert("Please enter text for the student to type.");
+      alert("សូមបញ្ចូលអត្ថបទសម្រាប់សិស្សវាយ។");
       return;
     }
 
@@ -134,8 +134,8 @@ export const TeacherMode: React.FC = () => {
             <ArrowLeft size={18} />
           </Button>
           <div>
-            <h1 className="text-3xl font-black text-foreground">Teacher Mode</h1>
-            <p className="text-muted-foreground">Static classroom practice for Vercel and Firebase hosting.</p>
+            <h1 className="text-3xl font-black text-foreground">របៀបគ្រូ</h1>
+            <p className="text-muted-foreground">ការហាត់វាយអក្សរសម្រាប់ថ្នាក់រៀន ដែលអាចប្រើបានលើ Vercel និង Firebase Hosting។</p>
           </div>
         </div>
 
@@ -143,36 +143,36 @@ export const TeacherMode: React.FC = () => {
           <div className="glass-panel p-8 rounded-2xl max-w-2xl mx-auto">
             <div className="flex items-center gap-3 mb-6">
               <ClipboardList className="text-primary" size={28} />
-              <h2 className="text-2xl font-bold text-foreground">Create Assignment</h2>
+              <h2 className="text-2xl font-bold text-foreground">បង្កើតកិច្ចការ</h2>
             </div>
 
             <div className="space-y-6">
               <div>
-                <label className="text-sm font-medium text-muted-foreground mb-2 block">Teacher name</label>
+                <label className="text-sm font-medium text-muted-foreground mb-2 block">ឈ្មោះគ្រូ</label>
                 <input
                   type="text"
                   value={teacherName}
                   onChange={(event) => setTeacherName(event.target.value)}
-                  placeholder="Teacher name"
+                  placeholder="ឈ្មោះគ្រូ"
                   className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                   data-testid="input-teacher-name"
                 />
               </div>
 
               <div>
-                <label className="text-sm font-medium text-muted-foreground mb-2 block">Student name</label>
+                <label className="text-sm font-medium text-muted-foreground mb-2 block">ឈ្មោះសិស្ស</label>
                 <input
                   type="text"
                   value={studentName}
                   onChange={(event) => setStudentName(event.target.value)}
-                  placeholder="Student name"
+                  placeholder="ឈ្មោះសិស្ស"
                   className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                   data-testid="input-student-name"
                 />
               </div>
 
               <div>
-                <label className="text-sm font-medium text-muted-foreground mb-2 block">Text to type</label>
+                <label className="text-sm font-medium text-muted-foreground mb-2 block">អត្ថបទសម្រាប់វាយ</label>
                 <textarea
                   value={assignedText}
                   onChange={(event) => setAssignedText(event.target.value)}
@@ -184,7 +184,7 @@ export const TeacherMode: React.FC = () => {
 
               <Button onClick={startAssignment} className="w-full gap-2" size="lg" data-testid="button-start-assignment">
                 <Play size={18} />
-                Start Assignment
+                ចាប់ផ្តើមកិច្ចការ
               </Button>
             </div>
           </div>
@@ -195,8 +195,8 @@ export const TeacherMode: React.FC = () => {
             <div className="glass-panel p-4 rounded-2xl">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <div className="font-bold text-foreground">{studentName || "Student"}</div>
-                  <div className="text-sm text-muted-foreground">{teacherName || "Teacher"} assignment</div>
+                  <div className="font-bold text-foreground">{studentName || "សិស្ស"}</div>
+                  <div className="text-sm text-muted-foreground">កិច្ចការពី {teacherName || "គ្រូ"}</div>
                 </div>
                 <div className="flex items-center gap-6">
                   <div className="flex items-center gap-2">
@@ -216,11 +216,11 @@ export const TeacherMode: React.FC = () => {
             </div>
 
             <div className="glass-panel p-6 rounded-2xl">
-              <h3 className="text-lg font-bold text-foreground mb-4">Type the assignment below</h3>
+              <h3 className="text-lg font-bold text-foreground mb-4">វាយកិច្ចការខាងក្រោម</h3>
               {renderText()}
 
               <div className="mt-4 flex items-center justify-between">
-                <div className="text-sm text-muted-foreground">Progress: {progress}%</div>
+                <div className="text-sm text-muted-foreground">វឌ្ឍនភាព: {progress}%</div>
                 <div className="w-full max-w-md mx-4 bg-secondary rounded-full h-2 overflow-hidden">
                   <div className="bg-primary h-full transition-all duration-300" style={{ width: `${progress}%` }} />
                 </div>
@@ -234,7 +234,7 @@ export const TeacherMode: React.FC = () => {
 
         {viewMode === "results" && (
           <div className="glass-panel p-12 rounded-2xl text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-foreground mb-6">Assignment Complete</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-6">កិច្ចការបានបញ្ចប់</h2>
             <div className="flex justify-center gap-8 mb-8">
               <div className="text-center">
                 <div className="text-4xl font-bold text-blue-500">{wpm}</div>
@@ -242,19 +242,19 @@ export const TeacherMode: React.FC = () => {
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-amber-500">{accuracy}%</div>
-                <div className="text-sm text-muted-foreground">Accuracy</div>
+                <div className="text-sm text-muted-foreground">ភាពត្រឹមត្រូវ</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-violet-500">{formatTime(elapsedTime)}</div>
-                <div className="text-sm text-muted-foreground">Time</div>
+                <div className="text-sm text-muted-foreground">ពេលវេលា</div>
               </div>
             </div>
             <div className="flex gap-4">
               <Button onClick={startAssignment} className="flex-1 gap-2" data-testid="button-retry-assignment">
-                <RotateCcw size={18} /> Retry
+                <RotateCcw size={18} /> សាកម្តងទៀត
               </Button>
               <Button variant="outline" onClick={() => setViewMode("setup")} className="flex-1">
-                New Assignment
+                កិច្ចការថ្មី
               </Button>
             </div>
           </div>

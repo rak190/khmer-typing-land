@@ -9,11 +9,11 @@ export const Challenges: React.FC = () => {
   const { profile } = useGameStore();
 
   const mockLeaderboard = [
-    { name: "Sokha", wpm: 72, accuracy: 99, rank: 1 },
-    { name: "Dara", wpm: 68, accuracy: 98, rank: 2 },
-    { name: "Bopha", wpm: 65, accuracy: 100, rank: 3 },
+    { name: "សុខា", wpm: 72, accuracy: 99, rank: 1 },
+    { name: "ដារ៉ា", wpm: 68, accuracy: 98, rank: 2 },
+    { name: "បុប្ផា", wpm: 65, accuracy: 100, rank: 3 },
     { name: profile.name, wpm: 45, accuracy: 92, rank: 12, isPlayer: true },
-    { name: "Chan", wpm: 42, accuracy: 88, rank: 13 },
+    { name: "ចាន់", wpm: 42, accuracy: 88, rank: 13 },
   ];
 
   return (
@@ -25,7 +25,7 @@ export const Challenges: React.FC = () => {
           <Button variant="ghost" size="icon" data-testid="button-back" onClick={() => window.history.back()}>
             <ArrowLeft />
           </Button>
-          <h1 className="text-4xl font-black font-display text-foreground">ការប្រកួតប្រជែង / Challenges</h1>
+          <h1 className="text-4xl font-black font-display text-foreground">ការប្រកួតប្រជែង</h1>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -36,24 +36,24 @@ export const Challenges: React.FC = () => {
             </div>
             <div className="relative z-10">
               <div className="bg-primary text-primary-foreground text-[10px] font-bold px-2 py-1 rounded w-fit mb-4 uppercase tracking-widest">
-                Daily Quest
+                ភារកិច្ចប្រចាំថ្ងៃ
               </div>
-              <h2 className="text-2xl font-bold mb-2">ព្យញ្ជនៈមូលដ្ឋាន (Basic Consonants)</h2>
-              <p className="text-muted-foreground mb-6">Complete the basic consonant set as fast as possible.</p>
+              <h2 className="text-2xl font-bold mb-2">ព្យញ្ជនៈមូលដ្ឋាន</h2>
+              <p className="text-muted-foreground mb-6">វាយសំណុំព្យញ្ជនៈមូលដ្ឋានឱ្យបានលឿនបំផុត។</p>
               
               <div className="flex items-center gap-6 mb-8">
                 <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground uppercase">Best Time</span>
+                  <span className="text-xs text-muted-foreground uppercase">ពេលល្អបំផុត</span>
                   <span className="text-xl font-bold">0:42</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground uppercase">Reward</span>
+                  <span className="text-xs text-muted-foreground uppercase">រង្វាន់</span>
                   <span className="text-xl font-bold text-amber-500">500 XP</span>
                 </div>
               </div>
 
               <Button className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 rounded-xl" data-testid="button-play-daily">
-                Play Now
+                លេងឥឡូវនេះ
               </Button>
             </div>
           </div>
@@ -65,24 +65,24 @@ export const Challenges: React.FC = () => {
             </div>
             <div className="relative z-10">
               <div className="bg-violet-600 text-white text-[10px] font-bold px-2 py-1 rounded w-fit mb-4 uppercase tracking-widest">
-                Weekly Marathon
+                ម៉ារ៉ាតុងប្រចាំសប្តាហ៍
               </div>
-              <h2 className="text-2xl font-bold mb-2">Word Master 2026</h2>
-              <p className="text-muted-foreground mb-6">Type complete sentences with 95% accuracy.</p>
+              <h2 className="text-2xl font-bold mb-2">អ្នកជំនាញពាក្យ ២០២៦</h2>
+              <p className="text-muted-foreground mb-6">វាយប្រយោគពេញលេញដោយមានភាពត្រឹមត្រូវ ៩៥%។</p>
               
               <div className="flex items-center gap-6 mb-8">
                 <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground uppercase">Ends in</span>
-                  <span className="text-xl font-bold">4 days</span>
+                  <span className="text-xs text-muted-foreground uppercase">បញ្ចប់នៅ</span>
+                  <span className="text-xl font-bold">៤ ថ្ងៃ</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs text-muted-foreground uppercase">Reward</span>
-                  <span className="text-xl font-bold text-violet-600">Legend Badge</span>
+                  <span className="text-xs text-muted-foreground uppercase">រង្វាន់</span>
+                  <span className="text-xl font-bold text-violet-600">មេដាយជើងឯក</span>
                 </div>
               </div>
 
               <Button variant="outline" className="w-full border-violet-200 text-violet-700 font-bold h-12 rounded-xl" disabled data-testid="button-play-weekly">
-                Coming Soon
+                នឹងមកដល់ឆាប់ៗ
               </Button>
             </div>
           </div>
@@ -93,9 +93,9 @@ export const Challenges: React.FC = () => {
           <div className="p-6 border-b border-border bg-muted/30 flex justify-between items-center">
             <h3 className="text-xl font-bold flex items-center gap-2">
               <Users size={20} className="text-primary" />
-              Leaderboard (Today)
+              តារាងចំណាត់ថ្នាក់ (ថ្ងៃនេះ)
             </h3>
-            <div className="text-xs font-mono text-muted-foreground uppercase tracking-tighter">Updated 5m ago</div>
+            <div className="text-xs font-mono text-muted-foreground uppercase tracking-tighter">បានធ្វើបច្ចុប្បន្នភាព ៥ នាទីមុន</div>
           </div>
           
           <div className="divide-y divide-border">
@@ -115,7 +115,7 @@ export const Challenges: React.FC = () => {
                 <div className="flex-1">
                   <div className="font-bold flex items-center gap-2">
                     {user.name}
-                    {user.isPlayer && <span className="text-[10px] bg-primary text-white px-1.5 rounded uppercase">You</span>}
+                    {user.isPlayer && <span className="text-[10px] bg-primary text-white px-1.5 rounded uppercase">អ្នក</span>}
                   </div>
                 </div>
                 <div className="flex gap-8 text-right">
@@ -127,7 +127,7 @@ export const Challenges: React.FC = () => {
                   </div>
                   <div className="flex flex-col items-end">
                     <span className="text-[10px] text-muted-foreground uppercase flex items-center gap-1">
-                      <Target size={10} /> Accuracy
+                      <Target size={10} /> ភាពត្រឹមត្រូវ
                     </span>
                     <span className="font-mono font-bold text-green-600">{user.accuracy}%</span>
                   </div>

@@ -108,8 +108,8 @@ export const Stats: React.FC = () => {
 
   const chartConfig = {
     wpm: { label: "WPM", color: "hsl(var(--primary))" },
-    accuracy: { label: "Accuracy", color: "hsl(var(--chart-2))" },
-    errors: { label: "Errors", color: "hsl(var(--destructive))" },
+    accuracy: { label: "ភាពត្រឹមត្រូវ", color: "hsl(var(--chart-2))" },
+    errors: { label: "កំហុស", color: "hsl(var(--destructive))" },
   } as const;
 
   return (
@@ -133,13 +133,13 @@ export const Stats: React.FC = () => {
               className="text-3xl font-black text-foreground font-display"
               data-testid="text-stats-title"
             >
-              ស្ថិតិការសរសេរ / Typing Stats
+              ស្ថិតិការវាយអក្សរ
             </h1>
             <p
               className="text-muted-foreground font-body"
               data-testid="text-stats-subtitle"
             >
-              Track your speed, accuracy, and mistakes over time.
+              តាមដានល្បឿន ភាពត្រឹមត្រូវ និងកំហុសរបស់អ្នកតាមពេលវេលា។
             </p>
           </div>
         </div>
@@ -149,7 +149,7 @@ export const Stats: React.FC = () => {
             <div className="flex items-start justify-between">
               <div>
                 <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Latest WPM
+                  WPM ចុងក្រោយ
                 </div>
                 <div
                   className="text-4xl font-black text-foreground mt-2"
@@ -163,7 +163,7 @@ export const Stats: React.FC = () => {
               </div>
             </div>
             <div className="text-sm text-muted-foreground mt-4 font-body">
-              Best: <span className="font-bold text-foreground">{bestWpm}</span>
+              ល្អបំផុត: <span className="font-bold text-foreground">{bestWpm}</span>
             </div>
           </Card>
 
@@ -171,7 +171,7 @@ export const Stats: React.FC = () => {
             <div className="flex items-start justify-between">
               <div>
                 <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Latest Accuracy
+                  ភាពត្រឹមត្រូវចុងក្រោយ
                 </div>
                 <div
                   className="text-4xl font-black text-foreground mt-2"
@@ -185,7 +185,7 @@ export const Stats: React.FC = () => {
               </div>
             </div>
             <div className="text-sm text-muted-foreground mt-4 font-body">
-              Best: <span className="font-bold text-foreground">{bestAcc}%</span>
+              ល្អបំផុត: <span className="font-bold text-foreground">{bestAcc}%</span>
             </div>
           </Card>
 
@@ -193,7 +193,7 @@ export const Stats: React.FC = () => {
             <div className="flex items-start justify-between">
               <div>
                 <div className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Total Errors (recent)
+                  កំហុសសរុប (ថ្មីៗ)
                 </div>
                 <div
                   className="text-4xl font-black text-foreground mt-2"
@@ -207,7 +207,7 @@ export const Stats: React.FC = () => {
               </div>
             </div>
             <div className="text-sm text-muted-foreground mt-4 font-body">
-              Worlds unlocked: <span className="font-bold text-foreground">{unlockedWorlds}</span>
+              ពិភពដែលបានបើក: <span className="font-bold text-foreground">{unlockedWorlds}</span>
             </div>
           </Card>
         </div>
@@ -219,10 +219,10 @@ export const Stats: React.FC = () => {
                 className="text-xl font-black text-foreground font-display"
                 data-testid="text-performance-trend"
               >
-                Performance Trend
+                និន្នាការសមត្ថភាព
               </h2>
               <p className="text-sm text-muted-foreground font-body">
-                Based on your most recent stages (mock trend from your stars).
+                ផ្អែកលើវគ្គថ្មីៗបំផុត និងផ្កាយដែលអ្នកទទួលបាន។
               </p>
             </div>
           </div>
@@ -270,13 +270,13 @@ export const Stats: React.FC = () => {
               className="mt-6 text-sm text-muted-foreground"
               data-testid="text-no-stats"
             >
-              Play a few stages to populate your stats.
+              លេងវគ្គពីរបីសិន ដើម្បីបង្កើតស្ថិតិរបស់អ្នក។
             </div>
           )}
 
           {sessions.length > 0 && (
             <div className="mt-6 text-sm text-emerald-600 font-bold" data-testid="text-real-data">
-              Showing locally saved typing session data ({sessions.length} sessions tracked)
+              កំពុងបង្ហាញទិន្នន័យវាយអក្សរដែលរក្សាទុកក្នុងម៉ាស៊ីននេះ ({sessions.length} វគ្គ)
             </div>
           )}
         </Card>

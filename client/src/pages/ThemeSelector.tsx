@@ -44,10 +44,10 @@ export const ThemeSelector: React.FC = () => {
       localStorage.setItem('typingSoundEffects', String(soundEffects));
       sounds.setCurrentTrack(selectedMusic);
 
-      alert("Preferences saved successfully!");
+      alert("បានរក្សាទុកការកំណត់រួចរាល់!");
     } catch (error) {
       console.error("Error saving preferences:", error);
-      alert("Failed to save preferences");
+      alert("មិនអាចរក្សាទុកការកំណត់បានទេ");
     }
   };
 
@@ -64,16 +64,16 @@ export const ThemeSelector: React.FC = () => {
           </Link>
           <div>
             <h1 className="text-4xl font-black font-display text-foreground" data-testid="text-theme-title">
-              ការកំណត់រូបរាង / Theme Settings
+              ការកំណត់រូបរាង
             </h1>
-            <p className="text-muted-foreground">Customize your typing experience</p>
+            <p className="text-muted-foreground">កែសម្រួលបទពិសោធន៍វាយអក្សររបស់អ្នក</p>
           </div>
         </div>
 
         <div className="glass-panel rounded-3xl p-8 border-border bg-card mb-8">
           <div className="flex items-center gap-3 mb-6">
             <Palette className="text-primary" size={24} />
-            <h2 className="text-2xl font-black text-foreground">Choose Your Theme</h2>
+            <h2 className="text-2xl font-black text-foreground">ជ្រើសរើសរូបរាង</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -96,8 +96,7 @@ export const ThemeSelector: React.FC = () => {
                 )}
 
                 <div className="text-5xl mb-4">{theme.icon}</div>
-                <h3 className="text-xl font-black text-foreground mb-1">{theme.name}</h3>
-                <p className="text-sm font-bold text-muted-foreground mb-3">{theme.nameKh}</p>
+                <h3 className="text-xl font-black text-foreground mb-1">{theme.nameKh}</h3>
                 <p className="text-xs text-muted-foreground mb-4">{theme.description}</p>
 
                 <div className="flex gap-2">
@@ -119,10 +118,10 @@ export const ThemeSelector: React.FC = () => {
               <div>
                 <h3 className="text-lg font-black text-foreground flex items-center gap-2">
                   <Volume2 size={20} className="text-primary" />
-                  សំឡេងពេលវាយ / Typing Sound Effects
+                  សំឡេងពេលវាយ
                 </h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Enable mechanical keyboard sound effects while typing
+                  បើកសំឡេងក្ដារចុចពេលវាយអក្សរ
                 </p>
               </div>
               <button
@@ -147,10 +146,10 @@ export const ThemeSelector: React.FC = () => {
             <div className="mb-4">
               <h3 className="text-lg font-black text-foreground flex items-center gap-2">
                 <Music size={20} className="text-primary" />
-                ចម្រៀងផ្ទៃខាងក្រោយ / Background Music
+                ចម្រៀងផ្ទៃខាងក្រោយ
               </h3>
               <p className="text-sm text-muted-foreground mt-1">
-                Choose your favorite background music while playing
+                ជ្រើសរើសចម្រៀងផ្ទៃខាងក្រោយដែលអ្នកចូលចិត្តពេលលេង
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -196,10 +195,10 @@ export const ThemeSelector: React.FC = () => {
               <div>
                 <h3 className="text-lg font-black text-foreground flex items-center gap-2">
                   <Languages size={20} className="text-primary" />
-                  របៀបខ្មែរពេញ / Immersion Mode
+                  របៀបខ្មែរពេញ
                 </h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Play the entire game in Khmer with all text, instructions, and challenges in Khmer
+                  លេងហ្គេមទាំងមូលជាភាសាខ្មែរ ជាមួយអត្ថបទ ការណែនាំ និងការប្រកួតទាំងអស់ជាភាសាខ្មែរ
                 </p>
               </div>
               <button
@@ -224,7 +223,7 @@ export const ThemeSelector: React.FC = () => {
                   ✓ របៀបខ្មែរពេញបានបើក - អត្ថបទទាំងអស់នឹងបង្ហាញជាភាសាខ្មែរ
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Immersion mode enabled - All text will be shown in Khmer
+                  អត្ថបទទាំងអស់នឹងបង្ហាញជាភាសាខ្មែរ។
                 </p>
               </div>
             )}
@@ -237,11 +236,11 @@ export const ThemeSelector: React.FC = () => {
             className="flex-1 h-14 text-lg font-black bg-primary hover:bg-primary/90"
             data-testid="button-save-theme"
           >
-            រក្សាទុក / Save Changes
+            រក្សាទុកការកំណត់
           </Button>
           <Link href="/home" className="flex-1" onClick={handleCancel}>
             <Button variant="outline" className="w-full h-14 text-lg font-black">
-              ត្រឡប់ក្រោយ / Cancel
+              បោះបង់
             </Button>
           </Link>
         </div>

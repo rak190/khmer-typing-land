@@ -32,7 +32,7 @@ export const StageSelect: React.FC = () => {
     }
   }, [params?.id, (profile as any).theme]);
   
-  if (!world) return <div className="text-white p-20">World not found</div>;
+  if (!world) return <div className="text-white p-20">រកមិនឃើញពិភពនេះទេ</div>;
 
   return (
     <div className="min-h-screen bg-background pb-20 pt-20" data-world={world.id}>
@@ -46,14 +46,14 @@ export const StageSelect: React.FC = () => {
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-1">
               <h1 className="text-3xl font-black text-foreground">{world.name}</h1>
-              <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest">Chapter {world.id.replace('w','')}</span>
+              <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest">ជំពូក {world.id.replace('w','')}</span>
             </div>
-            <h2 className="text-xl font-bold text-primary mb-3">Quest: {chapter?.title}</h2>
+            <h2 className="text-xl font-bold text-primary mb-3">ភារកិច្ច: {chapter?.title}</h2>
             <p className="text-muted-foreground italic text-lg leading-relaxed">"{chapter?.intro}"</p>
           </div>
           <div className="flex flex-col items-center justify-center p-6 bg-secondary rounded-2xl border border-border min-w-[150px]">
             <div className="text-5xl mb-2 animate-pulse">{world.logo}</div>
-            <div className="text-[10px] font-black uppercase text-red-600 tracking-tighter">Bounty Target</div>
+            <div className="text-[10px] font-black uppercase text-red-600 tracking-tighter">គោលដៅត្រូវឈ្នះ</div>
             <div className="text-sm font-bold text-foreground">{chapter?.monsterName}</div>
           </div>
         </div>
@@ -89,7 +89,7 @@ export const StageSelect: React.FC = () => {
                 
                 <Link href={`/play/${world.id}/${stage.id}`}>
                   <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    Play
+                    លេង
                   </Button>
                 </Link>
               </div>

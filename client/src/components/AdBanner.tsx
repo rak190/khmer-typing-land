@@ -54,8 +54,8 @@ export const AdBanner: React.FC<AdBannerProps> = ({
       ) : (
         <div className="text-center py-6 text-muted-foreground text-sm">
           <div className="text-2xl mb-2">📢</div>
-          <div className="font-medium">Ad Space</div>
-          <div className="text-xs opacity-60">Configure ad slot in AdSense</div>
+          <div className="font-medium">កន្លែងផ្សាយពាណិជ្ជកម្ម</div>
+          <div className="text-xs opacity-60">កំណត់លេខផ្សាយក្នុង AdSense</div>
         </div>
       )}
     </div>

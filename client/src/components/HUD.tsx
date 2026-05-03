@@ -102,7 +102,7 @@ export const HUD: React.FC = () => {
         <button 
           onClick={toggleMusic}
           className="p-2 rounded-full bg-secondary border border-border text-slate-600 dark:text-slate-400 hover:text-primary transition-colors"
-          title={isMuted ? "Enable Background Music" : "Mute Background Music"}
+          title={isMuted ? "បើកចម្រៀងផ្ទៃខាងក្រោយ" : "បិទចម្រៀងផ្ទៃខាងក្រោយ"}
         >
           {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} className="animate-pulse" />}
         </button>
@@ -183,7 +183,7 @@ export const HUD: React.FC = () => {
                         រាល់ការបរិច្ចាគរបស់លោកអ្នក នឹងជួយឱ្យយើងបន្តអភិវឌ្ឍកម្មវិធីនេះឱ្យកាន់តែប្រសើរ។
                       </p>
                       <p className="text-xs font-bold text-amber-700 uppercase tracking-wider font-body">
-                        Donate me a coffee ☕
+                        គាំទ្រជាកាហ្វេមួយកែវ
                       </p>
                     </div>
                   </div>

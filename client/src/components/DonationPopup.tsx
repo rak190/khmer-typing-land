@@ -47,7 +47,7 @@ export const DonationPopup: React.FC<DonationPopupProps> = ({ onClose }) => {
             <Heart className="text-red-500 animate-pulse" size={20} />
           </div>
           <h2 className="text-2xl font-bold text-amber-800 font-display">គាំទ្រពួកយើង</h2>
-          <p className="text-amber-700 text-sm mt-1">Support Our Work</p>
+          <p className="text-amber-700 text-sm mt-1">គាំទ្រការងាររបស់យើង</p>
         </div>
 
         <div className="p-6 flex flex-col items-center">
@@ -63,7 +63,7 @@ export const DonationPopup: React.FC<DonationPopupProps> = ({ onClose }) => {
           <div className="text-center">
             <p className="text-lg font-bold text-gray-800 flex items-center gap-2 justify-center">
               <Coffee size={20} className="text-amber-600" />
-              Donate me a coffee
+              គាំទ្រជាកាហ្វេមួយកែវ
               <Coffee size={20} className="text-amber-600" />
             </p>
             <p className="text-sm text-gray-500 mt-2">
@@ -77,7 +77,7 @@ export const DonationPopup: React.FC<DonationPopupProps> = ({ onClose }) => {
             onClick={handleClose}
             data-testid="button-skip-donate"
           >
-            រំលង / Skip
+            រំលង
           </Button>
         </div>
       </div>

@@ -71,7 +71,7 @@ export const Play: React.FC = () => {
     }
   }, [getTotalStars]); // Removed phase from dependencies to prevent restart on phase change
 
-  if (!world || !stage) return <div>Stage not found</div>;
+  if (!world || !stage) return <div>រកមិនឃើញវគ្គនេះទេ</div>;
 
   // Difficulty tuning
   const stageNo = parseInt(stageId?.replace("s","") || "1");
@@ -244,7 +244,7 @@ export const Play: React.FC = () => {
               />
             )}
             <div className="glass-panel p-10 rounded-3xl text-center max-w-lg w-full animate-in zoom-in-95 duration-300">
-              <h1 className="text-4xl font-black text-white mb-2">Lesson Complete! 🎉</h1>
+              <h1 className="text-4xl font-black text-white mb-2">មេរៀនបានបញ្ចប់! 🎉</h1>
             
             {/* Stars */}
             <div className="flex justify-center gap-2 my-6">

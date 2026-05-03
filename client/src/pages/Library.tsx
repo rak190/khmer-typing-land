@@ -50,7 +50,7 @@ export const Library: React.FC = () => {
           </Button>
           <h1 className="text-4xl font-black text-foreground font-display flex items-center gap-3">
             <GraduationCap className="text-primary" size={40} />
-            បណ្ណាល័យវិញ្ញាបនបត្រ <span className="text-muted-foreground text-2xl font-body">/ Certificate Library</span>
+            បណ្ណាល័យវិញ្ញាបនបត្រ
           </h1>
         </div>
 
@@ -72,9 +72,9 @@ export const Library: React.FC = () => {
                     <Award size={48} />
                   </div>
                   {completed ? (
-                    <span className="bg-green-100 text-green-700 px-4 py-1.5 rounded-full text-sm font-black">សម្រេចបាន / COMPLETED</span>
+                    <span className="bg-green-100 text-green-700 px-4 py-1.5 rounded-full text-sm font-black">សម្រេចបាន</span>
                   ) : (
-                    <span className="bg-slate-100 text-slate-500 px-4 py-1.5 rounded-full text-sm font-black">មិនទាន់រួចរាល់ / INCOMPLETE</span>
+                    <span className="bg-slate-100 text-slate-500 px-4 py-1.5 rounded-full text-sm font-black">មិនទាន់រួចរាល់</span>
                   )}
                 </div>
 

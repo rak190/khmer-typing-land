@@ -21,12 +21,12 @@ import {
 type Category = "all" | "proverb" | "history" | "daily" | "greeting" | "nature";
 
 const CATEGORY_INFO: Record<Category, { icon: React.ReactNode; label: string; labelKm: string; color: string }> = {
-  all: { icon: <Heart size={20} />, label: "All Categories", labelKm: "គ្រប់ប្រភេទ", color: "text-primary" },
-  proverb: { icon: <Scroll size={20} />, label: "Proverbs", labelKm: "សុភាសិត", color: "text-amber-600" },
-  history: { icon: <Landmark size={20} />, label: "History", labelKm: "ប្រវត្តិសាស្ត្រ", color: "text-blue-600" },
-  daily: { icon: <MessageCircle size={20} />, label: "Daily Life", labelKm: "ជីវិតប្រចាំថ្ងៃ", color: "text-emerald-600" },
-  greeting: { icon: <Heart size={20} />, label: "Greetings", labelKm: "ការស្វាគមន៍", color: "text-pink-600" },
-  nature: { icon: <Leaf size={20} />, label: "Nature", labelKm: "ធម្មជាតិ", color: "text-green-600" },
+  all: { icon: <Heart size={20} />, label: "គ្រប់ប្រភេទ", labelKm: "គ្រប់ប្រភេទ", color: "text-primary" },
+  proverb: { icon: <Scroll size={20} />, label: "សុភាសិត", labelKm: "សុភាសិត", color: "text-amber-600" },
+  history: { icon: <Landmark size={20} />, label: "ប្រវត្តិសាស្ត្រ", labelKm: "ប្រវត្តិសាស្ត្រ", color: "text-blue-600" },
+  daily: { icon: <MessageCircle size={20} />, label: "ជីវិតប្រចាំថ្ងៃ", labelKm: "ជីវិតប្រចាំថ្ងៃ", color: "text-emerald-600" },
+  greeting: { icon: <Heart size={20} />, label: "ការស្វាគមន៍", labelKm: "ការស្វាគមន៍", color: "text-pink-600" },
+  nature: { icon: <Leaf size={20} />, label: "ធម្មជាតិ", labelKm: "ធម្មជាតិ", color: "text-green-600" },
 };
 
 type Phase = "select" | "playing" | "results";
@@ -137,13 +137,13 @@ export const CulturalChallenges: React.FC = () => {
               </Button>
             </Link>
             <div>
-              <h1 className="text-4xl font-black font-display text-foreground" data-testid="text-cultural-title">វប្បធម៌ទូទៅ / General Knowledge</h1>
-              <p className="text-muted-foreground">Learn Khmer through proverbs, history, and daily phrases</p>
+              <h1 className="text-4xl font-black font-display text-foreground" data-testid="text-cultural-title">វប្បធម៌ទូទៅ</h1>
+              <p className="text-muted-foreground">រៀនភាសាខ្មែរតាមរយៈសុភាសិត ប្រវត្តិសាស្ត្រ និងឃ្លាប្រចាំថ្ងៃ</p>
             </div>
           </div>
 
           <div className="glass-panel rounded-3xl p-8 border-border bg-card mb-8">
-            <h2 className="text-2xl font-black mb-6">ជ្រើសរើសប្រភេទ / Choose Category</h2>
+            <h2 className="text-2xl font-black mb-6">ជ្រើសរើសប្រភេទ</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {(Object.keys(CATEGORY_INFO) as Category[]).map((cat) => {
@@ -169,7 +169,7 @@ export const CulturalChallenges: React.FC = () => {
                     <div className={cn("mb-3", info.color)}>{info.icon}</div>
                     <h3 className="text-xl font-black text-foreground mb-1">{info.label}</h3>
                     <p className="text-sm font-bold text-muted-foreground mb-2">{info.labelKm}</p>
-                    <p className="text-xs text-muted-foreground">{count} challenges</p>
+                    <p className="text-xs text-muted-foreground">{count} ប្រកួតប្រជែង</p>
                   </button>
                 );
               })}
@@ -177,10 +177,10 @@ export const CulturalChallenges: React.FC = () => {
           </div>
 
           <div className="glass-panel rounded-3xl p-8 border-border bg-card">
-            <h2 className="text-xl font-black mb-4">រៀនវប្បធម៌ទូទៅ / Learn General Knowledge</h2>
+            <h2 className="text-xl font-black mb-4">រៀនវប្បធម៌ទូទៅ</h2>
             <p className="text-muted-foreground mb-4">
-              These challenges feature authentic Khmer content including traditional proverbs, 
-              historical facts about Angkor and Cambodia, everyday phrases, and nature vocabulary.
+              ការប្រកួតទាំងនេះមានអត្ថបទខ្មែរពិតៗ រួមមានសុភាសិតប្រពៃណី ចំណេះដឹងអំពីអង្គរ និងកម្ពុជា
+              ឃ្លាប្រើប្រាស់ប្រចាំថ្ងៃ និងវាក្យសព្ទធម្មជាតិ។
             </p>
             <div className="flex gap-2 flex-wrap">
               <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-bold">សុភាសិត</span>
@@ -218,7 +218,7 @@ export const CulturalChallenges: React.FC = () => {
           <div className="glass-panel rounded-3xl p-8 border-border bg-card mb-6">
             <div className="mb-6">
               <div className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">
-                Type this phrase:
+                វាយឃ្លានេះ:
               </div>
               <div className="text-3xl font-khmer leading-relaxed text-foreground mb-4">
                 {currentChallenge.text.split("").map((char: string, idx: number) => {
@@ -257,7 +257,7 @@ export const CulturalChallenges: React.FC = () => {
 
             <div className="mt-6 flex gap-4">
               <Button variant="outline" onClick={skipChallenge} className="gap-2" data-testid="button-skip">
-                <X size={16} /> រំលង / Skip
+                <X size={16} /> រំលង
               </Button>
             </div>
           </div>
@@ -303,22 +303,22 @@ export const CulturalChallenges: React.FC = () => {
             <h1 className="text-4xl font-black font-display text-foreground mb-2">
               បញ្ហាប្រឈមបានបញ្ចប់!
             </h1>
-            <p className="text-muted-foreground">Challenge Complete!</p>
+            <p className="text-muted-foreground">ការប្រកួតបានបញ្ចប់!</p>
           </div>
 
           <div className="glass-panel rounded-3xl p-8 border-border bg-card mb-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-6 text-center">
                 <div className="text-4xl font-black text-emerald-600">{correctCount}/{challenges.length}</div>
-                <div className="text-sm font-bold text-emerald-700">Completed</div>
+                <div className="text-sm font-bold text-emerald-700">បានបញ្ចប់</div>
               </div>
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-6 text-center">
                 <div className="text-4xl font-black text-blue-600">{avgWpm}</div>
-                <div className="text-sm font-bold text-blue-700">Avg WPM</div>
+                <div className="text-sm font-bold text-blue-700">WPM មធ្យម</div>
               </div>
               <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-6 text-center">
                 <div className="text-4xl font-black text-amber-600">{avgAccuracy}%</div>
-                <div className="text-sm font-bold text-amber-700">Accuracy</div>
+                <div className="text-sm font-bold text-amber-700">ភាពត្រឹមត្រូវ</div>
               </div>
             </div>
 
@@ -352,10 +352,10 @@ export const CulturalChallenges: React.FC = () => {
 
           <div className="flex gap-4">
             <Button onClick={() => startChallenge(category)} className="flex-1 h-14 text-lg font-black gap-2">
-              <RotateCcw size={20} /> ព្យាយាមម្តងទៀត / Try Again
+              <RotateCcw size={20} /> ព្យាយាមម្តងទៀត
             </Button>
             <Button variant="outline" onClick={() => setPhase("select")} className="flex-1 h-14 text-lg font-black">
-              ប្រភេទផ្សេង / Other Categories
+              ប្រភេទផ្សេង
             </Button>
           </div>
         </div>
