@@ -1,10 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { findKeyForTarget, nidaFromEvent, NIDA_MAP } from '@/lib/nida-map';
-import { Button } from '@/components/ui/button';
+import { findKeyForTarget, nidaFromEvent } from '@/lib/nida-map';
 import { cn } from '@/lib/utils';
-import { useGameStore } from '@/lib/store';
 import { Keyboard } from '@/components/Keyboard';
-import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 import { sounds } from '@/lib/sounds';
 
 interface GameProps {
@@ -15,7 +12,7 @@ interface GameProps {
   onQuit: () => void;
 }
 
-export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯", onComplete, onQuit }) => {
+export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯", onComplete }) => {
   const [target, setTarget] = useState<string>("");
   const [hits, setHits] = useState(0);
   const [miss, setMiss] = useState(0);
@@ -102,22 +99,14 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [target, done, count, hits, miss, combo, onComplete, pick]);
 
-  const needsShift = target && Object.values(NIDA_MAP).some(m => m.shift === target);
-
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-[1200px] mx-auto gap-4">
-      <div className="glass-panel p-4 rounded-2xl w-full text-center relative overflow-hidden min-h-[350px] flex flex-col items-center justify-between">
-        {/* Shift Hint Sticky Note */}
-        {needsShift && (
-          <div className="absolute top-12 left-6 animate-bounce-in z-20">
-            <div className="bg-purple-600 text-white px-4 py-2 rounded-xl shadow-lg border-b-4 border-purple-800 flex items-center gap-2">
-              <span className="text-xl">⬆️</span>
-              <div className="flex flex-col items-start">
-                <span className="text-[10px] font-black uppercase tracking-widest leading-none mb-1">ត្រូវការ Shift</span>
-                <span className="text-sm font-bold font-khmer">ចុច Shift + {findKeyForTarget(target)?.code.replace('Key', '')}</span>
-              </div>
-            </div>
-          </div>
+    <div className="flex w-full max-w-[1000px] flex-col items-center justify-center gap-2 mx-auto">
+      <div className={cn(
+        "glass-panel relative flex h-[clamp(220px,34vh,300px)] w-full flex-col items-center justify-between overflow-hidden rounded-2xl p-3 text-center",
+        flash === "bad" && "animate-shake"
+      )}>
+        {flash === "bad" && (
+          <div className="pointer-events-none absolute inset-0 z-40 bg-destructive/35 animate-wrong-screen-flash" />
         )}
 
         <div className="absolute top-0 left-0 w-full h-1 bg-white/10">
@@ -159,7 +148,7 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
 
            <div 
              className={cn(
-               "w-48 h-48 rounded-full border-4 border-dashed border-slate-200 flex items-center justify-center text-9xl font-khmer text-foreground transition-all duration-200 relative",
+               "relative flex h-32 w-32 items-center justify-center rounded-full border-4 border-dashed border-slate-200 font-khmer text-7xl text-foreground transition-all duration-200 sm:h-36 sm:w-36 sm:text-8xl",
                flash === "good" && "border-accent bg-accent/10 scale-110 shadow-lg",
                flash === "bad" && "border-destructive bg-destructive/10 scale-95 shadow-lg text-destructive animate-shake"
              )}
@@ -168,12 +157,9 @@ export const GamePlatform: React.FC<GameProps> = ({ pool, count, mascot = "🐯"
            </div>
         </div>
 
-        <div className="w-full flex justify-center">
-          <Button variant="secondary" onClick={onQuit}>ចាកចេញ</Button>
-        </div>
       </div>
 
-      <Keyboard activeCode={activeCode} correct={flash === "good"} wrongCode={wrongCode} target={target} />
+      <Keyboard activeCode={activeCode} correct={flash === "good"} wrongCode={wrongCode} target={target} compact />
     </div>
   );
 };

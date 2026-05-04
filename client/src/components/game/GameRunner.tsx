@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { findKeyForTarget, nidaFromEvent } from '@/lib/nida-map';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Keyboard } from '@/components/Keyboard';
 import { sounds } from '@/lib/sounds';
@@ -22,7 +21,7 @@ interface Obstacle {
   hit: boolean;
 }
 
-export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, difficulty = "beginner", onComplete, onQuit }) => {
+export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, difficulty = "beginner", onComplete }) => {
   const [hits, setHits] = useState(0);
   const [miss, setMiss] = useState(0);
   const [score, setScore] = useState(0);
@@ -200,8 +199,15 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
   }, [jump]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
-      <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[400px] flex flex-col justify-between">
+    <div className="flex w-full max-w-[1000px] flex-col items-center justify-center gap-2 mx-auto">
+      <div className={cn(
+        "glass-panel relative flex h-[clamp(240px,36vh,310px)] w-full flex-col justify-between overflow-hidden rounded-3xl p-4 text-center",
+        wrongCode && "animate-shake"
+      )}>
+        {wrongCode && (
+          <div className="pointer-events-none absolute inset-0 z-40 bg-destructive/35 animate-wrong-screen-flash" />
+        )}
+
         <div className="flex justify-between w-full items-center text-muted-foreground font-mono text-sm z-10 relative">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
@@ -227,20 +233,17 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
           </div>
         </div>
 
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20">
+        <div className="absolute left-1/2 top-14 z-20 flex -translate-x-1/2 flex-col items-center gap-1 sm:top-16">
           {currentTarget && (
-            <>
-              <div className="text-xs text-muted-foreground uppercase tracking-widest animate-pulse">វាយអក្សរនេះដើម្បីលោត!</div>
-              <div className="w-28 h-28 rounded-2xl border-4 border-dashed border-primary/50 bg-primary/10 flex items-center justify-center backdrop-blur-sm">
-                <span className="text-7xl font-khmer font-bold text-foreground drop-shadow-lg">
-                  {currentTarget}
-                </span>
-              </div>
-            </>
+            <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-4 border-dashed border-primary/50 bg-primary/10 backdrop-blur-sm sm:h-24 sm:w-24">
+              <span className="font-khmer text-5xl font-bold text-foreground drop-shadow-lg sm:text-6xl">
+                {currentTarget}
+              </span>
+            </div>
           )}
         </div>
 
-        <div className="absolute inset-x-0 bottom-0 h-48 overflow-hidden">
+        <div className="absolute inset-x-0 bottom-0 h-36 overflow-hidden sm:h-40">
           <div 
             className="absolute bottom-0 left-0 w-full h-10 border-t-2 border-foreground/20 bg-gradient-to-t from-foreground/5 to-transparent"
             style={{ 
@@ -252,7 +255,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
           <div 
             ref={heroRef}
             className={cn(
-              "absolute left-16 w-20 h-20 bg-primary/20 border-2 border-primary rounded-2xl flex items-center justify-center text-5xl z-20 transition-shadow duration-200",
+              "absolute left-16 z-20 flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-primary bg-primary/20 text-4xl transition-shadow duration-200 sm:h-20 sm:w-20 sm:text-5xl",
               isJumping && "shadow-[0_0_40px_rgba(90,200,250,0.6)] border-white"
             )}
             style={{ 
@@ -280,7 +283,7 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
               }}
             >
               <div className={cn(
-                "w-16 h-16 rounded-xl border-3 flex items-center justify-center text-4xl font-khmer font-bold transition-all duration-200",
+                "flex h-12 w-12 items-center justify-center rounded-xl border-3 font-khmer text-3xl font-bold transition-all duration-200 sm:h-14 sm:w-14 sm:text-4xl",
                 obs.hit ? "border-accent bg-accent/20 text-accent scale-90" : 
                 obs.passed ? "border-destructive bg-destructive/20 text-destructive animate-shake" :
                 "border-orange-400 bg-orange-400/20 text-foreground shadow-lg shadow-orange-400/20",
@@ -299,12 +302,9 @@ export const GameRunner: React.FC<GameProps> = ({ pool, distanceGoal, mascot, di
           />
         </div>
 
-        <div className="w-full flex justify-center z-10 mt-auto pt-4">
-          <Button variant="secondary" onClick={onQuit}>ចាកចេញ</Button>
-        </div>
       </div>
 
-      <Keyboard activeCode={activeCode} wrongCode={wrongCode} target={currentTarget} />
+      <Keyboard activeCode={activeCode} wrongCode={wrongCode} target={currentTarget} compact />
     </div>
   );
 };

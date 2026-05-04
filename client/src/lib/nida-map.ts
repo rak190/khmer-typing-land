@@ -9,6 +9,7 @@ export interface KeyMap {
 
 export const NIDA_MAP: Record<string, KeyMap> = {
   // Number row
+  Backquote: { base: "«", shift: "»", altgr: "\u200d" },
   Digit1: { base: "១", shift: "!", altgr: "" },
   Digit2: { base: "២", shift: "@", altgr: "" },
   Digit3: { base: "៣", shift: "\"", altgr: "" },
@@ -36,6 +37,7 @@ export const NIDA_MAP: Record<string, KeyMap> = {
   KeyP: { base: "ផ", shift: "ភ", altgr: "ឰ" },
   BracketLeft: { base: "ៀ", shift: "ឿ", altgr: "ឩ" },
   BracketRight:{ base: "ឪ", shift: "ឧ", altgr: "ឳ" },
+  Backslash: { base: "ឮ", shift: "ឭ", altgr: "\\" },
 
   // A row
   KeyA: { base: "ា", shift: "ាំ", altgr: "" },

@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { findKeyForTarget, nidaFromEvent } from '@/lib/nida-map';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Keyboard } from '@/components/Keyboard';
-import { CODE_TO_FINGER, FINGER } from '@/lib/fingers';
 import { sounds } from '@/lib/sounds';
 import { AttackEffect, SkillInfo } from './AttackEffect';
 import { getAvatarSkill } from '@/lib/avatar-skills';
@@ -16,7 +14,7 @@ interface GameProps {
   onQuit: () => void;
 }
 
-export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onComplete, onQuit }) => {
+export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onComplete }) => {
   const [hits, setHits] = useState(0);
   const [miss, setMiss] = useState(0);
   const [hp, setHp] = useState(3);
@@ -202,8 +200,17 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
   }, [spawnEnemy, killsGoal, onComplete, combo, pick]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-4">
-      <div className="glass-panel p-6 rounded-3xl w-full text-center relative overflow-hidden h-[350px] flex flex-col justify-between transition-transform duration-300" ref={boxRef}>
+    <div className="flex w-full max-w-[1000px] flex-col items-center justify-center gap-2 mx-auto">
+      <div
+        className={cn(
+          "glass-panel relative flex h-[clamp(230px,34vh,300px)] w-full flex-col justify-between overflow-hidden rounded-3xl p-4 text-center transition-transform duration-300",
+          wrongCode && "animate-shake"
+        )}
+        ref={boxRef}
+      >
+        {wrongCode && (
+          <div className="pointer-events-none absolute inset-0 z-40 bg-destructive/35 animate-wrong-screen-flash" />
+        )}
         
         <AttackEffect
           trigger={attackTrigger}
@@ -236,7 +243,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
           </div>
         </div>
 
-        <div className="absolute inset-0 flex items-center px-16">
+        <div className="absolute inset-0 flex items-center px-10 sm:px-16">
           {/* Power Up Alert */}
           {powerUp && (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 animate-bounce">
@@ -247,10 +254,10 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
           )}
 
           {/* Hero */}
-          <div className="absolute left-16 bottom-16 flex flex-col items-center gap-2 z-10">
+          <div className="absolute bottom-12 left-10 z-10 flex flex-col items-center gap-1 sm:bottom-14 sm:left-16 sm:gap-2">
             <div 
               className={cn(
-                "w-20 h-20 border-2 rounded-2xl flex items-center justify-center text-5xl transition-all relative",
+                "relative flex h-16 w-16 items-center justify-center rounded-2xl border-2 text-4xl transition-all sm:h-20 sm:w-20 sm:text-5xl",
                 combo > 5 && "scale-110",
                 shield > 0 && "ring-4 ring-cyan-400/50",
                 isAttacking && "scale-125 -rotate-12"
@@ -313,7 +320,7 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
             >
               <div className="absolute -top-16 left-1/2 -translate-x-1/2 flex flex-col items-center">
                 <div className={cn(
-                  "text-5xl font-khmer text-foreground font-bold drop-shadow-sm flex items-center gap-1 bg-white/60 px-4 py-2 rounded-xl border border-border backdrop-blur-sm transition-colors",
+                  "flex items-center gap-1 rounded-xl border border-border bg-white/60 px-3 py-1 font-khmer text-4xl font-bold text-foreground drop-shadow-sm backdrop-blur-sm transition-colors sm:px-4 sm:py-2 sm:text-5xl",
                   wrongCode && "border-destructive text-destructive animate-shake bg-destructive/10"
                 )}>
                   {enemyVisual.target}
@@ -323,9 +330,9 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
                 )}
               </div>
               <div className={cn(
-                "w-20 h-20 bg-red-500/20 border border-red-400/50 rounded-2xl flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(239,68,68,0.3)] relative overflow-hidden",
+                "relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-red-400/50 bg-red-500/20 text-2xl shadow-[0_0_30px_rgba(239,68,68,0.3)] sm:h-20 sm:w-20 sm:text-3xl",
                 stateRef.current.enemy.x > 500 && "animate-pulse border-red-500 scale-105",
-                enemyVisual.isBoss && "border-purple-500 w-28 h-28 text-5xl bg-purple-900/20"
+                enemyVisual.isBoss && "h-20 w-20 border-purple-500 bg-purple-900/20 text-4xl sm:h-24 sm:w-24 sm:text-5xl"
               )}>
                  {enemyVisual.isBoss ? "👹" : "👾"}
               </div>
@@ -333,12 +340,9 @@ export const GameDefender: React.FC<GameProps> = ({ pool, killsGoal, mascot, onC
           )}
         </div>
 
-        <div className="w-full flex justify-center z-10">
-          <Button variant="secondary" onClick={onQuit}>ចាកចេញ</Button>
-        </div>
       </div>
 
-      <Keyboard activeCode={activeCode} wrongCode={wrongCode} target={enemyVisual?.target} />
+      <Keyboard activeCode={activeCode} wrongCode={wrongCode} target={enemyVisual?.target[0]} compact />
     </div>
   );
 };

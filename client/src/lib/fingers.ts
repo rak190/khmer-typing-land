@@ -35,7 +35,7 @@ export const CODE_TO_FINGER: Record<string, keyof typeof FINGER> = {
 
   // Right pinky
   Digit0:"RP", Minus:"RP", Equal:"RP", KeyP:"RP",
-  BracketLeft:"RP", BracketRight:"RP",
+  BracketLeft:"RP", BracketRight:"RP", Backslash:"RP",
   Semicolon:"RP", Quote:"RP", Slash:"RP",
   Backspace:"RP", Enter:"RP", ShiftRight:"RP",
 
