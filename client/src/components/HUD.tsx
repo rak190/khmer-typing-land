@@ -5,6 +5,7 @@ import { makeBadges } from '@/lib/badges';
 import { Link } from 'wouter';
 import { sounds } from '@/lib/sounds';
 import { useTranslation } from '@/lib/useTranslation';
+import donateQrCode from '@/assets/images/donate-qr.jpg';
 import {
   Dialog,
   DialogContent,
@@ -169,7 +170,7 @@ export const HUD: React.FC = () => {
                   <div className="flex flex-col md:flex-row items-center gap-6">
                     <div className="bg-white p-2 rounded-xl shadow-sm border border-amber-100 shrink-0">
                       <img 
-                        src="/src/assets/images/donate-qr.jpg" 
+                        src={donateQrCode} 
                         alt="Donate QR" 
                         className="w-32 h-32 object-contain"
                       />
