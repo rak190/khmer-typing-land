@@ -92,6 +92,7 @@ const Key: React.FC<KeyProps> = ({
   const hasAltGr = Boolean(map?.altgr);
   const topHint = mod === "SHIFT" ? map?.base : map?.shift;
   const rightHint = mod === "ALTGR" ? map?.base : map?.altgr;
+  const showEnglishLegend = Boolean(map);
   const fillBackground = wrong
     ? "linear-gradient(180deg, rgba(239,68,68,0.9), rgba(185,28,28,0.92))"
     : correct
@@ -181,15 +182,23 @@ const Key: React.FC<KeyProps> = ({
         </span>
       </div>
 
-      <span
-        className={cn(
-          "absolute bottom-0.5 right-1 font-mono leading-none transition-colors sm:right-1.5",
-          compact ? "text-[7px]" : "text-[8px] sm:text-[9px]",
-          filledKey ? "text-white/75" : isTargetKey || active ? "text-primary/50" : isModifierNeeded ? "text-amber-600/50" : "text-slate-400"
-        )}
-      >
-        {label}
-      </span>
+      {showEnglishLegend && (
+        <span
+          className={cn(
+            "absolute bottom-1 right-1.5 rounded-sm px-0.5 font-mono font-black leading-none transition-colors sm:right-2",
+            compact ? "text-[9px] sm:text-[10px]" : "text-[10px] sm:text-xs",
+            filledKey
+              ? "bg-white/15 text-white"
+              : isTargetKey || active
+                ? "bg-primary/10 text-primary"
+                : isModifierNeeded
+                  ? "bg-amber-500/10 text-amber-700"
+                  : "bg-slate-900/5 text-slate-600 dark:bg-white/10 dark:text-slate-200"
+          )}
+        >
+          {label}
+        </span>
+      )}
     </div>
   );
 };
