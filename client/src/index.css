@@ -105,6 +105,223 @@
     color: var(--fg);
     padding: 2.5rem;
   }
+
+  .stage-world-hero {
+    @apply relative mb-12 flex flex-col gap-6 overflow-hidden border bg-white/90 p-6 shadow-xl backdrop-blur-xl md:flex-row md:items-center md:p-8;
+    border-color: color-mix(in srgb, var(--stage-accent), transparent 72%);
+    border-radius: 24px;
+    box-shadow: 0 18px 40px color-mix(in srgb, var(--stage-accent), transparent 88%);
+    isolation: isolate;
+  }
+
+  .stage-world-hero > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .stage-world-hero::before {
+    content: "";
+    position: absolute;
+    inset: -35% auto auto -8%;
+    width: 340px;
+    height: 340px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--stage-accent), white 78%);
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .stage-world-hero::after {
+    content: "";
+    position: absolute;
+    right: -72px;
+    bottom: -96px;
+    width: 260px;
+    height: 260px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--stage-accent-alt), white 72%);
+    opacity: 0.36;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .stage-back-button {
+    @apply relative z-10 shrink-0 rounded-full;
+    background: color-mix(in srgb, var(--stage-accent), white 85%);
+    color: color-mix(in srgb, var(--stage-accent), black 20%);
+  }
+
+  .stage-chapter-pill {
+    @apply relative z-10 inline-flex items-center rounded-full px-4 py-1 text-xs font-black uppercase tracking-widest;
+    background: color-mix(in srgb, var(--stage-accent), white 86%);
+    color: color-mix(in srgb, var(--stage-accent), black 24%);
+  }
+
+  .stage-monster-target {
+    @apply relative z-10 flex min-w-[150px] flex-col items-center justify-center border bg-white/80 p-6 text-center shadow-sm;
+    border-color: color-mix(in srgb, var(--stage-accent), transparent 76%);
+    border-radius: 20px;
+  }
+
+  .stage-card {
+    position: relative;
+    display: flex;
+    min-height: 392px;
+    flex-direction: column;
+    overflow: hidden;
+    border: 3px solid transparent;
+    border-radius: 24px;
+    background:
+      linear-gradient(white, white) padding-box,
+      linear-gradient(135deg, color-mix(in srgb, var(--stage-accent), white 55%), transparent 62%) border-box;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06), 0 6px 6px rgba(15, 23, 42, 0.04);
+    transition: transform 180ms cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .stage-card:hover {
+    transform: translateY(-10px) scale(1.015);
+    border-color: color-mix(in srgb, var(--stage-accent), white 18%);
+    box-shadow: 0 18px 30px rgba(15, 23, 42, 0.11), 0 10px 10px rgba(15, 23, 42, 0.05);
+  }
+
+  .stage-card-complete {
+    background:
+      linear-gradient(color-mix(in srgb, white, var(--stage-accent) 4%), color-mix(in srgb, white, var(--stage-accent-alt) 3%)) padding-box,
+      linear-gradient(135deg, color-mix(in srgb, var(--stage-accent), white 35%), color-mix(in srgb, var(--stage-accent-alt), white 45%)) border-box;
+  }
+
+  .stage-card-glow {
+    position: absolute;
+    inset: auto -36px -70px auto;
+    width: 150px;
+    height: 150px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--stage-accent-alt), transparent 65%);
+    opacity: 0.32;
+    pointer-events: none;
+    transition: transform 220ms ease, opacity 220ms ease;
+  }
+
+  .stage-card:hover .stage-card-glow {
+    opacity: 0.52;
+    transform: scale(1.22);
+  }
+
+  .stage-card-topline {
+    @apply relative z-10 mb-4 flex items-center justify-between gap-3;
+  }
+
+  .stage-level-badge {
+    @apply inline-flex items-center rounded-full px-4 py-1.5 text-sm font-black;
+    background: color-mix(in srgb, var(--stage-accent), white 82%);
+    color: color-mix(in srgb, var(--stage-accent), black 24%);
+  }
+
+  .stage-status-badge {
+    @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-wide text-slate-500;
+    background: #f8fafc;
+  }
+
+  .stage-card-complete .stage-status-badge {
+    background: color-mix(in srgb, var(--stage-accent-alt), white 84%);
+    color: color-mix(in srgb, var(--stage-accent-alt), black 26%);
+  }
+
+  .stage-stars {
+    @apply relative z-10 mb-3 flex justify-center gap-1.5;
+  }
+
+  .stage-star {
+    transition: transform 160ms ease, color 160ms ease, fill 160ms ease;
+  }
+
+  .stage-card:hover .stage-star-earned {
+    transform: rotate(-7deg) scale(1.09);
+  }
+
+  .stage-star-earned {
+    fill: #fbbf24;
+    color: #f59e0b;
+    filter: drop-shadow(0 3px 4px rgba(245, 158, 11, 0.28));
+  }
+
+  .stage-star-empty {
+    fill: #e2e8f0;
+    color: #cbd5e1;
+  }
+
+  .stage-card-symbol {
+    @apply relative z-10 mx-auto mb-4 grid h-20 w-full max-w-[210px] grid-cols-3 items-center gap-2;
+  }
+
+  .stage-card-symbol span {
+    @apply flex aspect-square items-center justify-center rounded-2xl text-2xl font-black shadow-sm;
+    background: color-mix(in srgb, var(--stage-accent), white 88%);
+    color: color-mix(in srgb, var(--stage-accent), black 20%);
+  }
+
+  .stage-card-title {
+    @apply relative z-10 mb-4 line-clamp-2 min-h-[3.5rem] text-xl font-black leading-snug text-slate-700;
+  }
+
+  .stage-card-meta {
+    @apply relative z-10 mb-4 grid grid-cols-3 gap-2;
+  }
+
+  .stage-card-meta div {
+    @apply rounded-2xl bg-slate-50 px-2 py-2 text-[10px] font-black uppercase tracking-wide text-slate-500;
+  }
+
+  .stage-card-meta span {
+    @apply mb-0.5 block font-mono text-lg text-slate-800;
+  }
+
+  .stage-target-preview {
+    @apply relative z-10 mb-5 flex min-h-8 flex-wrap justify-center gap-1.5;
+  }
+
+  .stage-target-chip {
+    @apply inline-flex min-w-7 items-center justify-center rounded-full bg-slate-100 px-2 py-1 text-xs font-bold text-slate-500;
+  }
+
+  .stage-play-button {
+    @apply relative z-10 mt-auto flex w-full items-center justify-center gap-2 py-6 text-lg font-black text-white;
+    border-radius: 16px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--stage-accent), white 6%), color-mix(in srgb, var(--stage-accent), black 18%));
+    box-shadow: 0 5px 0 color-mix(in srgb, var(--stage-accent), black 30%), 0 12px 18px color-mix(in srgb, var(--stage-accent), transparent 78%);
+  }
+
+  .stage-play-button:hover {
+    color: white;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--stage-accent), white 14%), color-mix(in srgb, var(--stage-accent), black 10%));
+  }
+
+  .stage-play-button:active {
+    transform: translateY(5px) scale(0.99);
+    box-shadow: 0 0 0 color-mix(in srgb, var(--stage-accent), black 30%);
+  }
+
+  .dark .stage-world-hero,
+  .dark .stage-card {
+    background:
+      linear-gradient(color-mix(in srgb, var(--card), white 4%), color-mix(in srgb, var(--card), var(--stage-accent) 7%)) padding-box,
+      linear-gradient(135deg, color-mix(in srgb, var(--stage-accent), white 25%), transparent 64%) border-box;
+  }
+
+  .dark .stage-card-title,
+  .dark .stage-card-meta span {
+    color: var(--fg);
+  }
+
+  .dark .stage-status-badge,
+  .dark .stage-card-meta div,
+  .dark .stage-target-chip {
+    background: color-mix(in srgb, var(--secondary), black 8%);
+    color: var(--muted-fg);
+  }
   
   button, .button {
     @apply font-bold tracking-wide transition-transform active:scale-95;
