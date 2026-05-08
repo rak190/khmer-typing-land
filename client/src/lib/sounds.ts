@@ -2,8 +2,17 @@ export interface MusicTrack {
   id: string;
   name: string;
   nameKh: string;
-  file: string;
+  file?: string;
   icon: string;
+  mood: string;
+  generated?: {
+    tempo: number;
+    wave: OscillatorType;
+    lead: number[];
+    bass: number[];
+    pad: number[];
+    volume: number;
+  };
 }
 
 export interface SoundTheme {
@@ -21,10 +30,85 @@ export interface SoundTheme {
 }
 
 export const MUSIC_TRACKS: MusicTrack[] = [
-  { id: "main", name: "Khmer Spirit", nameKh: "ចិត្តខ្មែរ", file: "/main-bg.mp3", icon: "🎵" },
-  { id: "game", name: "Game Adventure", nameKh: "ដំណើរផ្សងព្រេង", file: "/game-bg.mp3", icon: "🎮" },
-  { id: "happy", name: "Happy Day", nameKh: "ថ្ងៃសប្បាយ", file: "/happy-bg.mp3", icon: "☀️" },
-  { id: "calm", name: "Calm & Relaxing", nameKh: "ស្ងប់ស្ងាត់", file: "/calm-bg.mp3", icon: "🌿" },
+  { id: "main", name: "Khmer Spirit", nameKh: "ចិត្តខ្មែរ", file: "/main-bg.mp3", icon: "🎵", mood: "Warm Khmer learning music" },
+  { id: "game", name: "Game Adventure", nameKh: "ដំណើរផ្សងព្រេង", file: "/game-bg.mp3", icon: "🎮", mood: "Energetic challenge music" },
+  { id: "happy", name: "Happy Day", nameKh: "ថ្ងៃសប្បាយ", file: "/happy-bg.mp3", icon: "☀️", mood: "Bright and cheerful music" },
+  { id: "calm", name: "Calm & Relaxing", nameKh: "ស្ងប់ស្ងាត់", file: "/calm-bg.mp3", icon: "🌿", mood: "Gentle focus music" },
+  {
+    id: "angkor-bells",
+    name: "Angkor Bells",
+    nameKh: "ជួងអង្គរ",
+    icon: "🔔",
+    mood: "Sparkly temple bell loop",
+    generated: {
+      tempo: 96,
+      wave: "triangle",
+      lead: [659.25, 783.99, 880, 783.99, 987.77, 880, 783.99, 659.25],
+      bass: [261.63, 329.63, 392, 329.63],
+      pad: [523.25, 659.25, 783.99],
+      volume: 0.12,
+    },
+  },
+  {
+    id: "lotus-dance",
+    name: "Lotus Dance",
+    nameKh: "របាំផ្កាឈូក",
+    icon: "🪷",
+    mood: "Soft floating melody",
+    generated: {
+      tempo: 82,
+      wave: "sine",
+      lead: [587.33, 659.25, 783.99, 880, 783.99, 659.25, 587.33, 523.25],
+      bass: [293.66, 349.23, 392, 349.23],
+      pad: [587.33, 739.99, 880],
+      volume: 0.1,
+    },
+  },
+  {
+    id: "jungle-jump",
+    name: "Jungle Jump",
+    nameKh: "ព្រៃលោតសប្បាយ",
+    icon: "🌳",
+    mood: "Bouncy forest typing beat",
+    generated: {
+      tempo: 118,
+      wave: "square",
+      lead: [392, 493.88, 587.33, 493.88, 659.25, 587.33, 493.88, 392],
+      bass: [196, 246.94, 293.66, 246.94],
+      pad: [392, 493.88, 587.33],
+      volume: 0.075,
+    },
+  },
+  {
+    id: "mekong-ripple",
+    name: "Mekong Ripple",
+    nameKh: "រលកមេគង្គ",
+    icon: "🌊",
+    mood: "Gentle river sparkle",
+    generated: {
+      tempo: 74,
+      wave: "sine",
+      lead: [523.25, 659.25, 783.99, 659.25, 587.33, 739.99, 880, 739.99],
+      bass: [261.63, 329.63, 293.66, 349.23],
+      pad: [523.25, 659.25, 880],
+      volume: 0.095,
+    },
+  },
+  {
+    id: "royal-parade",
+    name: "Royal Parade",
+    nameKh: "ដង្ហែរាជវាំង",
+    icon: "👑",
+    mood: "Tiny victory parade",
+    generated: {
+      tempo: 108,
+      wave: "triangle",
+      lead: [523.25, 659.25, 783.99, 1046.5, 987.77, 783.99, 659.25, 783.99],
+      bass: [261.63, 392, 329.63, 392],
+      pad: [523.25, 659.25, 987.77],
+      volume: 0.11,
+    },
+  },
 ];
 
 export const SOUND_THEMES: SoundTheme[] = [
@@ -103,6 +187,9 @@ class SoundManager {
   private effectsEnabled = true;
   private bgAudio: HTMLAudioElement | null = null;
   private isBgPlaying = false;
+  private bgMaster: GainNode | null = null;
+  private bgTimer: number | null = null;
+  private bgStep = 0;
 
   constructor() {
     const savedTrack = localStorage.getItem("selectedMusicTrack");
@@ -123,6 +210,9 @@ class SoundManager {
   private init() {
     if (!this.ctx) {
       this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+    if (this.ctx.state === "suspended") {
+      this.ctx.resume().catch(() => undefined);
     }
   }
 
@@ -205,6 +295,27 @@ class SoundManager {
 
     osc.start();
     osc.stop(this.ctx.currentTime + duration);
+  }
+
+  private playBackgroundTone(freq: number, type: OscillatorType, delay: number, duration: number, volume: number) {
+    if (this.isMuted || !this.ctx || !this.bgMaster) return;
+
+    const startAt = this.ctx.currentTime + delay;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, startAt);
+
+    gain.gain.setValueAtTime(0.0001, startAt);
+    gain.gain.exponentialRampToValueAtTime(volume, startAt + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+
+    osc.connect(gain);
+    gain.connect(this.bgMaster);
+
+    osc.start(startAt);
+    osc.stop(startAt + duration + 0.04);
   }
 
   playKeystroke() {
@@ -298,6 +409,66 @@ class SoundManager {
     }
   }
 
+  private startGeneratedBackground(track: MusicTrack) {
+    if (!track.generated || !this.ctx) return;
+
+    if (this.bgAudio) {
+      this.bgAudio.pause();
+      this.bgAudio.currentTime = 0;
+    }
+
+    this.stopGeneratedBackground();
+
+    const generated = track.generated;
+    const stepSeconds = 60 / generated.tempo;
+    this.bgMaster = this.ctx.createGain();
+    this.bgMaster.gain.setValueAtTime(generated.volume, this.ctx.currentTime);
+    this.bgMaster.connect(this.ctx.destination);
+    this.bgStep = 0;
+
+    const tick = () => {
+      if (!track.generated) return;
+
+      const leadNote = generated.lead[this.bgStep % generated.lead.length];
+      this.playBackgroundTone(leadNote, generated.wave, 0, stepSeconds * 0.72, 0.24);
+
+      if (this.bgStep % 2 === 1) {
+        this.playBackgroundTone(leadNote * 2, "sine", stepSeconds * 0.2, stepSeconds * 0.35, 0.07);
+      }
+
+      if (this.bgStep % 4 === 0) {
+        const bassNote = generated.bass[Math.floor(this.bgStep / 4) % generated.bass.length];
+        this.playBackgroundTone(bassNote, "sine", 0, stepSeconds * 2.8, 0.14);
+      }
+
+      if (this.bgStep % 8 === 0) {
+        generated.pad.forEach((note, index) => {
+          this.playBackgroundTone(note, "sine", index * 0.04, stepSeconds * 6.2, 0.035);
+        });
+      }
+
+      this.bgStep += 1;
+    };
+
+    tick();
+    this.bgTimer = window.setInterval(tick, stepSeconds * 1000);
+    this.isBgPlaying = true;
+  }
+
+  private stopGeneratedBackground() {
+    if (this.bgTimer) {
+      window.clearInterval(this.bgTimer);
+      this.bgTimer = null;
+    }
+
+    if (this.bgMaster) {
+      this.bgMaster.disconnect();
+      this.bgMaster = null;
+    }
+
+    this.bgStep = 0;
+  }
+
   startBackgroundMusic() {
     if (this.isMuted || this.isBgPlaying) return;
     this.init();
@@ -308,6 +479,15 @@ class SoundManager {
     }
 
     const track = MUSIC_TRACKS.find((item) => item.id === this.currentTrackId) || MUSIC_TRACKS[0];
+
+    if (track.generated) {
+      this.startGeneratedBackground(track);
+      return;
+    }
+
+    if (!track.file) return;
+
+    this.stopGeneratedBackground();
 
     if (!this.bgAudio || this.bgAudio.src !== window.location.origin + track.file) {
       if (this.bgAudio) {
@@ -340,11 +520,12 @@ class SoundManager {
   }
 
   stopBackgroundMusic() {
+    this.stopGeneratedBackground();
     if (this.bgAudio) {
       this.bgAudio.pause();
       this.bgAudio.currentTime = 0;
-      this.isBgPlaying = false;
     }
+    this.isBgPlaying = false;
   }
 
   toggleBackgroundMusic() {
@@ -361,8 +542,12 @@ class SoundManager {
   }
 
   setVolume(volume: number) {
+    const safeVolume = Math.max(0, Math.min(1, volume));
     if (this.bgAudio) {
-      this.bgAudio.volume = Math.max(0, Math.min(1, volume));
+      this.bgAudio.volume = safeVolume;
+    }
+    if (this.bgMaster && this.ctx) {
+      this.bgMaster.gain.setValueAtTime(safeVolume, this.ctx.currentTime);
     }
   }
 }

@@ -244,7 +244,7 @@ export const ThemeSelector: React.FC = () => {
                 ជ្រើសរើសចម្រៀងផ្ទៃខាងក្រោយដែលអ្នកចូលចិត្តពេលលេង
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               {MUSIC_TRACKS.map((track) => (
                 <button
                   key={track.id}
@@ -266,9 +266,10 @@ export const ThemeSelector: React.FC = () => {
                     </div>
                   )}
                   <div className="text-3xl">{track.icon}</div>
-                  <div className="flex-1">
+                  <div className="min-w-0 flex-1">
                     <p className="font-bold text-foreground">{track.name}</p>
                     <p className="text-sm text-muted-foreground">{track.nameKh}</p>
+                    <p className="text-xs text-primary font-bold line-clamp-1">{track.mood}</p>
                   </div>
                   {selectedMusic === track.id && (
                     <div className="flex items-center gap-1 text-primary">
