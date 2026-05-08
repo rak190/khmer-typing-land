@@ -6,6 +6,20 @@ export interface MusicTrack {
   icon: string;
 }
 
+export interface SoundTheme {
+  id: string;
+  name: string;
+  nameKh: string;
+  description: string;
+  icon: string;
+  wave: OscillatorType;
+  keystrokeBase: number;
+  keystrokeRange: number;
+  correct: number[];
+  wrong: number[];
+  victory: number[];
+}
+
 export const MUSIC_TRACKS: MusicTrack[] = [
   { id: "main", name: "Khmer Spirit", nameKh: "ចិត្តខ្មែរ", file: "/main-bg.mp3", icon: "🎵" },
   { id: "game", name: "Game Adventure", nameKh: "ដំណើរផ្សងព្រេង", file: "/game-bg.mp3", icon: "🎮" },
@@ -13,16 +27,107 @@ export const MUSIC_TRACKS: MusicTrack[] = [
   { id: "calm", name: "Calm & Relaxing", nameKh: "ស្ងប់ស្ងាត់", file: "/calm-bg.mp3", icon: "🌿" },
 ];
 
+export const SOUND_THEMES: SoundTheme[] = [
+  {
+    id: "bubble",
+    name: "Bubble Pop",
+    nameKh: "ប៊ូប៊លសប្បាយ",
+    description: "Soft pop sounds for young learners.",
+    icon: "🫧",
+    wave: "sine",
+    keystrokeBase: 650,
+    keystrokeRange: 180,
+    correct: [880, 1174.66],
+    wrong: [220, 185],
+    victory: [523.25, 659.25, 783.99, 1046.5, 1318.51],
+  },
+  {
+    id: "temple",
+    name: "Temple Bells",
+    nameKh: "សំឡេងជួងប្រាសាទ",
+    description: "Bright bell tones inspired by Khmer temples.",
+    icon: "🔔",
+    wave: "triangle",
+    keystrokeBase: 520,
+    keystrokeRange: 140,
+    correct: [784, 1046.5, 1318.51],
+    wrong: [246.94, 196],
+    victory: [392, 523.25, 659.25, 783.99, 1046.5, 1567.98],
+  },
+  {
+    id: "jungle",
+    name: "Jungle Quest",
+    nameKh: "ដំណើរព្រៃរីករាយ",
+    description: "Playful adventure sounds with a warm bounce.",
+    icon: "🌿",
+    wave: "square",
+    keystrokeBase: 440,
+    keystrokeRange: 120,
+    correct: [659.25, 783.99, 987.77],
+    wrong: [174.61, 146.83],
+    victory: [329.63, 392, 493.88, 659.25, 783.99, 987.77],
+  },
+  {
+    id: "water",
+    name: "Mekong Splash",
+    nameKh: "ទន្លេមេគង្គស្រស់",
+    description: "Light splashy tones that feel calm and happy.",
+    icon: "🌊",
+    wave: "sine",
+    keystrokeBase: 720,
+    keystrokeRange: 90,
+    correct: [987.77, 1174.66, 1396.91],
+    wrong: [293.66, 246.94],
+    victory: [587.33, 739.99, 880, 1174.66, 1396.91],
+  },
+  {
+    id: "royal",
+    name: "Royal Stars",
+    nameKh: "ផ្កាយរាជវាំង",
+    description: "Sparkly reward sounds for confident typing.",
+    icon: "👑",
+    wave: "triangle",
+    keystrokeBase: 760,
+    keystrokeRange: 160,
+    correct: [1046.5, 1318.51, 1567.98],
+    wrong: [196, 164.81],
+    victory: [523.25, 659.25, 783.99, 987.77, 1318.51, 1567.98],
+  },
+];
+
 class SoundManager {
   private ctx: AudioContext | null = null;
   private isMuted = false;
   private currentTrackId = "main";
+  private currentSoundThemeId = "bubble";
+  private effectsEnabled = true;
+  private bgAudio: HTMLAudioElement | null = null;
+  private isBgPlaying = false;
+
+  constructor() {
+    const savedTrack = localStorage.getItem("selectedMusicTrack");
+    const savedSoundTheme = localStorage.getItem("selectedSoundTheme");
+    const savedEffects = localStorage.getItem("typingSoundEffects");
+
+    if (savedTrack && MUSIC_TRACKS.some((track) => track.id === savedTrack)) {
+      this.currentTrackId = savedTrack;
+    }
+
+    if (savedSoundTheme && SOUND_THEMES.some((theme) => theme.id === savedSoundTheme)) {
+      this.currentSoundThemeId = savedSoundTheme;
+    }
+
+    this.effectsEnabled = savedEffects !== "false";
+  }
 
   private init() {
     if (!this.ctx) {
-      this.ctx = new (window.AudioContext ||
-        (window as any).webkitAudioContext)();
+      this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
     }
+  }
+
+  private getActiveSoundTheme() {
+    return SOUND_THEMES.find((theme) => theme.id === this.currentSoundThemeId) || SOUND_THEMES[0];
   }
 
   setMuted(muted: boolean) {
@@ -41,17 +146,48 @@ class SoundManager {
   }
 
   setCurrentTrack(trackId: string) {
+    if (!MUSIC_TRACKS.some((track) => track.id === trackId)) return;
     this.currentTrackId = trackId;
-    localStorage.setItem('selectedMusicTrack', trackId);
+    localStorage.setItem("selectedMusicTrack", trackId);
   }
 
-  private playTone(
-    freq: number,
-    type: OscillatorType,
-    duration: number,
-    volume: number,
-  ) {
-    if (this.isMuted) return;
+  getCurrentSoundThemeId() {
+    return this.currentSoundThemeId;
+  }
+
+  setCurrentSoundTheme(themeId: string) {
+    if (!SOUND_THEMES.some((theme) => theme.id === themeId)) return;
+    this.currentSoundThemeId = themeId;
+    localStorage.setItem("selectedSoundTheme", themeId);
+  }
+
+  setSoundEffectsEnabled(enabled: boolean) {
+    this.effectsEnabled = enabled;
+    localStorage.setItem("typingSoundEffects", String(enabled));
+  }
+
+  getSoundEffectsEnabled() {
+    return this.effectsEnabled;
+  }
+
+  previewSoundTheme(themeId: string) {
+    if (!SOUND_THEMES.some((theme) => theme.id === themeId)) return;
+
+    const previousTheme = this.currentSoundThemeId;
+    const previousEnabled = this.effectsEnabled;
+
+    this.currentSoundThemeId = themeId;
+    this.effectsEnabled = true;
+    this.playKeystroke();
+    setTimeout(() => this.playCorrect(), 80);
+    setTimeout(() => {
+      this.currentSoundThemeId = previousTheme;
+      this.effectsEnabled = previousEnabled;
+    }, 360);
+  }
+
+  private playTone(freq: number, type: OscillatorType, duration: number, volume: number) {
+    if (this.isMuted || !this.effectsEnabled) return;
     this.init();
     if (!this.ctx) return;
 
@@ -62,10 +198,7 @@ class SoundManager {
     osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
 
     gain.gain.setValueAtTime(volume, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(
-      0.01,
-      this.ctx.currentTime + duration,
-    );
+    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
 
     osc.connect(gain);
     gain.connect(this.ctx.destination);
@@ -75,96 +208,106 @@ class SoundManager {
   }
 
   playKeystroke() {
-    this.playTone(600 + Math.random() * 100, "sine", 0.03, 0.03);
+    const theme = this.getActiveSoundTheme();
+    this.playTone(theme.keystrokeBase + Math.random() * theme.keystrokeRange, theme.wave, 0.03, 0.03);
   }
 
   playCorrect() {
-    this.playTone(880, "sine", 0.1, 0.12);
-    setTimeout(() => this.playTone(1100, "sine", 0.08, 0.08), 50);
+    const theme = this.getActiveSoundTheme();
+    theme.correct.forEach((note, i) => {
+      setTimeout(() => this.playTone(note, theme.wave, 0.08, i === 0 ? 0.1 : 0.075), i * 55);
+    });
   }
 
   playWrong() {
-    this.playTone(180, "sawtooth", 0.15, 0.08);
-    setTimeout(() => this.playTone(150, "sawtooth", 0.1, 0.05), 80);
+    const theme = this.getActiveSoundTheme();
+    theme.wrong.forEach((note, i) => {
+      setTimeout(() => this.playTone(note, "sawtooth", 0.12, i === 0 ? 0.07 : 0.045), i * 75);
+    });
   }
 
   playClick() {
-    this.playTone(440, "sine", 0.05, 0.05);
+    const theme = this.getActiveSoundTheme();
+    this.playTone(theme.keystrokeBase * 0.72, theme.wave, 0.05, 0.045);
   }
 
   playLevelUp() {
-    const notes = [523.25, 659.25, 783.99, 1046.50];
-    notes.forEach((note, i) => {
-      setTimeout(() => this.playTone(note, "sine", 0.15, 0.1), i * 100);
+    const theme = this.getActiveSoundTheme();
+    theme.victory.slice(0, 4).forEach((note, i) => {
+      setTimeout(() => this.playTone(note, theme.wave, 0.15, 0.1), i * 100);
     });
   }
 
   playStarEarned() {
-    this.playTone(700, "sine", 0.1, 0.1);
-    setTimeout(() => this.playTone(900, "sine", 0.1, 0.1), 80);
-    setTimeout(() => this.playTone(1200, "sine", 0.15, 0.12), 160);
+    const theme = this.getActiveSoundTheme();
+    const notes = theme.correct.length >= 3 ? theme.correct : [...theme.correct, theme.correct[theme.correct.length - 1] * 1.25];
+
+    notes.slice(0, 3).forEach((note, i) => {
+      setTimeout(() => this.playTone(note, theme.wave, i === 2 ? 0.15 : 0.1, i === 2 ? 0.12 : 0.1), i * 80);
+    });
   }
 
   playBadgeUnlock() {
-    const melody = [392, 523.25, 659.25, 783.99, 1046.50];
-    melody.forEach((note, i) => {
+    const theme = this.getActiveSoundTheme();
+    theme.victory.forEach((note, i) => {
       setTimeout(() => this.playTone(note, "triangle", 0.2, 0.1), i * 120);
     });
   }
 
   playRaceStart() {
-    this.playTone(440, "square", 0.15, 0.08);
-    setTimeout(() => this.playTone(440, "square", 0.15, 0.08), 400);
-    setTimeout(() => this.playTone(880, "square", 0.3, 0.1), 800);
+    const theme = this.getActiveSoundTheme();
+    this.playTone(theme.keystrokeBase * 0.75, "square", 0.15, 0.08);
+    setTimeout(() => this.playTone(theme.keystrokeBase * 0.75, "square", 0.15, 0.08), 400);
+    setTimeout(() => this.playTone(theme.keystrokeBase * 1.5, "square", 0.3, 0.1), 800);
   }
 
   playVictory() {
-    const fanfare = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98];
-    fanfare.forEach((note, i) => {
-      setTimeout(() => this.playTone(note, "sine", 0.2, 0.12), i * 80);
+    const theme = this.getActiveSoundTheme();
+    theme.victory.forEach((note, i) => {
+      setTimeout(() => this.playTone(note, theme.wave, 0.2, 0.12), i * 80);
     });
     setTimeout(() => {
-      this.playTone(1046.50, "sine", 0.5, 0.15);
+      this.playTone(theme.victory[theme.victory.length - 2] || 1046.5, theme.wave, 0.5, 0.15);
     }, 600);
   }
 
   playStreak(count: number) {
-    const baseFreq = 400 + Math.min(count * 50, 400);
-    this.playTone(baseFreq, "sine", 0.08, 0.06);
+    const theme = this.getActiveSoundTheme();
+    const baseFreq = theme.keystrokeBase + Math.min(count * 45, 420);
+    this.playTone(baseFreq, theme.wave, 0.08, 0.06);
     if (count >= 5) {
-      setTimeout(() => this.playTone(baseFreq * 1.5, "sine", 0.06, 0.04), 40);
+      setTimeout(() => this.playTone(baseFreq * 1.5, theme.wave, 0.06, 0.04), 40);
     }
     if (count >= 10) {
-      setTimeout(() => this.playTone(baseFreq * 2, "sine", 0.06, 0.04), 80);
+      setTimeout(() => this.playTone(baseFreq * 2, theme.wave, 0.06, 0.04), 80);
     }
   }
 
   playComboBreak() {
-    this.playTone(300, "sawtooth", 0.2, 0.06);
-    setTimeout(() => this.playTone(200, "sawtooth", 0.3, 0.04), 100);
+    const theme = this.getActiveSoundTheme();
+    this.playTone(theme.wrong[0] || 300, "sawtooth", 0.2, 0.06);
+    setTimeout(() => this.playTone(theme.wrong[1] || 200, "sawtooth", 0.3, 0.04), 100);
   }
 
   playCountdown(num: number) {
+    const theme = this.getActiveSoundTheme();
     if (num > 0) {
-      this.playTone(440, "square", 0.1, 0.08);
+      this.playTone(theme.keystrokeBase * 0.75, "square", 0.1, 0.08);
     } else {
-      this.playTone(880, "square", 0.2, 0.1);
+      this.playTone(theme.keystrokeBase * 1.5, "square", 0.2, 0.1);
     }
   }
-
-  private bgAudio: HTMLAudioElement | null = null;
-  private isBgPlaying = false;
 
   startBackgroundMusic() {
     if (this.isMuted || this.isBgPlaying) return;
     this.init();
 
-    const savedTrack = localStorage.getItem('selectedMusicTrack');
-    if (savedTrack) {
+    const savedTrack = localStorage.getItem("selectedMusicTrack");
+    if (savedTrack && MUSIC_TRACKS.some((track) => track.id === savedTrack)) {
       this.currentTrackId = savedTrack;
     }
 
-    const track = MUSIC_TRACKS.find(t => t.id === this.currentTrackId) || MUSIC_TRACKS[0];
+    const track = MUSIC_TRACKS.find((item) => item.id === this.currentTrackId) || MUSIC_TRACKS[0];
 
     if (!this.bgAudio || this.bgAudio.src !== window.location.origin + track.file) {
       if (this.bgAudio) {

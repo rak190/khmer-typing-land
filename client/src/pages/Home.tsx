@@ -49,7 +49,8 @@ export const Home: React.FC = () => {
       className="min-h-screen pb-20 pt-20 relative overflow-hidden font-body transition-colors duration-500"
       style={{ 
         backgroundColor: currentTheme.colors.background,
-        backgroundImage: `linear-gradient(to bottom, ${currentTheme.colors.background}, ${currentTheme.colors.secondary}40, ${currentTheme.colors.background})`
+        backgroundImage: currentTheme.scene?.backgroundImage || `linear-gradient(to bottom, ${currentTheme.colors.background}, ${currentTheme.colors.secondary}40, ${currentTheme.colors.background})`,
+        backgroundSize: currentTheme.scene ? `auto, ${currentTheme.scene.patternSize}` : undefined
       }}
     >
       {/* Concept-inspired background elements */}

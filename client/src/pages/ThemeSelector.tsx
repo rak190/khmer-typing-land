@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, Check, Palette, Languages, Volume2, Music, Play, Pause } from "lucide-react";
+import { ArrowLeft, Check, Languages, Music, Palette, Sparkles, Volume2 } from "lucide-react";
 import { HUD } from "@/components/HUD";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/lib/store";
 import { THEMES, getThemeById, applyTheme } from "@/lib/themes";
 import { cn } from "@/lib/utils";
-import { sounds, MUSIC_TRACKS } from "@/lib/sounds";
+import { MUSIC_TRACKS, SOUND_THEMES, sounds } from "@/lib/sounds";
 
 export const ThemeSelector: React.FC = () => {
   const { profile, immersionMode, setImmersionMode } = useGameStore();
   const [initialTheme] = useState(() => (profile as any).theme || "angkor-classic");
-  const [initialMusic] = useState(() => localStorage.getItem('selectedMusicTrack') || 'main');
+  const [initialMusic] = useState(() => sounds.getCurrentTrackId());
+  const [initialSoundTheme] = useState(() => sounds.getCurrentSoundThemeId());
+  const [initialSoundEffects] = useState(() => sounds.getSoundEffectsEnabled());
   
   const [selectedTheme, setSelectedTheme] = useState(initialTheme);
-  const [soundEffects, setSoundEffects] = useState(true);
+  const [soundEffects, setSoundEffects] = useState(initialSoundEffects);
   const [selectedMusic, setSelectedMusic] = useState(initialMusic);
-  const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
+  const [selectedSoundTheme, setSelectedSoundTheme] = useState(initialSoundTheme);
 
   const handleSelectTheme = (themeId: string) => {
     setSelectedTheme(themeId);
@@ -30,6 +32,23 @@ export const ThemeSelector: React.FC = () => {
     applyTheme(theme);
     // Revert music
     sounds.changeTrack(initialMusic);
+    sounds.setCurrentSoundTheme(initialSoundTheme);
+    sounds.setSoundEffectsEnabled(initialSoundEffects);
+  };
+
+  const handleToggleSoundEffects = () => {
+    const next = !soundEffects;
+    setSoundEffects(next);
+    sounds.setSoundEffectsEnabled(next);
+    if (next) sounds.playClick();
+  };
+
+  const handleSelectSoundTheme = (themeId: string) => {
+    setSelectedSoundTheme(themeId);
+    sounds.setCurrentSoundTheme(themeId);
+    sounds.setSoundEffectsEnabled(true);
+    setSoundEffects(true);
+    sounds.previewSoundTheme(themeId);
   };
 
   const savePreferences = async () => {
@@ -41,8 +60,9 @@ export const ThemeSelector: React.FC = () => {
 
       // Persist selected music track
       localStorage.setItem('selectedMusicTrack', selectedMusic);
-      localStorage.setItem('typingSoundEffects', String(soundEffects));
       sounds.setCurrentTrack(selectedMusic);
+      sounds.setCurrentSoundTheme(selectedSoundTheme);
+      sounds.setSoundEffectsEnabled(soundEffects);
 
       alert("បានរក្សាទុកការកំណត់រួចរាល់!");
     } catch (error) {
@@ -95,19 +115,45 @@ export const ThemeSelector: React.FC = () => {
                   </div>
                 )}
 
-                <div className="text-5xl mb-4">{theme.icon}</div>
+                <div
+                  className="theme-scene-preview mb-4"
+                  style={{
+                    ['--preview-primary' as string]: theme.colors.primary,
+                    ['--preview-accent' as string]: theme.colors.accent,
+                    ['--preview-sky' as string]: theme.scene?.sky || theme.colors.background,
+                    ['--preview-ground' as string]: theme.scene?.ground || theme.colors.secondary,
+                    ['--preview-pattern' as string]: theme.scene?.patternImage || "none",
+                    ['--preview-pattern-size' as string]: theme.scene?.patternSize || "96px 96px",
+                  }}
+                >
+                  <div className="theme-preview-pattern" />
+                  <div className="theme-preview-sun">{theme.scene?.accents[1] || "✨"}</div>
+                  <div className="theme-preview-main">{theme.scene?.mascot || theme.icon}</div>
+                  <div className="theme-preview-path" />
+                  <div className="theme-preview-accents">
+                    {(theme.scene?.accents || [theme.icon]).map((item, index) => (
+                      <span key={`${item}-${index}`}>{item}</span>
+                    ))}
+                  </div>
+                </div>
                 <h3 className="text-xl font-black text-foreground mb-1">{theme.nameKh}</h3>
+                <p className="text-xs font-black text-primary uppercase tracking-widest mb-2">{theme.scene?.label}</p>
                 <p className="text-xs text-muted-foreground mb-4">{theme.description}</p>
 
-                <div className="flex gap-2">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                    {theme.scene?.pattern}
+                  </span>
+                  <div className="flex gap-1.5">
                   {Object.entries(theme.colors).map(([key, color]) => (
                     <div
                       key={key}
-                      className="w-8 h-8 rounded-lg border border-border shadow-sm"
+                      className="w-6 h-6 rounded-lg border border-border shadow-sm"
                       style={{ backgroundColor: color }}
                       title={key}
                     />
                   ))}
+                  </div>
                 </div>
               </button>
             ))}
@@ -125,7 +171,7 @@ export const ThemeSelector: React.FC = () => {
                 </p>
               </div>
               <button
-                onClick={() => setSoundEffects(!soundEffects)}
+                onClick={handleToggleSoundEffects}
                 className={cn(
                   "relative w-14 h-8 rounded-full transition-colors",
                   soundEffects ? "bg-primary" : "bg-muted"
@@ -139,6 +185,52 @@ export const ThemeSelector: React.FC = () => {
                   )}
                 />
               </button>
+            </div>
+          </div>
+
+          <div className="border-t border-border pt-6 mt-6">
+            <div className="mb-4">
+              <h3 className="text-lg font-black text-foreground flex items-center gap-2">
+                <Sparkles size={20} className="text-primary" />
+                ឈុតសំឡេងហ្គេម
+              </h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                ជ្រើសរើសសំឡេងវាយ អបអរ និងសំឡេងលេងហ្គេមឱ្យកុមាររីករាយជាងមុន
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {SOUND_THEMES.map((theme) => (
+                <button
+                  key={theme.id}
+                  onClick={() => handleSelectSoundTheme(theme.id)}
+                  className={cn(
+                    "relative p-4 rounded-xl border-2 transition-all duration-300 text-left flex items-center gap-4 group",
+                    selectedSoundTheme === theme.id
+                      ? "border-primary bg-primary/10 shadow-md"
+                      : "border-border hover:border-primary/50 bg-card hover:shadow-sm"
+                  )}
+                  data-testid={`button-sound-theme-${theme.id}`}
+                >
+                  {selectedSoundTheme === theme.id && (
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-md">
+                      <Check className="text-primary-foreground" size={14} />
+                    </div>
+                  )}
+                  <div className="text-3xl">{theme.icon}</div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-bold text-foreground">{theme.name}</p>
+                    <p className="text-sm font-bold text-primary">{theme.nameKh}</p>
+                    <p className="text-xs text-muted-foreground line-clamp-2">{theme.description}</p>
+                  </div>
+                  {selectedSoundTheme === theme.id && (
+                    <div className="flex items-center gap-1 text-primary">
+                      <div className="w-1 h-3 bg-primary rounded animate-pulse" />
+                      <div className="w-1 h-5 bg-primary rounded animate-pulse" style={{ animationDelay: '0.1s' }} />
+                      <div className="w-1 h-2 bg-primary rounded animate-pulse" style={{ animationDelay: '0.2s' }} />
+                    </div>
+                  )}
+                </button>
+              ))}
             </div>
           </div>
 
